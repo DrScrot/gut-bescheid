@@ -1,5 +1,5 @@
 // Einstieg des Regelwerks. Rein rechnend: keine Oberfläche, kein Netzwerk.
-export { anteil, pruefeBetrag, type Cent } from "./geld";
+export { anteil, geteilt, pruefeBetrag, type Cent } from "./geld";
 export type { Erwachsener, Haushalt, Kind, Spanne } from "./haushalt";
 export {
   RECHTSSTAENDE,
@@ -7,6 +7,7 @@ export {
   type Parameter,
   type ParameterHinweis,
   type Rechtsstand,
+  type RechtsstandHinweis,
   type Status,
 } from "./parameter";
 export {

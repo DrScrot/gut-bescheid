@@ -90,6 +90,13 @@
     "status": "geprueft",
     "geprueftAm": "2026-10-26"
   },
+  "versicherungspauschale": {
+    "wert": 3000,
+    "einheit": "cent im Monat, einmal je volljähriger Person vom gesamten Einkommen außer Erwerbseinkommen, auch vom zugerechneten Kindergeld-Überhang (BSG, B 4 AS 49/13 R); bei Erwerbseinkommen im Grundabsetzbetrag enthalten (§ 11b Abs. 2 SGB II)",
+    "fundstelle": "§ 6 Abs. 1 Nr. 1 GrusiGV",
+    "gueltigAb": "2026-07-01",
+    "status": "aus_quelle"
+  },
   "kindergeld": {
     "wert": 25900,
     "einheit": "cent im Monat je Kind",
@@ -142,6 +149,6 @@
     "fundstelle": "§ 41 Abs. 2 SGB II",
     "gueltigAb": "2026-07-01",
     "status": "pruefen",
-    "hinweis": "Zwei Dezimalstellen, ab 5 in der dritten Stelle aufrunden. Gerundet wird je Freibetragsstufe."
+    "hinweis": "Zwei Dezimalstellen, ab 5 in der dritten Stelle aufrunden. Gerundet wird je Freibetragsstufe und beim Kopfteil der Wohnkosten."
   }
 }

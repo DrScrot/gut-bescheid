@@ -8,6 +8,12 @@ describe("Rechtsstand per Stichtag", () => {
   it("nimmt den Stand ab 1.7.2026 für Stichtage ab diesem Tag", () => {
     expect(rechtsstandZumStichtag("2026-07-01").gueltigAb).toBe("2026-07-01");
     expect(rechtsstandZumStichtag("2026-10-26").gueltigAb).toBe("2026-07-01");
+    expect(rechtsstandZumStichtag("2026-12-31").gueltigAb).toBe("2026-07-01");
+  });
+
+  it("nimmt ab 1.1.2027 den fortgeschriebenen Stand, auch für spätere Jahre", () => {
+    expect(rechtsstandZumStichtag("2027-01-01").gueltigAb).toBe("2027-01-01");
+    expect(rechtsstandZumStichtag("2030-06-01").gueltigAb).toBe("2027-01-01");
   });
 
   it("meldet einen klaren Fehler vor dem frühesten Stand", () => {
@@ -40,5 +46,27 @@ describe("Parameterdateien", () => {
     const { rundung } = rechtsstandZumStichtag("2026-07-01").sgb2;
     expect(rundung.status).toBe("pruefen");
     expect(rundung.fundstelle).toContain("§ 41 Abs. 2 SGB II");
+  });
+
+  it("Versicherungspauschale: 30 €, § 6 Abs. 1 Nr. 1 GrusiGV, Status aus_quelle", () => {
+    const { versicherungspauschale } = rechtsstandZumStichtag("2026-07-01").sgb2;
+    expect(versicherungspauschale).toMatchObject({ wert: 3000, status: "aus_quelle" });
+    expect(versicherungspauschale.fundstelle).toContain("§ 6 Abs. 1 Nr. 1 GrusiGV");
+  });
+
+  it("Stand 2027: Regelbedarfe und Kindergeld wie 2026, aber mit Status pruefen", () => {
+    const stand2026 = rechtsstandZumStichtag("2026-07-01");
+    const stand2027 = rechtsstandZumStichtag("2027-01-01");
+    for (const name of ["regelbedarfStufe1", "regelbedarfStufe2", "regelbedarfKinder", "kindergeld"] as const) {
+      expect(stand2027.sgb2[name].wert).toEqual(stand2026.sgb2[name].wert);
+      expect(stand2027.sgb2[name].status).toBe("pruefen");
+      expect(stand2027.sgb2[name].gueltigAb).toBe("2027-01-01");
+    }
+    expect(stand2027.sgb2.kindergeld.wert).toBe(25900);
+  });
+
+  it("Stand 2027 trägt den Hinweis auf die offenen Regelsätze, 2026 nicht", () => {
+    expect(rechtsstandZumStichtag("2027-01-01").hinweise).toEqual(["regelsaetze_2027_offen"]);
+    expect(rechtsstandZumStichtag("2026-07-01").hinweise).toEqual([]);
   });
 });

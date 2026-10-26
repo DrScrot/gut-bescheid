@@ -1,5 +1,22 @@
 import { describe, expect, it } from "vitest";
-import { anteil, pruefeBetrag } from "../src/geld";
+import { anteil, geteilt, pruefeBetrag } from "../src/geld";
+
+describe("geteilt", () => {
+  it("teilt ohne Rundung, wenn es aufgeht", () => {
+    expect(geteilt(60000, 2)).toEqual({ cent: 30000, gerundet: false });
+  });
+
+  it("rundet ab einem halben Cent auf (§ 41 Abs. 2 SGB II)", () => {
+    expect(geteilt(100000, 3)).toEqual({ cent: 33333, gerundet: true });
+    expect(geteilt(5, 2)).toEqual({ cent: 3, gerundet: true });
+    expect(geteilt(200000, 3)).toEqual({ cent: 66667, gerundet: true });
+  });
+
+  it("lehnt Teiler ab, die keine ganze Zahl ab 1 sind", () => {
+    expect(() => geteilt(100, 0)).toThrow();
+    expect(() => geteilt(100, 1.5)).toThrow();
+  });
+});
 
 describe("anteil", () => {
   it("rechnet ohne Rundung, wenn das Ergebnis volle Cent hat", () => {

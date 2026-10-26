@@ -14,8 +14,10 @@ export interface Erwachsener {
 
 export interface Kind {
   alter: { jahre: number; monate: number };
-  /** Eigenes Einkommen ohne Kindergeld: Unterhalt, Unterhaltsvorschuss, Ausbildung. */
+  /** Eigenes Einkommen ohne Kindergeld: Unterhalt, Unterhaltsvorschuss. */
   einkommen: Cent;
+  /** Ausbildungsvergütung des Kindes. Größer 0: außerhalb des Umfangs von Version 0. */
+  ausbildungsverguetung: Cent;
 }
 
 /** Betrag als Spanne, beide Grenzen eingeschlossen. Ein genauer Betrag hat von = bis. bis = null: nach oben offen. */

@@ -15,7 +15,7 @@ Stand: 26.10.2026 · Autor: Nico · Lebende Fassung: Claude-Doc „Fachkonzept V
 - Checkliste der Unterlagen, Erinnerungen als Kalenderdatei (.ics)
 - Spracheingabe für freie Angaben, alles auf dem Gerät, kein Konto
 
-**Nicht im Umfang (bewusst):** Alleinstehende ohne Kinder, Selbstständige mit schwankendem Einkommen, Pflege, Unterhaltsvorschuss, Eigentümer (Lastenzuschuss), Bundesländer außer Bayern, Antragstellung selbst, Post-Scanner. Wer außerhalb des Umfangs liegt, bekommt einen klaren Hinweis und Verweise auf offizielle Rechner, statt eines falschen Ergebnisses.
+**Nicht im Umfang (bewusst):** Alleinstehende ohne Kinder, Selbstständige mit schwankendem Einkommen, Pflege, die Prüfung des Unterhaltsvorschusses selbst (wer ihn bekommt, gibt ihn als Einkommen des Kindes ein), Ausbildungsvergütung von Kindern, Kinder ab 18, Elterngeld (folgt als eigenes Feld), Eigentümer (Lastenzuschuss), Bundesländer außer Bayern, Antragstellung selbst, Post-Scanner. Wer außerhalb des Umfangs liegt, bekommt einen klaren Hinweis und Verweise auf offizielle Rechner, statt eines falschen Ergebnisses.
 
 **Erfolgskriterien:**
 
@@ -76,7 +76,7 @@ Jeder Schritt besteht aus mehreren Bildschirmen mit je einer Frage.
 ### Entscheidungslogik
 
 1. **Bedarf nach SGB II berechnen:** Regelbedarfe + Mehrbedarfe + Kosten der Unterkunft und Heizung.
-2. **Einkommen nach SGB II bereinigen:** Netto minus Erwerbstätigenfreibetrag, Kindergeld zählt als Einkommen des Kindes. Daraus ergibt sich **Lücke A** = Bedarf minus Einkommen. Ist sie 0 oder kleiner, besteht kein Anspruch auf Grundsicherung.
+2. **Einkommen nach SGB II bereinigen:** Netto minus Freibetrag (Grundabsetzbetrag 100 € + Erwerbstätigenfreibetrag, höchstens bis zum Netto). Sonstiges Einkommen Erwachsener ohne Erwerbseinkommen minus 30 € Versicherungspauschale. Kindergeld zählt als Einkommen des Kindes; was das Kind davon nicht braucht, zählt beim Elternteil (Kindergeld-Überhang), und das Kind fällt dann aus der Bedarfsgemeinschaft. Daraus ergibt sich **Lücke A** = Bedarf minus Einkommen. Ist sie 0 oder kleiner, besteht kein Anspruch auf Grundsicherung.
 3. **Weg B rechnen:** Kinderzuschlag (wenn das Mindesteinkommen erreicht ist) und Wohngeld (unter der Annahme, dass keine Grundsicherung bezogen wird).
 4. **Vergleich:** Deckt Einkommen + Kindergeld + KiZ + Wohngeld den Bedarf, ist Weg B möglich. Das Jobcenter würde nach § 12a SGB II ohnehin auf die vorrangigen Leistungen verweisen. Fehlen höchstens 100 €, greift der erweiterte Zugang zum KiZ (§ 6a Abs. 1a BKGG), dann besteht eine echte Wahl. Fehlt mehr, deckt nur Weg A den Bedarf. Beide Beträge werden trotzdem gezeigt.
 5. **Bildung und Teilhabe** ist auf beiden Wegen möglich. Nur die zuständige Stelle unterscheidet sich.
@@ -88,13 +88,16 @@ Jeder Schritt besteht aus mehreren Bildschirmen mit je einer Frage.
 | Regelbedarf Stufe 1 (alleinerziehend) | 563 € | RBSFV 2026 | geprüft |
 | Regelbedarf Stufe 2 (je Partner) | 506 € | RBSFV 2026 | geprüft |
 | Regelbedarf Kind 14–17 / 6–13 / 0–5 | 471 / 390 / 357 € | RBSFV 2026 (Nullrunde) | geprüft |
-| Mehrbedarf Alleinerziehende | der höhere Wert aus 36 % von Stufe 1 (bei Kind unter 7 oder 2–3 Kindern unter 16) und 12 % je Kind, höchstens 60 % | § 21 Abs. 3 SGB II | geprüft |
+| Mehrbedarf Alleinerziehende | 36 % von Stufe 1 bei Kind unter 7 oder 2–3 Kindern unter 16, oder 12 % je Kind, wenn das mehr ergibt; höchstens 60 % | § 21 Abs. 3 SGB II | geprüft |
 | Grundabsetzbetrag Erwerbseinkommen | 100 € | § 11b Abs. 2 SGB II | geprüft |
 | Erwerbstätigenfreibetrag | 20 % auf 100–520 €, 30 % auf 520–1.000 €, 10 % auf 1.000–1.200 € (1.500 € mit minderjährigem Kind), jeweils vom Brutto | § 11b Abs. 3 SGB II | geprüft |
-| Kindergeld | 259 € je Kind | EStG/BKGG 2026 | geprüft |
-| Vermögensfreibetrag je Person | 0–29 Jahre: 5.000 €, 30–39 Jahre: 10.000 €, 40–49 Jahre: 12.500 €, ab 50 Jahren: 20.000 €. Innerhalb der Bedarfsgemeinschaft übertragbar, keine Karenzzeit mehr | § 12 Abs. 2 SGB II | geprüft |
+| Versicherungspauschale | 30 € vom sonstigen Einkommen Volljähriger; nicht zusätzlich bei Erwerbseinkommen, dann steckt sie im Grundabsetzbetrag | § 6 Abs. 1 Nr. 1 GrusiGV | aus Quelle laden |
+| Kindergeld | 259 € je Kind | § 66 Abs. 1 EStG; § 6 Abs. 1 BKGG | geprüft |
+| Vermögensfreibetrag je Person | 0–29 Jahre: 5.000 €, 30–39 Jahre: 10.000 €, 40–49 Jahre: 12.500 €, ab 50 Jahren: 20.000 €. Der höhere Freibetrag gilt ab Beginn des Monats, in dem die Altersgrenze erreicht wird. Innerhalb der Bedarfsgemeinschaft übertragbar, keine Karenzzeit mehr. Auto und Altersvorsorge zählen nicht mit, die Frage nach dem Ersparten nimmt sie aus | § 12 Abs. 2 SGB II | geprüft |
 | Wohnkosten | tatsächliche Kosten bis zur regionalen Angemessenheitsgrenze, im ersten Jahr höchstens 1,5-fach | § 22 SGB II | geprüft; regionale Grenzen nicht in Version 0 |
 | Bewilligungszeitraum | in der Regel 12 Monate, 6 Monate bei schwankendem Einkommen | BA | geprüft |
+| Rundung | zwei Dezimalstellen, ab 5 in der dritten Stelle aufrunden | § 41 Abs. 2 SGB II | prüfen |
+| Stichtag ab 1.1.2027 | Regelsätze 2027 noch nicht festgelegt: gerechnet wird mit den Werten von 2026, Kindergeld 259 € | RBSFV 2027 noch nicht verkündet | prüfen |
 
 *Hinweis Wohnkosten:* Version 0 rechnet mit den tatsächlichen Kosten und zeigt deutlich: „Das Jobcenter prüft, ob eure Miete angemessen ist. Die Grenze legt jedes Jobcenter selbst fest.“
 
@@ -193,19 +196,19 @@ Jede Zeile wird zu einer Karte mit einer von drei Markierungen: **Pflicht** (Han
 
 **Bedarf und Freibetrag sind aus den geprüften Parametern vorgerechnet. Die Sollwerte für KiZ und Wohngeld werden beim Bau aus den offiziellen Rechnern eingetragen, mit Datum.** Erst wenn alle zehn auf 1 € genau stimmen, gilt das Regelwerk als fertig.
 
-Wohnkosten = Kaltmiete + Nebenkosten + Heizung. Freibetrag = Erwerbstätigenfreibetrag nach § 11b auf das Brutto der erwerbstätigen Person.
+Wohnkosten = Kaltmiete + Nebenkosten + Heizung. Freibetrag = Grundabsetzbetrag 100 € (§ 11b Abs. 2) + Erwerbstätigenfreibetrag (§ 11b Abs. 3) auf das Brutto der erwerbstätigen Person, höchstens bis zum Netto.
 
 | ID | Haushalt | Einkommen (brutto / netto) | Wohnkosten | Prüft vor allem | SGB-II-Bedarf | Freibetrag | Erwartung |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | T01 | Paar, Kinder 4 und 8, Nürnberg | 2.400 / 1.750 € | 750 + 180 + 110 = 1.040 € | Standardfall Weg B | 1.759 + 1.040 = 2.799 € | 378 € | Weg B deckt den Bedarf |
 | T02 | wie T01 | 1.400 / 1.120 € | 1.040 € | niedriges Einkommen | 2.799 € | 368 € | nur Weg A deckt den Bedarf |
-| T03 | alleinerziehend, Kind 3, Erlangen, Unterhaltsvorschuss 230 € | 1.300 / 1.000 € | 550 + 120 + 80 = 750 € | Mehrbedarf 36 %, Kindeseinkommen 45 % | 563 + 357 + 202,68 + 750 = 1.872,68 € | 358 € | KiZ gemindert, Weg B wahrscheinlich |
+| T03 | alleinerziehend, Kind 3, Erlangen, Unterhaltsvorschuss 227 € | 1.300 / 1.000 € | 550 + 120 + 80 = 750 € | Mehrbedarf 36 %, Kindeseinkommen 45 % | 563 + 357 + 202,68 + 750 = 1.872,68 € | 358 € | KiZ gemindert, Weg B wahrscheinlich |
 | T04 | Paar, Kinder 6 und 9, Landkreis Passau | 850 / 680 € | 620 + 150 + 90 = 860 € | Mindesteinkommen 900 € nicht erreicht | 1.792 + 860 = 2.652 € | 283 € | kein KiZ, nur Weg A |
 | T05 | Paar, Kinder 1, 5 und 12, Augsburg | 2.900 / 2.050 € | 900 + 200 + 130 = 1.230 € | Kind unter 14 Monaten (Folgen-Karte), 3 Kinder | 2.116 + 1.230 = 3.346 € | 378 € | Grenzfall, Wohnkostenanteil für 3 Kinder nötig |
 | T06 | Paar (35 und 38), Kind 7, Würzburg, Erspartes 60.000 € | 2.200 / 1.650 € | 650 + 150 + 90 = 890 € | Vermögen: SGB II ausgeschlossen (Freibetrag 25.000 €), KiZ möglich (Grenze 70.000 €) | 1.402 + 890 = 2.292 € | 378 € | nur Weg B, Hinweis Vermögen |
 | T07 | Paar, 2 Kinder, Werte so gewählt, dass 1–100 € fehlen | beim Bau einstellen | beim Bau einstellen | erweiterter Zugang KiZ | – | – | echte Wahl zwischen A und B |
 | T08 | Paar, Kind 4, München | 3.200 / 2.300 € | 1.400 + 250 + 120 = 1.770 € | Miete über dem Wohngeld-Höchstbetrag (Mietstufe VII) | 1.369 + 1.770 = 3.139 € | 378 € | Wohngeld gedeckelt, Wohnkosten-Hinweis |
-| T09 | Paar, 2 Kinder, Regensburg | 4.500 / 3.100 € | 1.000 € | kein Anspruch | – | 378 € | „Kein Anspruch“, mit Verweis auf Steuer und BuT-Prüfung |
+| T09 | Paar, Kinder 14 und 16, Regensburg (1.000 € als Kaltmiete, Aufteilung in M3 nachtragen) | 4.500 / 3.100 € | 1.000 € | kein Anspruch | – | 378 € | „Kein Anspruch“, mit Verweis auf Steuer und BuT-Prüfung |
 | T10 | Paar, Kinder 2 und 5, Landkreis Regensburg, eine Person ohne Einkommen und ohne ALG I | 2.800 / 2.000 € | 780 + 170 + 100 = 1.050 € | Krankenversicherungs-Karte, Partner-Karte | 1.726 + 1.050 = 2.776 € | 378 € | Weg B wahrscheinlich |
 
 **So werden die Sollwerte erfasst:** je Haushalt eine Datei `packages/regelwerk/tests/haushalte/T01.json` mit Eingaben, Sollwerten, Quelle („KiZ-Lotse, 28.10.2026“) und Rechtsstand. Weicht ein offizieller Rechner von der Gesetzesrechnung ab, wird das notiert und nicht stillschweigend angeglichen. Die Mietstufen der Orte stammen aus der WoGV-Anlage, nicht aus Annahmen.

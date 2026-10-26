@@ -1,0 +1,154 @@
+{
+  "regelbedarfStufe1": {
+    "wert": 56300,
+    "einheit": "cent im Monat (alleinstehend oder alleinerziehend)",
+    "fundstelle": "§ 20 Abs. 2 Satz 1 SGB II i. V. m. § 2 RBSFV 2026 (BGBl. 2025 I Nr. 243), Regelbedarfsstufe 1; Wert 2026 fortgeschrieben, RBSFV 2027 noch nicht verkündet",
+    "gueltigAb": "2027-01-01",
+    "status": "pruefen",
+    "hinweis": "Wert für 2027 noch nicht festgelegt. Gerechnet wird mit dem Wert von 2026."
+  },
+  "regelbedarfStufe2": {
+    "wert": 50600,
+    "einheit": "cent im Monat je Partner",
+    "fundstelle": "§ 20 Abs. 4 SGB II i. V. m. § 2 RBSFV 2026 (BGBl. 2025 I Nr. 243), Regelbedarfsstufe 2; Wert 2026 fortgeschrieben, RBSFV 2027 noch nicht verkündet",
+    "gueltigAb": "2027-01-01",
+    "status": "pruefen",
+    "hinweis": "Wert für 2027 noch nicht festgelegt. Gerechnet wird mit dem Wert von 2026."
+  },
+  "regelbedarfKinder": {
+    "wert": [
+      {
+        "vonAlter": 0,
+        "bisAlter": 5,
+        "cent": 35700
+      },
+      {
+        "vonAlter": 6,
+        "bisAlter": 13,
+        "cent": 39000
+      },
+      {
+        "vonAlter": 14,
+        "bisAlter": 17,
+        "cent": 47100
+      }
+    ],
+    "einheit": "cent im Monat je Kind, Alter in vollen Jahren",
+    "fundstelle": "§ 23 Nr. 1, § 20 Abs. 2 Satz 2 Nr. 1 SGB II i. V. m. § 2 RBSFV 2026 (BGBl. 2025 I Nr. 243), Regelbedarfsstufen 4 bis 6 (Nullrunde, § 1 Abs. 2 RBSFV 2026); Wert 2026 fortgeschrieben, RBSFV 2027 noch nicht verkündet",
+    "gueltigAb": "2027-01-01",
+    "status": "pruefen",
+    "hinweis": "Wert für 2027 noch nicht festgelegt. Gerechnet wird mit dem Wert von 2026."
+  },
+  "mehrbedarfAlleinerziehend": {
+    "wert": {
+      "prozentGrund": 36,
+      "einKindUnterAlter": 7,
+      "mehrereKinderUnterAlter": 16,
+      "mehrereKinderAnzahlVon": 2,
+      "mehrereKinderAnzahlBis": 3,
+      "prozentJeKind": 12,
+      "prozentHoechstens": 60
+    },
+    "einheit": "Prozent der Regelbedarfsstufe 1; der höhere Wert aus Grund- und Je-Kind-Satz",
+    "fundstelle": "§ 21 Abs. 3 Nr. 1 und 2 SGB II; FW § 21 Rz. 21.8",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-26"
+  },
+  "grundabsetzbetrag": {
+    "wert": 10000,
+    "einheit": "cent im Monat je erwerbstätiger Person",
+    "fundstelle": "§ 11b Abs. 2 Satz 1 SGB II",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-26"
+  },
+  "erwerbstaetigenfreibetrag": {
+    "wert": {
+      "stufen": [
+        {
+          "uebersteigtCent": 10000,
+          "bisCent": 52000,
+          "prozent": 20
+        },
+        {
+          "uebersteigtCent": 52000,
+          "bisCent": 100000,
+          "prozent": 30
+        },
+        {
+          "uebersteigtCent": 100000,
+          "bisCent": 120000,
+          "prozent": 10
+        }
+      ],
+      "obergrenzeMitMinderjaehrigemKindCent": 150000
+    },
+    "einheit": "Prozent des monatlichen Brutto-Erwerbseinkommens je Stufe",
+    "fundstelle": "§ 11b Abs. 3 Satz 2 Nr. 1–3 und Satz 3 SGB II; FW §§ 11–11b Rz. 11.157 (Brutto)",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-26"
+  },
+  "versicherungspauschale": {
+    "wert": 3000,
+    "einheit": "cent im Monat, einmal je volljähriger Person vom gesamten Einkommen außer Erwerbseinkommen, auch vom zugerechneten Kindergeld-Überhang (BSG, B 4 AS 49/13 R); bei Erwerbseinkommen im Grundabsetzbetrag enthalten (§ 11b Abs. 2 SGB II)",
+    "fundstelle": "§ 6 Abs. 1 Nr. 1 GrusiGV",
+    "gueltigAb": "2026-07-01",
+    "status": "aus_quelle"
+  },
+  "kindergeld": {
+    "wert": 25900,
+    "einheit": "cent im Monat je Kind",
+    "fundstelle": "§ 66 Abs. 1 EStG; § 6 Abs. 1 BKGG; Wert 2026 fortgeschrieben. Erhöhung auf 267 € bisher nur im Regierungsentwurf (BT-Drs. 21/8235), in M3 als geplant",
+    "gueltigAb": "2027-01-01",
+    "status": "pruefen",
+    "hinweis": "Wert für 2027 noch nicht festgelegt. Gerechnet wird mit dem Wert von 2026."
+  },
+  "vermoegensfreibetrag": {
+    "wert": [
+      {
+        "vonAlter": 0,
+        "bisAlter": 29,
+        "cent": 500000
+      },
+      {
+        "vonAlter": 30,
+        "bisAlter": 39,
+        "cent": 1000000
+      },
+      {
+        "vonAlter": 40,
+        "bisAlter": 49,
+        "cent": 1250000
+      },
+      {
+        "vonAlter": 50,
+        "bisAlter": null,
+        "cent": 2000000
+      }
+    ],
+    "einheit": "cent je Person der Bedarfsgemeinschaft, Alter in vollen Jahren; innerhalb der Bedarfsgemeinschaft übertragbar",
+    "fundstelle": "§ 12 Abs. 2 SGB II (Fassung ab 1.7.2026, BGBl. 2026 I Nr. 107); FW § 12 Rz. 12.36 f.",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-26"
+  },
+  "wohnkosten": {
+    "wert": "tatsaechliche_kosten",
+    "einheit": "Regel",
+    "fundstelle": "§ 22 Abs. 1 SGB II",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-26",
+    "hinweis": "Version 0 vereinfacht: tatsächliche Kosten ohne Angemessenheitsgrenze und ohne 1,5-fach-Grenze (Fachkonzept). Das Jobcenter prüft, ob Miete und Heizkosten angemessen sind. Das Ergebnis weist immer darauf hin."
+  },
+  "rundung": {
+    "wert": "kaufmaennisch_cent",
+    "einheit": "Regel",
+    "fundstelle": "§ 41 Abs. 2 SGB II",
+    "gueltigAb": "2026-07-01",
+    "status": "pruefen",
+    "hinweis": "Zwei Dezimalstellen, ab 5 in der dritten Stelle aufrunden. Gerundet wird je Freibetragsstufe und beim Kopfteil der Wohnkosten."
+  }
+}

@@ -11,11 +11,11 @@ function erwachsener(teil: Partial<Erwachsener> = {}): Erwachsener {
   return { alter: 35, brutto: 0, netto: 0, sonstigesEinkommen: 0, ...teil };
 }
 
-function kind(jahre: number, einkommen = 0): Kind {
-  return { alter: { jahre, monate: 0 }, einkommen };
+function kind(jahre: number, einkommen = 0, ausbildungsverguetung = 0): Kind {
+  return { alter: { jahre, monate: 0 }, einkommen, ausbildungsverguetung };
 }
 
-// Alleinerziehend, ein Kind von 3 Jahren, Wohnkosten 700 €, kein Einkommen, kein Erspartes.
+// Alleinerziehend (35), ein Kind von 3 Jahren, Wohnkosten 700 €, kein Einkommen, kein Erspartes.
 function haushalt(teil: Partial<Haushalt> = {}): Haushalt {
   return {
     gemeinde: "Testort",
@@ -39,7 +39,7 @@ describe("Lücke A (von Hand vorgerechnet, von Nico bestätigt am 26.10.2026)", 
   const faelle: [string, number][] = [
     ["T01", 90900],
     ["T02", 152900],
-    ["T03", 74168],
+    ["T03", 74468], // Unterhaltsvorschuss 227 €: 1.872,68 − (1.000 − 358 + 259 + 227)
     ["T04", 173700],
     ["T05", 89700],
     ["T06", 76100],
@@ -63,8 +63,9 @@ describe("Anspruch", () => {
 
   it("besteht nicht, wenn Lücke A genau 0 ist", () => {
     // Bedarf: 563 + 390 + 12 % von 563 (67,56) + 500 = 1.520,56 €
+    // Einkommen: 1.291,56 € − 30 € Versicherungspauschale + 259 € Kindergeld = 1.520,56 €
     const h = haushalt({
-      erwachsene: [erwachsener({ sonstigesEinkommen: 126156 })],
+      erwachsene: [erwachsener({ sonstigesEinkommen: 129156 })],
       kinder: [kind(10)],
       kaltmiete: 50000,
       nebenkosten: 0,
@@ -199,19 +200,158 @@ describe("Einkommen", () => {
     expect(rechne(testhaushalt("T05").eingabe).einkommen.kindergeld).toBe(77700);
   });
 
-  it("zählt Einkommen des Kindes voll", () => {
+  it("zählt Einkommen des Kindes voll (T03: Unterhaltsvorschuss 227 €)", () => {
     const e = rechne(testhaushalt("T03").eingabe);
-    expect(e.einkommen.kindeseinkommen).toBe(23000);
-    expect(e.einkommen.summe).toBe(113100);
+    expect(e.einkommen.kindeseinkommen).toBe(22700);
+    expect(e.einkommen.summe).toBe(112800);
   });
+});
 
-  it("zählt sonstiges Einkommen voll (offener Punkt: Abzüge)", () => {
+describe("Versicherungspauschale (§ 6 Abs. 1 Nr. 1 GrusiGV)", () => {
+  it("zieht 30 € vom sonstigen Einkommen ab, wenn die Person kein Erwerbseinkommen hat", () => {
     const t02 = testhaushalt("T02").eingabe;
     const mitElterngeld: Haushalt = {
       ...t02,
       erwachsene: [t02.erwachsene[0]!, erwachsener({ sonstigesEinkommen: 30000 })],
     };
-    expect(rechne(mitElterngeld).lueckeA).toBe(152900 - 30000);
+    const e = rechne(mitElterngeld);
+    expect(e.einkommen.erwachsene[1]?.versicherungspauschale).toBe(3000);
+    expect(e.lueckeA).toBe(152900 - 30000 + 3000);
+  });
+
+  it("zieht nichts zusätzlich ab, wenn die Person Erwerbseinkommen hat (steckt im Grundabsetzbetrag)", () => {
+    const e = rechne(
+      haushalt({ erwachsene: [erwachsener({ brutto: 52000, netto: 52000, sonstigesEinkommen: 20000 })] }),
+    );
+    expect(e.einkommen.erwachsene[0]?.versicherungspauschale).toBe(0);
+    expect(e.einkommen.summe).toBe(52000 - 18400 + 20000 + 25900);
+  });
+
+  it("zieht höchstens das sonstige Einkommen ab", () => {
+    const e = rechne(haushalt({ erwachsene: [erwachsener({ sonstigesEinkommen: 2000 })] }));
+    expect(e.einkommen.erwachsene[0]?.versicherungspauschale).toBe(2000);
+    expect(e.einkommen.summe).toBe(25900);
+  });
+
+  it("zieht ohne sonstiges Einkommen nichts ab", () => {
+    const e = rechne(testhaushalt("T01").eingabe);
+    expect(e.einkommen.erwachsene.map((x) => x.versicherungspauschale)).toEqual([0, 0]);
+  });
+});
+
+describe("Hinweis Elterngeld", () => {
+  it("erscheint, wenn jemand sonstiges Einkommen hat", () => {
+    const e = rechne(haushalt({ erwachsene: [erwachsener({ sonstigesEinkommen: 30000 })] }));
+    expect(e.hinweise).toContainEqual({ code: "elterngeld_nicht_beruecksichtigt" });
+  });
+
+  it("erscheint nicht ohne sonstiges Einkommen", () => {
+    const e = rechne(testhaushalt("T01").eingabe);
+    expect(e.hinweise).not.toContainEqual({ code: "elterngeld_nicht_beruecksichtigt" });
+  });
+});
+
+describe("Kindergeld-Überhang (§ 7 Abs. 3 Nr. 4, § 11 Abs. 1 Satz 5 SGB II)", () => {
+  // Alleinerziehend (35), Kind 15 mit 600 € Unterhalt, Wohnkosten 600 €.
+  // Kind: Bedarf 471 € + Kopfteil 300 € = 771 €. Eigenes Einkommen 259 € + 600 € = 859 €. Überschuss 88 €.
+  const mitUnterhalt = (cent: number) => haushalt({ kinder: [kind(15, cent)], kaltmiete: 40000 });
+
+  it("nimmt das Kind aus der Bedarfsgemeinschaft", () => {
+    const e = rechne(mitUnterhalt(60000));
+    expect(e.kinderAusserhalbBedarfsgemeinschaft).toEqual([0]);
+    // Mehrbedarf zählt weiter alle Kinder im Haushalt: 12 % für ein Kind von 15.
+    expect(e.bedarf).toEqual({ regelbedarfe: 56300, mehrbedarfAlleinerziehend: 6756, wohnkosten: 30000, summe: 93056 });
+  });
+
+  it("zählt den Überschuss beim Elternteil, abzüglich 30 € Versicherungspauschale ohne Erwerbseinkommen", () => {
+    const e = rechne(mitUnterhalt(60000));
+    expect(e.einkommen).toMatchObject({
+      kindergeld: 0,
+      kindeseinkommen: 0,
+      kindergeldUeberhang: 8800,
+      versicherungspauschaleAufUeberhang: 3000,
+      summe: 5800,
+    });
+    expect(e.lueckeA).toBe(93056 - 5800);
+  });
+
+  it("zieht die Pauschale je Person nur einmal ab, auch mit sonstigem Einkommen", () => {
+    // 20 € sonstiges Einkommen: davon 20 € Pauschale. Auf den Überhang nur noch die restlichen 10 €.
+    const e = rechne(
+      haushalt({ erwachsene: [erwachsener({ sonstigesEinkommen: 2000 })], kinder: [kind(15, 60000)], kaltmiete: 40000 }),
+    );
+    expect(e.einkommen.erwachsene[0]?.versicherungspauschale).toBe(2000);
+    expect(e.einkommen.versicherungspauschaleAufUeberhang).toBe(1000);
+    expect(e.einkommen.summe).toBe(2000 - 2000 + 8800 - 1000);
+  });
+
+  it("zieht keine Pauschale vom Überhang ab, wenn die Alleinerziehende Erwerbseinkommen hat", () => {
+    const e = rechne(
+      haushalt({
+        erwachsene: [erwachsener({ brutto: 52000, netto: 52000 })],
+        kinder: [kind(15, 60000)],
+        kaltmiete: 40000,
+      }),
+    );
+    expect(e.einkommen.versicherungspauschaleAufUeberhang).toBe(0);
+  });
+
+  it("Paar mit genau einem Erwerbstätigen: nur der sichere Abzug, also keiner (offener Punkt)", () => {
+    // Wer das Kindergeld bekommt, fragt Version 0 nicht. Beim Erwerbstätigen gäbe es keine Pauschale.
+    const e = rechne(
+      haushalt({
+        erwachsene: [erwachsener({ brutto: 240000, netto: 175000 }), erwachsener()],
+        kinder: [kind(15, 100000)],
+        kaltmiete: 80000,
+      }),
+    );
+    expect(e.einkommen.kindergeldUeberhang).toBe(25900);
+    expect(e.einkommen.versicherungspauschaleAufUeberhang).toBe(0);
+  });
+
+  it("streicht den Vermögensfreibetrag des Kindes", () => {
+    expect(rechne(mitUnterhalt(60000)).vermoegen.freibetrag).toBe(1000000);
+  });
+
+  it("deckt das Einkommen den Bedarf genau, fällt das Kind heraus, Überhang 0", () => {
+    // 512 € Unterhalt + 259 € Kindergeld = 771 €
+    const e = rechne(mitUnterhalt(51200));
+    expect(e.kinderAusserhalbBedarfsgemeinschaft).toEqual([0]);
+    expect(e.einkommen.kindergeldUeberhang).toBe(0);
+  });
+
+  it("begrenzt den Überhang auf das Kindergeld und rundet den Kopfteil", () => {
+    // Paar, Kind 15 mit 1.000 € Unterhalt, Wohnkosten 1.000 €: Kopfteil 333,33 €.
+    const e = rechne(
+      haushalt({ erwachsene: [erwachsener(), erwachsener()], kinder: [kind(15, 100000)], kaltmiete: 80000 }),
+    );
+    expect(e.bedarf.wohnkosten).toBe(100000 - 33333);
+    expect(e.einkommen.kindergeldUeberhang).toBe(25900);
+    // Beide Erwachsenen ohne Einkommen: Die Pauschale greift, egal wer das Kindergeld bekommt.
+    expect(e.einkommen.versicherungspauschaleAufUeberhang).toBe(3000);
+    expect(e.lueckeA).toBe(101200 + 66667 - 25900 + 3000);
+    expect(e.parameterHinweise.map((h) => h.name)).toContain("sgb2.rundung");
+  });
+
+  it("prüft mit dem gerundeten Kopfteil (§ 41 Abs. 2 SGB II)", () => {
+    // Kopfteil 1.000 € / 3 = 333,33 €. Einkommen genau 471 € + 333,33 € = 804,33 € deckt den Bedarf.
+    const e = rechne(
+      haushalt({ erwachsene: [erwachsener(), erwachsener()], kinder: [kind(15, 54533)], kaltmiete: 80000 }),
+    );
+    expect(e.kinderAusserhalbBedarfsgemeinschaft).toEqual([0]);
+    expect(e.einkommen.kindergeldUeberhang).toBe(0);
+    expect(e.parameterHinweise.map((h) => h.name)).toContain("sgb2.rundung");
+  });
+
+  it("meldet die Rundung nicht, wenn sie nichts berührt (T06: Kopfteil 296,67 €, Kind klar in der BG)", () => {
+    expect(rechne(testhaushalt("T06").eingabe).parameterHinweise).toEqual([]);
+  });
+
+  it("lässt ein Kind in der Bedarfsgemeinschaft, dessen Einkommen den Bedarf nicht deckt (T03)", () => {
+    // Kind 3: 357 € + Kopfteil 375 € = 732 €. Eigenes Einkommen 259 € + 227 € = 486 €.
+    const e = rechne(testhaushalt("T03").eingabe);
+    expect(e.kinderAusserhalbBedarfsgemeinschaft).toEqual([]);
+    expect(e.einkommen.kindergeldUeberhang).toBe(0);
   });
 });
 
@@ -243,8 +383,68 @@ describe("Vermögen (§ 12 SGB II)", () => {
     expect(e.anspruch).toBe(anspruch);
   });
 
+  it.each([
+    ["einen Cent darüber", { von: 1500001, bis: 1500001 }, { von: 1, bis: 1 }],
+    ["Spanne über den Freibetrag hinweg", { von: 1000000, bis: 3999999 }, { von: 0, bis: 2499999 }],
+    ["nach oben offen", { von: 7000000, bis: null }, { von: 5500000, bis: null }],
+  ] as const)("gibt den Betrag über dem Freibetrag aus: %s", (_, vermoegen, ueber) => {
+    const e = rechne(haushalt({ vermoegen }));
+    expect(e.vermoegen.ueberFreibetrag).toEqual(ueber);
+    expect(e.hinweise).toContainEqual({ code: "erspartes_zuerst_einsetzen" });
+  });
+
+  it("unter dem Freibetrag: kein Betrag darüber, kein Hinweis", () => {
+    const e = rechne(haushalt({ vermoegen: { von: 0, bis: 999999 } }));
+    expect(e.vermoegen.ueberFreibetrag).toEqual({ von: 0, bis: 0 });
+    expect(e.hinweise).not.toContainEqual({ code: "erspartes_zuerst_einsetzen" });
+  });
+
+  it("kein Hinweis „danach kann ein Anspruch bestehen“, wenn Lücke A 0 oder kleiner ist", () => {
+    const t09 = testhaushalt("T09").eingabe;
+    const e = rechne({ ...t09, vermoegen: { von: 6000000, bis: 6000000 } });
+    expect(e.vermoegen.ergebnis).toBe("ueber_freibetrag");
+    expect(e.anspruch).toBe("nein_einkommen");
+    expect(e.hinweise).not.toContainEqual({ code: "erspartes_zuerst_einsetzen" });
+  });
+
+  it("T06: 35.000 € über dem Freibetrag", () => {
+    const e = rechne(testhaushalt("T06").eingabe);
+    expect(e.vermoegen.ueberFreibetrag).toEqual({ von: 3500000, bis: 3500000 });
+  });
+
   it("lehnt eine Spanne ab, deren Ende vor dem Anfang liegt", () => {
     expect(() => rechne(haushalt({ vermoegen: { von: 100, bis: 50 } }))).toThrow(/vermoegen/);
+  });
+});
+
+describe("Monatsregel § 12 Abs. 2 Satz 2 SGB II (Geburtstagsmonat)", () => {
+  it("gibt den Hinweis, wenn der höhere Freibetrag das Ergebnis ändern würde", () => {
+    // 29 Jahre: 5.000 € + 5.000 € (Kind) = 10.000 €. Im Monat des 30. Geburtstags: 15.000 €.
+    const e = rechne(haushalt({ erwachsene: [erwachsener({ alter: 29 })], vermoegen: { von: 1200000, bis: 1200000 } }));
+    expect(e.vermoegen.ergebnis).toBe("ueber_freibetrag");
+    expect(e.hinweise).toContainEqual({ code: "freibetrag_geburtstagsmonat" });
+  });
+
+  it("gibt ihn nicht, wenn sich nichts ändert", () => {
+    const e = rechne(haushalt({ erwachsene: [erwachsener({ alter: 29 })], vermoegen: { von: 0, bis: 999999 } }));
+    expect(e.hinweise).not.toContainEqual({ code: "freibetrag_geburtstagsmonat" });
+  });
+
+  it("gibt ihn nicht, wenn Lücke A 0 oder kleiner ist (Ergebnis bleibt „kein Anspruch“)", () => {
+    const e = rechne(
+      haushalt({
+        erwachsene: [erwachsener({ alter: 29, brutto: 400000, netto: 300000 })],
+        vermoegen: { von: 1200000, bis: 1200000 },
+      }),
+    );
+    expect(e.anspruch).toBe("nein_einkommen");
+    expect(e.hinweise).not.toContainEqual({ code: "freibetrag_geburtstagsmonat" });
+  });
+
+  it("gibt ihn nicht, wenn niemand vor einer Altersgrenze steht", () => {
+    const e = rechne(haushalt({ vermoegen: { von: 1600000, bis: 1600000 } }));
+    expect(e.vermoegen.ergebnis).toBe("ueber_freibetrag");
+    expect(e.hinweise).not.toContainEqual({ code: "freibetrag_geburtstagsmonat" });
   });
 });
 
@@ -258,22 +458,52 @@ describe("Umfang", () => {
     const e = berechneSgb2(haushalt({ kinder: [] }), { stichtag: STICHTAG });
     expect(e).toMatchObject({ imUmfang: false, gruende: ["kein_kind"] });
   });
-});
 
-describe("Kindeseinkommen über dem Bedarf des Kindes", () => {
-  it("gibt den Hinweis „Rechnung vereinfacht“", () => {
-    // Kind 15: Bedarf 471 € + Kopfteil Wohnkosten 300 € = 771 €. Einkommen 259 € + 600 € = 859 €.
-    const e = rechne(haushalt({ kinder: [kind(15, 60000)], kaltmiete: 40000 }));
-    expect(e.hinweise).toContainEqual({
-      code: "rechnung_vereinfacht",
-      grund: "kindeseinkommen_ueber_bedarf",
-      kind: 0,
-    });
+  it("Kind mit Ausbildungsvergütung: außerhalb des Umfangs", () => {
+    const e = berechneSgb2(haushalt({ kinder: [kind(16, 0, 80000)] }), { stichtag: STICHTAG });
+    expect(e).toMatchObject({ imUmfang: false, gruende: ["kind_ausbildungsverguetung"] });
   });
 
-  it("gibt ihn nicht, wenn das Einkommen den Bedarf nicht übersteigt (T03)", () => {
-    const e = rechne(testhaushalt("T03").eingabe);
-    expect(e.hinweise.map((h) => h.code)).not.toContain("rechnung_vereinfacht");
+  it.each([
+    [17, "erwachsener_unter_18"],
+    [65, "erwachsener_ab_65"],
+  ])("Erwachsener mit %i Jahren: %s", (alter, grund) => {
+    const e = berechneSgb2(haushalt({ erwachsene: [erwachsener({ alter })] }), { stichtag: STICHTAG });
+    expect(e).toMatchObject({ imUmfang: false, gruende: [grund] });
+  });
+
+  it("Erwachsene mit 18 und 64 Jahren sind im Umfang", () => {
+    const e = berechneSgb2(haushalt({ erwachsene: [erwachsener({ alter: 18 }), erwachsener({ alter: 64 })] }), {
+      stichtag: STICHTAG,
+    });
+    expect(e.imUmfang).toBe(true);
+  });
+});
+
+describe("Stichtag ab 1.1.2027", () => {
+  it("rechnet mit den Werten von 2026 und meldet sie als pruefen", () => {
+    const e = rechne(testhaushalt("T01").eingabe, "2027-03-01");
+    expect(e.rechtsstand).toBe("2027-01-01");
+    expect(e.bedarf.summe).toBe(279900);
+    expect(e.einkommen.freibetrag).toBe(37800);
+    expect(e.parameterHinweise.map((h) => h.name).sort()).toEqual([
+      "sgb2.kindergeld",
+      "sgb2.regelbedarfKinder",
+      "sgb2.regelbedarfStufe2",
+    ]);
+    expect(e.parameterHinweise.every((h) => h.status === "pruefen")).toBe(true);
+    expect(e.hinweise).toContainEqual({ code: "regelsaetze_2027_offen" });
+  });
+
+  it("meldet bei Alleinerziehenden auch Stufe 1", () => {
+    const e = rechne(testhaushalt("T03").eingabe, "2027-01-01");
+    expect(e.parameterHinweise.map((h) => h.name)).toContain("sgb2.regelbedarfStufe1");
+  });
+
+  it("gibt den Hinweis vor 2027 nicht", () => {
+    const e = rechne(testhaushalt("T01").eingabe, "2026-12-31");
+    expect(e.hinweise).not.toContainEqual({ code: "regelsaetze_2027_offen" });
+    expect(e.parameterHinweise).toEqual([]);
   });
 });
 
@@ -291,6 +521,7 @@ describe("Eingaben und Stichtag", () => {
   it("lehnt negative oder krumme Beträge ab", () => {
     expect(() => rechne(haushalt({ erwachsene: [erwachsener({ brutto: -1 })] }))).toThrow(/brutto/);
     expect(() => rechne(haushalt({ kaltmiete: 500.5 }))).toThrow(/kaltmiete/);
+    expect(() => rechne(haushalt({ kinder: [kind(16, 0, -1)] }))).toThrow(/ausbildungsverguetung/);
   });
 
   it("verlangt einen oder zwei Erwachsene", () => {
@@ -302,9 +533,9 @@ describe("Eingaben und Stichtag", () => {
 
   it("lehnt ungültiges Alter ab", () => {
     expect(() => rechne(haushalt({ kinder: [kind(-1)] }))).toThrow(/alter/);
-    expect(() => rechne(haushalt({ kinder: [{ alter: { jahre: 3, monate: 12 }, einkommen: 0 }] }))).toThrow(
-      /alter/,
-    );
+    expect(() =>
+      rechne(haushalt({ kinder: [{ alter: { jahre: 3, monate: 12 }, einkommen: 0, ausbildungsverguetung: 0 }] })),
+    ).toThrow(/alter/);
     expect(() => rechne(haushalt({ erwachsene: [erwachsener({ alter: 35.5 })] }))).toThrow(/alter/);
   });
 });

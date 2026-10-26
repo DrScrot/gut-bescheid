@@ -11,8 +11,8 @@
       { "alter": 35, "brutto": 0, "netto": 0, "sonstigesEinkommen": 0 }
     ],
     "kinder": [
-      { "alter": { "jahre": 6, "monate": 0 }, "einkommen": 0 },
-      { "alter": { "jahre": 9, "monate": 0 }, "einkommen": 0 }
+      { "alter": { "jahre": 6, "monate": 0 }, "einkommen": 0, "ausbildungsverguetung": 0 },
+      { "alter": { "jahre": 9, "monate": 0 }, "einkommen": 0, "ausbildungsverguetung": 0 }
     ],
     "kaltmiete": 62000,
     "nebenkosten": 15000,

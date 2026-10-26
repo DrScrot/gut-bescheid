@@ -2,6 +2,7 @@
 // Die Dateien werden statisch importiert: keine Netzwerk- oder Dateizugriffe zur Laufzeit.
 import type { Cent } from "./geld";
 import sgb2_2026_07_01 from "../parameter/2026-07-01/sgb2.json";
+import sgb2_2027_01_01 from "../parameter/2027-01-01/sgb2.json";
 
 export type Status = "geprueft" | "aus_quelle" | "pruefen" | "geplant";
 
@@ -42,15 +43,23 @@ export interface Sgb2Parameter {
     stufen: { uebersteigtCent: Cent; bisCent: Cent; prozent: number }[];
     obergrenzeMitMinderjaehrigemKindCent: Cent;
   }>;
+  versicherungspauschale: Parameter<Cent>;
   kindergeld: Parameter<Cent>;
   vermoegensfreibetrag: Parameter<Altersstufe[]>;
   wohnkosten: Parameter<"tatsaechliche_kosten">;
   rundung: Parameter<"kaufmaennisch_cent">;
 }
 
+/**
+ * Hinweise, die ein ganzer Rechtsstand mitbringt.
+ * regelsaetze_2027_offen: „Die Regelsätze für 2027 sind noch nicht festgelegt. Gerechnet wird mit den Werten von 2026.“
+ */
+export type RechtsstandHinweis = "regelsaetze_2027_offen";
+
 export interface Rechtsstand {
   gueltigAb: string;
   sgb2: Sgb2Parameter;
+  hinweise: RechtsstandHinweis[];
 }
 
 /** Meldung, dass ein Wert mit Status "pruefen" oder "geplant" ins Ergebnis eingeflossen ist. */
@@ -86,7 +95,17 @@ function pruefeSgb2(gueltigAb: string, roh: Roh<Sgb2Parameter>): Sgb2Parameter {
 
 /** Alle Stände, ältester zuerst. */
 export const RECHTSSTAENDE: readonly Rechtsstand[] = [
-  { gueltigAb: "2026-07-01", sgb2: pruefeSgb2("2026-07-01", sgb2_2026_07_01 satisfies Roh<Sgb2Parameter>) },
+  {
+    gueltigAb: "2026-07-01",
+    sgb2: pruefeSgb2("2026-07-01", sgb2_2026_07_01 satisfies Roh<Sgb2Parameter>),
+    hinweise: [],
+  },
+  {
+    // Fortschreibung: Regelsätze und Kindergeld 2027 sind noch nicht festgelegt (Status pruefen).
+    gueltigAb: "2027-01-01",
+    sgb2: pruefeSgb2("2027-01-01", sgb2_2027_01_01 satisfies Roh<Sgb2Parameter>),
+    hinweise: ["regelsaetze_2027_offen"],
+  },
 ];
 
 function istDatum(text: string): boolean {

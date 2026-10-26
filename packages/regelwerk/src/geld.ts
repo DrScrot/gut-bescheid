@@ -21,8 +21,20 @@ export function anteil(betrag: Cent, prozent: number): { cent: Cent; gerundet: b
   if (!Number.isSafeInteger(prozent) || prozent < 0) {
     throw new RangeError(`prozent muss eine ganze Zahl ab 0 sein, nicht ${prozent}.`);
   }
-  const zaehler = betrag * prozent;
-  const rest = zaehler % 100;
-  const ganz = (zaehler - rest) / 100;
-  return { cent: 2 * rest >= 100 ? ganz + 1 : ganz, gerundet: rest !== 0 };
+  return bruchteil(betrag * prozent, 100);
+}
+
+/** `betrag` geteilt durch `durch`, gerundet wie bei `anteil`. Etwa für den Kopfteil der Wohnkosten. */
+export function geteilt(betrag: Cent, durch: number): { cent: Cent; gerundet: boolean } {
+  pruefeBetrag(betrag, "betrag");
+  if (!Number.isSafeInteger(durch) || durch < 1) {
+    throw new RangeError(`durch muss eine ganze Zahl ab 1 sein, nicht ${durch}.`);
+  }
+  return bruchteil(betrag, durch);
+}
+
+function bruchteil(zaehler: number, nenner: number): { cent: Cent; gerundet: boolean } {
+  const rest = zaehler % nenner;
+  const ganz = (zaehler - rest) / nenner;
+  return { cent: 2 * rest >= nenner ? ganz + 1 : ganz, gerundet: rest !== 0 };
 }
