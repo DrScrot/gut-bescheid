@@ -1,0 +1,115 @@
+/* Gut Bescheid — generated from tokens.json (Designsystem-Artefakt, Stand 26.10.2026) */
+:root, [data-theme="light"] {
+  --paper: #F6F8F7;
+  --surface: #FFFFFF;
+  --surface-sunk: #E9EEEC;
+  --line: #C3CCC8;
+  --line-strong: #7E8D93;
+  --ink: #16232A;
+  --ink-muted: #4A5B61;
+  --tinte: #1B5A6D;
+  --tinte-strong: #13475A;
+  --on-tinte: #FFFFFF;
+  --marker: #FFE04F;
+  --on-marker: #16232A;
+  --marker-soft: #FFF1A8;
+  --beere: #A8325F;
+  --beere-soft: #F9DDE7;
+  --illu-papier: #FFFFFF;
+  --illu-weich: #E9EEEC;
+  --pflicht: #9A4512;
+  --pflicht-soft: #FBE8DA;
+  --pruefung: #4A4796;
+  --pruefung-soft: #E8E7F6;
+  --gut: #2C6A4D;
+  --gut-soft: #E1F0E7;
+  --fehler: #B3261E;
+  --shadow-karte: 0 1px 2px rgba(22,35,42,0.08);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #10171B;
+    --surface: #162026;
+    --surface-sunk: #1E2A31;
+    --line: #33434B;
+    --line-strong: #7A8B92;
+    --ink: #E8EEEC;
+    --ink-muted: #A6B4B8;
+    --tinte: #7FC4D7;
+    --tinte-strong: #A6D8E6;
+    --on-tinte: #0A1A20;
+    --marker: #D8BE45;
+    --on-marker: #16232A;
+    --marker-soft: #3A3417;
+    --beere: #F2A2C2;
+    --beere-soft: #3A1F2C;
+    --illu-papier: #E3EAE7;
+    --illu-weich: #AFC0BA;
+    --pflicht: #F2A877;
+    --pflicht-soft: #3A2516;
+    --pruefung: #B6B3F2;
+    --pruefung-soft: #262541;
+    --gut: #8ED2AE;
+    --gut-soft: #183226;
+    --fehler: #F4A19A;
+    --shadow-karte: 0 1px 2px rgba(0,0,0,0.4);
+    color-scheme: dark;
+  }
+}
+[data-theme="dark"] {
+  --paper: #10171B;
+  --surface: #162026;
+  --surface-sunk: #1E2A31;
+  --line: #33434B;
+  --line-strong: #7A8B92;
+  --ink: #E8EEEC;
+  --ink-muted: #A6B4B8;
+  --tinte: #7FC4D7;
+  --tinte-strong: #A6D8E6;
+  --on-tinte: #0A1A20;
+  --marker: #D8BE45;
+  --on-marker: #16232A;
+  --marker-soft: #3A3417;
+  --beere: #F2A2C2;
+  --beere-soft: #3A1F2C;
+  --illu-papier: #E3EAE7;
+  --illu-weich: #AFC0BA;
+  --pflicht: #F2A877;
+  --pflicht-soft: #3A2516;
+  --pruefung: #B6B3F2;
+  --pruefung-soft: #262541;
+  --gut: #8ED2AE;
+  --gut-soft: #183226;
+  --fehler: #F4A19A;
+  --shadow-karte: 0 1px 2px rgba(0,0,0,0.4);
+  color-scheme: dark;
+}
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+  --touch: 48px;
+  --measure: 560px;
+  --fokus: 3px;
+  --font-display: "Bricolage Grotesque", "Atkinson Hyperlegible Next", system-ui, sans-serif;
+  --font-text: "Atkinson Hyperlegible Next", system-ui, sans-serif;
+  --font-zahl: "Atkinson Hyperlegible Mono", ui-monospace, monospace;
+}
+.display { font-family: var(--font-display); font-size: 44px; line-height: 46px; font-weight: 700; letter-spacing: -0.01em; }
+.frage { font-family: var(--font-display); font-size: 26px; line-height: 32px; font-weight: 600; }
+.h2 { font-family: var(--font-display); font-size: 20px; line-height: 26px; font-weight: 600; }
+.body-lg { font-family: var(--font-text); font-size: 18px; line-height: 28px; font-weight: 400; }
+.body { font-family: var(--font-text); font-size: 16px; line-height: 24px; font-weight: 400; }
+.label { font-family: var(--font-text); font-size: 15px; line-height: 20px; font-weight: 700; letter-spacing: 0.01em; }
+.hinweis { font-family: var(--font-text); font-size: 14px; line-height: 20px; font-weight: 400; }
+.betrag-xl { font-family: var(--font-zahl); font-size: 36px; line-height: 40px; font-weight: 600; }
+.betrag { font-family: var(--font-zahl); font-size: 18px; line-height: 24px; font-weight: 600; }
+/* Schriften im Produkt selbst hosten (OFL), z. B. @fontsource-Pakete; keine Einbindung über Google-Server. */

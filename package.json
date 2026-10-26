@@ -1,0 +1,15 @@
+{
+  "name": "gut-bescheid",
+  "private": true,
+  "license": "EUPL-1.2",
+  "type": "module",
+  "packageManager": "pnpm@12.15.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "dev": "pnpm --filter @gut-bescheid/web dev"
+  }
+}

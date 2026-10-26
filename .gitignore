@@ -1,0 +1,39 @@
+# Node / pnpm
+node_modules/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# Vite / Build
+dist/
+dist-ssr/
+*.local
+.vite/
+*.tsbuildinfo
+
+# Tests
+coverage/
+test-results/
+playwright-report/
+blob-report/
+
+# Umgebung
+.env
+.env.*
+
+# Claude Code: nur lokale Einstellungen
+.claude/settings.local.json
+
+# Editoren
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Windows
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
