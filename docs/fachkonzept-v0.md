@@ -88,11 +88,11 @@ Jeder Schritt besteht aus mehreren Bildschirmen mit je einer Frage.
 | Regelbedarf Stufe 1 (alleinerziehend) | 563 € | RBSFV 2026 | geprüft |
 | Regelbedarf Stufe 2 (je Partner) | 506 € | RBSFV 2026 | geprüft |
 | Regelbedarf Kind 14–17 / 6–13 / 0–5 | 471 / 390 / 357 € | RBSFV 2026 (Nullrunde) | geprüft |
-| Mehrbedarf Alleinerziehende | 36 % von Stufe 1 bei Kind unter 7 oder 2–3 Kindern unter 16, sonst 12 % je Kind, höchstens 60 % | § 21 Abs. 3 SGB II | geprüft |
+| Mehrbedarf Alleinerziehende | der höhere Wert aus 36 % von Stufe 1 (bei Kind unter 7 oder 2–3 Kindern unter 16) und 12 % je Kind, höchstens 60 % | § 21 Abs. 3 SGB II | geprüft |
 | Grundabsetzbetrag Erwerbseinkommen | 100 € | § 11b Abs. 2 SGB II | geprüft |
 | Erwerbstätigenfreibetrag | 20 % auf 100–520 €, 30 % auf 520–1.000 €, 10 % auf 1.000–1.200 € (1.500 € mit minderjährigem Kind), jeweils vom Brutto | § 11b Abs. 3 SGB II | geprüft |
 | Kindergeld | 259 € je Kind | EStG/BKGG 2026 | geprüft |
-| Vermögensfreibetrag je Person | bis 30 J.: 5.000 €, ab 31: 10.000 €, ab 41: 12.500 €, ab 51: 20.000 €. Innerhalb der Bedarfsgemeinschaft übertragbar, keine Karenzzeit mehr | § 12 SGB II | geprüft |
+| Vermögensfreibetrag je Person | 0–29 Jahre: 5.000 €, 30–39 Jahre: 10.000 €, 40–49 Jahre: 12.500 €, ab 50 Jahren: 20.000 €. Innerhalb der Bedarfsgemeinschaft übertragbar, keine Karenzzeit mehr | § 12 Abs. 2 SGB II | geprüft |
 | Wohnkosten | tatsächliche Kosten bis zur regionalen Angemessenheitsgrenze, im ersten Jahr höchstens 1,5-fach | § 22 SGB II | geprüft; regionale Grenzen nicht in Version 0 |
 | Bewilligungszeitraum | in der Regel 12 Monate, 6 Monate bei schwankendem Einkommen | BA | geprüft |
 
