@@ -24,13 +24,17 @@ export type AusserhalbGrund =
 export type Sgb2Hinweis =
   /** „Das Jobcenter prüft, ob eure Miete angemessen ist. Die Grenze legt jedes Jobcenter selbst fest.“ */
   | { code: "wohnkosten_angemessenheit" }
-  /** Siehe RechtsstandHinweis in parameter.ts. */
-  | { code: RechtsstandHinweis }
+  /** Siehe RechtsstandHinweis in parameter.ts. jahr: das Jahr des Stichtags. */
+  | { code: RechtsstandHinweis; jahr: number }
   /** „Bekommt ihr Elterngeld, kann ein Teil davon frei bleiben. Das rechnet Gut Bescheid noch nicht. Euer Ergebnis kann zu niedrig sein.“ */
   | { code: "elterngeld_nicht_beruecksichtigt" }
+  /** „Je nachdem, wer von euch das Kindergeld bekommt, kann die Lücke bis zu 30 € größer sein.“ */
+  | { code: "kindergeld_empfaenger_offen" }
   /** „Nach den Regeln wird Erspartes über dem Freibetrag zuerst eingesetzt. Danach kann ein Anspruch bestehen.“ */
   | { code: "erspartes_zuerst_einsetzen" }
-  /** „Wer diesen Monat 30, 40 oder 50 wird, hat schon den höheren Freibetrag.“ */
+  /** „Erspartes, das einem Kind gehört, das nicht mitgerechnet wird, zählt hier nicht mit. Zieht es von eurer Summe ab.“ */
+  | { code: "erspartes_kind_ausserhalb" }
+  /** „Wer in dem Monat, für den gerechnet wird, 30, 40 oder 50 wird, hat schon den höheren Freibetrag.“ */
   | { code: "freibetrag_geburtstagsmonat" };
 
 export interface Sgb2EinkommenErwachsener {
@@ -165,18 +169,15 @@ export function berechneSgb2(haushalt: Haushalt, optionen: { stichtag: string })
   const kindeseinkommen = summe(kinderInBg.map((k) => k.kind.einkommen));
   const kindergeldUeberhang = summe(kinderAusserhalb.map((k) => k.ueberhang));
   // Ohne Erwerbseinkommen gilt die Versicherungspauschale einmal für das gesamte Einkommen der Person, also auch
-  // für den Überhang (BSG, B 4 AS 49/13 R). Wer das Kindergeld bekommt, fragt Version 0 nicht. Deshalb nur der
-  // Abzug, der für jeden der Erwachsenen gälte (bei Paaren mit genau einem Erwerbstätigen: keiner).
-  const versicherungspauschaleAufUeberhang =
-    kindergeldUeberhang > 0
-      ? Math.min(
-          ...erwachsene.map((e, i) => {
-            if (e.brutto > 0) return 0;
-            const schon = einkommenErwachsene[i]?.versicherungspauschale ?? 0;
-            return Math.min(p.nimm("versicherungspauschale"), e.sonstigesEinkommen + kindergeldUeberhang) - schon;
-          }),
-        )
-      : 0;
+  // für den Überhang (BSG, B 4 AS 49/13 R). Wer das Kindergeld bekommt, fragt Version 0 nicht (Entscheidung vom
+  // 26.10.2026). Deshalb nur der Abzug, der für jeden der Erwachsenen gälte, und ein Hinweis, wenn es darauf ankommt.
+  const pauschaleAufUeberhangJePerson = erwachsene.map((e, i) => {
+    if (kindergeldUeberhang === 0 || e.brutto > 0) return 0;
+    const schon = einkommenErwachsene[i]?.versicherungspauschale ?? 0;
+    return Math.min(p.nimm("versicherungspauschale"), e.sonstigesEinkommen + kindergeldUeberhang) - schon;
+  });
+  const versicherungspauschaleAufUeberhang = Math.min(...pauschaleAufUeberhangJePerson);
+  const pauschaleHaengtAmKindergeld = Math.max(...pauschaleAufUeberhangJePerson) > versicherungspauschaleAufUeberhang;
   const einkommenSumme =
     summe(
       einkommenErwachsene.map((e) => e.bereinigtesErwerbseinkommen + e.sonstigesEinkommen - e.versicherungspauschale),
@@ -194,20 +195,27 @@ export function berechneSgb2(haushalt: Haushalt, optionen: { stichtag: string })
   const vermoegensfreibetrag = summe(alterInBg.map((alter) => nachAlter(freibetragTabelle, alter)));
   const vermoegensergebnis = vergleicheVermoegen(haushalt.vermoegen, vermoegensfreibetrag);
   // Monatsregel (§ 12 Abs. 2 Satz 2 SGB II): Der höhere Freibetrag gilt ab dem Monat, in dem die Altersgrenze
-  // erreicht wird. Wir kennen nur volle Jahre und nehmen an, alle hätten diesen Monat Geburtstag.
+  // erreicht wird. Wir kennen nur volle Jahre und nehmen an, alle hätten im Monat des Stichtags Geburtstag.
   const freibetragImGeburtstagsmonat = summe(alterInBg.map((alter) => nachAlter(freibetragTabelle, alter + 1)));
 
   const anspruch = anspruchAus(lueckeA, vermoegensergebnis);
   const geburtstagsmonatAendertErgebnis =
     anspruchAus(lueckeA, vergleicheVermoegen(haushalt.vermoegen, freibetragImGeburtstagsmonat)) !== anspruch;
 
+  const jahr = Number(optionen.stichtag.slice(0, 4));
   const hinweise: Sgb2Hinweis[] = [
     { code: "wohnkosten_angemessenheit" },
-    ...stand.hinweise.map((code) => ({ code })),
+    ...stand.hinweise.map((code) => ({ code, jahr })),
   ];
   if (erwachsene.some((e) => e.sonstigesEinkommen > 0)) hinweise.push({ code: "elterngeld_nicht_beruecksichtigt" });
+  if (pauschaleHaengtAmKindergeld) hinweise.push({ code: "kindergeld_empfaenger_offen" });
   // „Danach kann ein Anspruch bestehen“ stimmt nur, wenn Lücke A positiv ist.
   if (lueckeA > 0 && vermoegensergebnis !== "unter_freibetrag") hinweise.push({ code: "erspartes_zuerst_einsetzen" });
+  // Erspartes eines Kindes außerhalb der Bedarfsgemeinschaft zählt nicht für die Eltern, steckt aber in der
+  // Haushaltssumme. Der Hinweis kommt nur, wenn das Vermögen über das Ergebnis entscheidet oder es offen lässt.
+  if (kinderAusserhalb.length > 0 && (anspruch === "nein_vermoegen" || anspruch === "unklar_vermoegen")) {
+    hinweise.push({ code: "erspartes_kind_ausserhalb" });
+  }
   if (geburtstagsmonatAendertErgebnis) hinweise.push({ code: "freibetrag_geburtstagsmonat" });
 
   const { von, bis } = haushalt.vermoegen;

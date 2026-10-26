@@ -48,11 +48,14 @@ describe("Parameterdateien", () => {
     expect(rundung.fundstelle).toContain("§ 41 Abs. 2 SGB II");
   });
 
-  it("Versicherungspauschale: 30 €, § 6 Abs. 1 Nr. 1 GrusiGV, Status aus_quelle", () => {
-    const { versicherungspauschale } = rechtsstandZumStichtag("2026-07-01").sgb2;
-    expect(versicherungspauschale).toMatchObject({ wert: 3000, status: "aus_quelle" });
-    expect(versicherungspauschale.fundstelle).toContain("§ 6 Abs. 1 Nr. 1 GrusiGV");
-  });
+  it.each(["2026-07-01", "2027-01-01"])(
+    "Versicherungspauschale (Stand %s): 30 €, § 6 Abs. 1 Nr. 1 GrusiGV, geprüft am 26.10.2026",
+    (stichtag) => {
+      const { versicherungspauschale } = rechtsstandZumStichtag(stichtag).sgb2;
+      expect(versicherungspauschale).toMatchObject({ wert: 3000, status: "geprueft", geprueftAm: "2026-10-26" });
+      expect(versicherungspauschale.fundstelle).toContain("§ 6 Abs. 1 Nr. 1 GrusiGV");
+    },
+  );
 
   it("Stand 2027: Regelbedarfe und Kindergeld wie 2026, aber mit Status pruefen", () => {
     const stand2026 = rechtsstandZumStichtag("2026-07-01");
@@ -66,7 +69,7 @@ describe("Parameterdateien", () => {
   });
 
   it("Stand 2027 trägt den Hinweis auf die offenen Regelsätze, 2026 nicht", () => {
-    expect(rechtsstandZumStichtag("2027-01-01").hinweise).toEqual(["regelsaetze_2027_offen"]);
+    expect(rechtsstandZumStichtag("2027-01-01").hinweise).toEqual(["regelsaetze_offen"]);
     expect(rechtsstandZumStichtag("2026-07-01").hinweise).toEqual([]);
   });
 });

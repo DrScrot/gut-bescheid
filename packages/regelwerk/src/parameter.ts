@@ -51,10 +51,10 @@ export interface Sgb2Parameter {
 }
 
 /**
- * Hinweise, die ein ganzer Rechtsstand mitbringt.
- * regelsaetze_2027_offen: „Die Regelsätze für 2027 sind noch nicht festgelegt. Gerechnet wird mit den Werten von 2026.“
+ * Hinweise, die ein ganzer Rechtsstand mitbringt. {jahr} ist das Jahr des Stichtags.
+ * regelsaetze_offen: „Für {jahr} sind die Regelsätze und das Kindergeld noch nicht festgelegt. Gerechnet wird mit den Werten von 2026.“
  */
-export type RechtsstandHinweis = "regelsaetze_2027_offen";
+export type RechtsstandHinweis = "regelsaetze_offen";
 
 export interface Rechtsstand {
   gueltigAb: string;
@@ -104,7 +104,7 @@ export const RECHTSSTAENDE: readonly Rechtsstand[] = [
     // Fortschreibung: Regelsätze und Kindergeld 2027 sind noch nicht festgelegt (Status pruefen).
     gueltigAb: "2027-01-01",
     sgb2: pruefeSgb2("2027-01-01", sgb2_2027_01_01 satisfies Roh<Sgb2Parameter>),
-    hinweise: ["regelsaetze_2027_offen"],
+    hinweise: ["regelsaetze_offen"],
   },
 ];
 

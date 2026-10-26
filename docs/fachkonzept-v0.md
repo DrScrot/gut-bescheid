@@ -15,7 +15,9 @@ Stand: 26.10.2026 · Autor: Nico · Lebende Fassung: Claude-Doc „Fachkonzept V
 - Checkliste der Unterlagen, Erinnerungen als Kalenderdatei (.ics)
 - Spracheingabe für freie Angaben, alles auf dem Gerät, kein Konto
 
-**Nicht im Umfang (bewusst):** Alleinstehende ohne Kinder, Selbstständige mit schwankendem Einkommen, Pflege, die Prüfung des Unterhaltsvorschusses selbst (wer ihn bekommt, gibt ihn als Einkommen des Kindes ein), Ausbildungsvergütung von Kindern, Kinder ab 18, Elterngeld (folgt als eigenes Feld), Eigentümer (Lastenzuschuss), Bundesländer außer Bayern, Antragstellung selbst, Post-Scanner. Wer außerhalb des Umfangs liegt, bekommt einen klaren Hinweis und Verweise auf offizielle Rechner, statt eines falschen Ergebnisses.
+**Nicht im Umfang (bewusst):** Alleinstehende ohne Kinder, Selbstständige mit schwankendem Einkommen, Pflege, die Prüfung des Unterhaltsvorschusses selbst (wer ihn bekommt, gibt ihn als Einkommen des Kindes ein), Ausbildungsvergütung von Kindern, Kinder ab 18, Elterngeld (folgt als eigenes Feld), Eigentümer (Lastenzuschuss), Bundesländer außer Bayern, Antragstellung selbst, Post-Scanner, Erwachsene unter 18 oder ab 65 (vereinfacht, die Regelaltersgrenze nach § 7a hängt vom Geburtsjahr ab). Annahme: Bei zwei Erwachsenen sind beide Eltern aller Kinder; Patchwork-Familien klären wir in M3.
+
+Wer außerhalb des Umfangs liegt, bekommt einen klaren Hinweis und Verweise auf offizielle Rechner, statt eines falschen Ergebnisses.
 
 **Erfolgskriterien:**
 
@@ -54,7 +56,7 @@ Jeder Schritt besteht aus mehreren Bildschirmen mit je einer Frage.
 | --- | --- | --- | --- |
 | `gemeinde` | Auswahl (Gemeinde in Bayern) | Mietstufe Wohngeld | Wo wohnt ihr? |
 | `erwachsene` | 1 oder 2 | Haushaltsgröße, Regelbedarfsstufe | Wohnst du allein mit den Kindern oder mit Partner oder Partnerin? |
-| `kinder[]` | Liste: Alter in Jahren und Monaten, Einkommen des Kindes (Unterhalt, Unterhaltsvorschuss, Ausbildung) | Kinderzuschlag, Regelbedarf, Mehrbedarf, BuT, Zumutbarkeit (14. Lebensmonat) | Wie alt sind eure Kinder? |
+| `kinder[]` | Liste: Alter in Jahren und Monaten, Einkommen des Kindes (Unterhalt, Unterhaltsvorschuss); Ausbildungsvergütung als eigenes Feld, führt zu ‚außerhalb des Umfangs‘ | Kinderzuschlag, Regelbedarf, Mehrbedarf, BuT, Zumutbarkeit (14. Lebensmonat) | Wie alt sind eure Kinder? |
 | `erwachsener[].alter` | Zahl | Vermögensfreibetrag SGB II | Wie alt seid ihr? |
 | `erwachsener[].brutto` | Euro pro Monat | Mindesteinkommen KiZ, Freibeträge SGB II, Wohngeld-Einkommen | Wie viel verdient ihr brutto im Monat? |
 | `erwachsener[].netto` | Euro pro Monat | anrechenbares Einkommen | Und was kommt netto an? |
@@ -76,7 +78,7 @@ Jeder Schritt besteht aus mehreren Bildschirmen mit je einer Frage.
 ### Entscheidungslogik
 
 1. **Bedarf nach SGB II berechnen:** Regelbedarfe + Mehrbedarfe + Kosten der Unterkunft und Heizung.
-2. **Einkommen nach SGB II bereinigen:** Netto minus Freibetrag (Grundabsetzbetrag 100 € + Erwerbstätigenfreibetrag, höchstens bis zum Netto). Sonstiges Einkommen Erwachsener ohne Erwerbseinkommen minus 30 € Versicherungspauschale. Kindergeld zählt als Einkommen des Kindes; was das Kind davon nicht braucht, zählt beim Elternteil (Kindergeld-Überhang), und das Kind fällt dann aus der Bedarfsgemeinschaft. Daraus ergibt sich **Lücke A** = Bedarf minus Einkommen. Ist sie 0 oder kleiner, besteht kein Anspruch auf Grundsicherung.
+2. **Einkommen nach SGB II bereinigen:** Netto minus Freibetrag (Grundabsetzbetrag 100 € + Erwerbstätigenfreibetrag, höchstens bis zum Netto). Kindergeld zählt als Einkommen des Kindes. Deckt das eigene Einkommen eines Kindes seinen Bedarf (Regelbedarf + Kopfteil der Wohnkosten), fällt es aus der Bedarfsgemeinschaft (§ 7 Abs. 3 Nr. 4); der Überschuss zählt bis zur Höhe des Kindergelds beim kindergeldberechtigten Elternteil (§ 11 Abs. 1 Satz 5, Kindergeld-Überhang), sein Vermögensfreibetrag entfällt. Vom sonstigen Einkommen Erwachsener ohne Erwerbseinkommen, einschließlich Überhang, werden einmal 30 € Versicherungspauschale abgezogen. Daraus ergibt sich **Lücke A** = Bedarf minus Einkommen. Ist sie 0 oder kleiner, besteht kein Anspruch auf Grundsicherung.
 3. **Weg B rechnen:** Kinderzuschlag (wenn das Mindesteinkommen erreicht ist) und Wohngeld (unter der Annahme, dass keine Grundsicherung bezogen wird).
 4. **Vergleich:** Deckt Einkommen + Kindergeld + KiZ + Wohngeld den Bedarf, ist Weg B möglich. Das Jobcenter würde nach § 12a SGB II ohnehin auf die vorrangigen Leistungen verweisen. Fehlen höchstens 100 €, greift der erweiterte Zugang zum KiZ (§ 6a Abs. 1a BKGG), dann besteht eine echte Wahl. Fehlt mehr, deckt nur Weg A den Bedarf. Beide Beträge werden trotzdem gezeigt.
 5. **Bildung und Teilhabe** ist auf beiden Wegen möglich. Nur die zuständige Stelle unterscheidet sich.
@@ -91,7 +93,7 @@ Jeder Schritt besteht aus mehreren Bildschirmen mit je einer Frage.
 | Mehrbedarf Alleinerziehende | 36 % von Stufe 1 bei Kind unter 7 oder 2–3 Kindern unter 16, oder 12 % je Kind, wenn das mehr ergibt; höchstens 60 % | § 21 Abs. 3 SGB II | geprüft |
 | Grundabsetzbetrag Erwerbseinkommen | 100 € | § 11b Abs. 2 SGB II | geprüft |
 | Erwerbstätigenfreibetrag | 20 % auf 100–520 €, 30 % auf 520–1.000 €, 10 % auf 1.000–1.200 € (1.500 € mit minderjährigem Kind), jeweils vom Brutto | § 11b Abs. 3 SGB II | geprüft |
-| Versicherungspauschale | 30 € vom sonstigen Einkommen Volljähriger; nicht zusätzlich bei Erwerbseinkommen, dann steckt sie im Grundabsetzbetrag | § 6 Abs. 1 Nr. 1 GrusiGV | aus Quelle laden |
+| Versicherungspauschale | 30 € vom sonstigen Einkommen Volljähriger; nicht zusätzlich bei Erwerbseinkommen, dann steckt sie im Grundabsetzbetrag | § 6 Abs. 1 Nr. 1 GrusiGV | geprüft (26.10.2026); gilt auch für den Kindergeld-Überhang (BSG B 4 AS 49/13 R) |
 | Kindergeld | 259 € je Kind | § 66 Abs. 1 EStG; § 6 Abs. 1 BKGG | geprüft |
 | Vermögensfreibetrag je Person | 0–29 Jahre: 5.000 €, 30–39 Jahre: 10.000 €, 40–49 Jahre: 12.500 €, ab 50 Jahren: 20.000 €. Der höhere Freibetrag gilt ab Beginn des Monats, in dem die Altersgrenze erreicht wird. Innerhalb der Bedarfsgemeinschaft übertragbar, keine Karenzzeit mehr. Auto und Altersvorsorge zählen nicht mit, die Frage nach dem Ersparten nimmt sie aus | § 12 Abs. 2 SGB II | geprüft |
 | Wohnkosten | tatsächliche Kosten bis zur regionalen Angemessenheitsgrenze, im ersten Jahr höchstens 1,5-fach | § 22 SGB II | geprüft; regionale Grenzen nicht in Version 0 |
@@ -226,7 +228,7 @@ gut-bescheid/
   docs/fachkonzept-v0.md        dieses Dokument
   packages/regelwerk/
     parameter/2026-07-01/       sgb2.json, kiz.json, wohngeld.json, but.json
-    parameter/2027-01-01/       wohngeld.json  (status: geplant)
+    parameter/2027-01-01/       sgb2.json (Werte 2026 fortgeschrieben, status: pruefen), wohngeld.json (status: geplant)
     daten/mietstufen-bayern.json
     folgen/katalog.json         Folgen-Karten mit Fundstelle und Status
     src/sgb2.ts  kiz.ts  wohngeld.ts  but.ts  vergleich.ts  geld.ts
@@ -261,6 +263,10 @@ gut-bescheid/
 Das sind rund drei Wochen Vollzeit. Bis zum 23.11. knapp, aber machbar. Falls es eng wird: M6 auf Spracheingabe beschränken, Barrierefreiheit nach der Bewerbung.
 
 **So arbeitest du mit Claude Code:** Pro Sitzung genau einen Meilenstein, z. B.: „Lies CLAUDE.md und docs/fachkonzept-v0.md. Setze M2 um. Schreibe zuerst die Tests aus T01–T10.“ Nach jedem Meilenstein committen und das Ergebnis selbst ansehen.
+
+### Arbeitsregeln für Claude Code
+
+Die Arbeitsregeln stehen nur noch in CLAUDE.md im Repository. Dieses Dokument wiederholt sie nicht, damit es keine zwei Fassungen gibt.
 
 ## Rechtliche Leitplanken und Akzeptanzkriterien
 

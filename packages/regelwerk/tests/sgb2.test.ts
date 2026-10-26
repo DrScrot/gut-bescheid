@@ -296,8 +296,9 @@ describe("Kindergeld-Überhang (§ 7 Abs. 3 Nr. 4, § 11 Abs. 1 Satz 5 SGB II)",
     expect(e.einkommen.versicherungspauschaleAufUeberhang).toBe(0);
   });
 
-  it("Paar mit genau einem Erwerbstätigen: nur der sichere Abzug, also keiner (offener Punkt)", () => {
-    // Wer das Kindergeld bekommt, fragt Version 0 nicht. Beim Erwerbstätigen gäbe es keine Pauschale.
+  it("Paar mit genau einem Erwerbstätigen: nur der sichere Abzug, also keiner, und ein Hinweis", () => {
+    // Wer das Kindergeld bekommt, fragt Version 0 nicht (Entscheidung vom 26.10.2026). Beim Erwerbstätigen
+    // gäbe es keine Pauschale.
     const e = rechne(
       haushalt({
         erwachsene: [erwachsener({ brutto: 240000, netto: 175000 }), erwachsener()],
@@ -307,6 +308,32 @@ describe("Kindergeld-Überhang (§ 7 Abs. 3 Nr. 4, § 11 Abs. 1 Satz 5 SGB II)",
     );
     expect(e.einkommen.kindergeldUeberhang).toBe(25900);
     expect(e.einkommen.versicherungspauschaleAufUeberhang).toBe(0);
+    expect(e.hinweise).toContainEqual({ code: "kindergeld_empfaenger_offen" });
+  });
+
+  it("Hinweis auch, wenn beide ohne Erwerbseinkommen sind, aber nur einer die Pauschale schon ausschöpft", () => {
+    const e = rechne(
+      haushalt({
+        erwachsene: [erwachsener({ sonstigesEinkommen: 5000 }), erwachsener()],
+        kinder: [kind(15, 100000)],
+        kaltmiete: 80000,
+      }),
+    );
+    expect(e.einkommen.versicherungspauschaleAufUeberhang).toBe(0);
+    expect(e.hinweise).toContainEqual({ code: "kindergeld_empfaenger_offen" });
+  });
+
+  it.each([
+    [
+      "die nicht erwerbstätige Person die Pauschale schon ausschöpft",
+      [erwachsener({ brutto: 240000, netto: 175000 }), erwachsener({ sonstigesEinkommen: 5000 })],
+      [kind(15, 100000)],
+    ],
+    ["es keinen Überhang gibt", [erwachsener({ brutto: 240000, netto: 175000 }), erwachsener()], [kind(3)]],
+    ["die Person alleinerziehend ist", [erwachsener()], [kind(15, 100000)]],
+  ])("kein Hinweis zum Kindergeld, wenn %s", (_, erwachsene, kinder) => {
+    const e = rechne(haushalt({ erwachsene, kinder, kaltmiete: 80000 }));
+    expect(e.hinweise).not.toContainEqual({ code: "kindergeld_empfaenger_offen" });
   });
 
   it("streicht den Vermögensfreibetrag des Kindes", () => {
@@ -329,6 +356,7 @@ describe("Kindergeld-Überhang (§ 7 Abs. 3 Nr. 4, § 11 Abs. 1 Satz 5 SGB II)",
     expect(e.einkommen.kindergeldUeberhang).toBe(25900);
     // Beide Erwachsenen ohne Einkommen: Die Pauschale greift, egal wer das Kindergeld bekommt.
     expect(e.einkommen.versicherungspauschaleAufUeberhang).toBe(3000);
+    expect(e.hinweise).not.toContainEqual({ code: "kindergeld_empfaenger_offen" });
     expect(e.lueckeA).toBe(101200 + 66667 - 25900 + 3000);
     expect(e.parameterHinweise.map((h) => h.name)).toContain("sgb2.rundung");
   });
@@ -412,6 +440,38 @@ describe("Vermögen (§ 12 SGB II)", () => {
     expect(e.vermoegen.ueberFreibetrag).toEqual({ von: 3500000, bis: 3500000 });
   });
 
+  describe("Erspartes eines Kindes außerhalb der Bedarfsgemeinschaft", () => {
+    // Alleinerziehend (35), Kind 15 mit 600 € Unterhalt deckt seinen Bedarf. Freibetrag nur noch 10.000 €.
+    const mitKindAusserhalb = (vermoegen: Haushalt["vermoegen"], teil: Partial<Erwachsener> = {}) =>
+      haushalt({ erwachsene: [erwachsener(teil)], kinder: [kind(15, 60000)], kaltmiete: 40000, vermoegen });
+
+    it.each([
+      ["über dem Freibetrag liegt", { von: 1200000, bis: 1200000 }],
+      ["als Spanne über den Freibetrag hinweg reicht", { von: 500000, bis: 1500000 }],
+    ] as const)("Hinweis, wenn das Erspartes %s", (_, vermoegen) => {
+      const e = rechne(mitKindAusserhalb(vermoegen));
+      expect(e.kinderAusserhalbBedarfsgemeinschaft).toEqual([0]);
+      expect(e.hinweise).toContainEqual({ code: "erspartes_kind_ausserhalb" });
+    });
+
+    it("kein Hinweis unter dem Freibetrag", () => {
+      const e = rechne(mitKindAusserhalb({ von: 0, bis: 999999 }));
+      expect(e.hinweise).not.toContainEqual({ code: "erspartes_kind_ausserhalb" });
+    });
+
+    it("kein Hinweis, wenn alle Kinder in der Bedarfsgemeinschaft sind", () => {
+      const e = rechne(haushalt({ vermoegen: { von: 1600000, bis: 1600000 } }));
+      expect(e.anspruch).toBe("nein_vermoegen");
+      expect(e.hinweise).not.toContainEqual({ code: "erspartes_kind_ausserhalb" });
+    });
+
+    it("kein Hinweis, wenn Lücke A 0 oder kleiner ist (Ergebnis bleibt „kein Anspruch“)", () => {
+      const e = rechne(mitKindAusserhalb({ von: 1200000, bis: 1200000 }, { brutto: 400000, netto: 300000 }));
+      expect(e.anspruch).toBe("nein_einkommen");
+      expect(e.hinweise).not.toContainEqual({ code: "erspartes_kind_ausserhalb" });
+    });
+  });
+
   it("lehnt eine Spanne ab, deren Ende vor dem Anfang liegt", () => {
     expect(() => rechne(haushalt({ vermoegen: { von: 100, bis: 50 } }))).toThrow(/vermoegen/);
   });
@@ -492,7 +552,13 @@ describe("Stichtag ab 1.1.2027", () => {
       "sgb2.regelbedarfStufe2",
     ]);
     expect(e.parameterHinweise.every((h) => h.status === "pruefen")).toBe(true);
-    expect(e.hinweise).toContainEqual({ code: "regelsaetze_2027_offen" });
+    expect(e.hinweise).toContainEqual({ code: "regelsaetze_offen", jahr: 2027 });
+  });
+
+  it("nennt im Hinweis das Jahr des Stichtags, auch nach 2027", () => {
+    const e = rechne(testhaushalt("T01").eingabe, "2028-02-01");
+    expect(e.rechtsstand).toBe("2027-01-01");
+    expect(e.hinweise).toContainEqual({ code: "regelsaetze_offen", jahr: 2028 });
   });
 
   it("meldet bei Alleinerziehenden auch Stufe 1", () => {
@@ -502,7 +568,7 @@ describe("Stichtag ab 1.1.2027", () => {
 
   it("gibt den Hinweis vor 2027 nicht", () => {
     const e = rechne(testhaushalt("T01").eingabe, "2026-12-31");
-    expect(e.hinweise).not.toContainEqual({ code: "regelsaetze_2027_offen" });
+    expect(e.hinweise.map((h) => h.code)).not.toContain("regelsaetze_offen");
     expect(e.parameterHinweise).toEqual([]);
   });
 });
