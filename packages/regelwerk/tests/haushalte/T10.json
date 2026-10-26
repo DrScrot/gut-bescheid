@@ -1,0 +1,36 @@
+{
+  "id": "T10",
+  "haushalt": "Paar, Kinder 2 und 5, Landkreis Regensburg, eine Person ohne Einkommen und ohne ALG I",
+  "prueftVorAllem": "Krankenversicherungs-Karte, Partner-Karte",
+  "erwartung": "Weg B wahrscheinlich",
+  "stichtag": "2026-07-01",
+  "eingabe": {
+    "gemeinde": "Landkreis Regensburg",
+    "erwachsene": [
+      { "alter": 35, "brutto": 280000, "netto": 200000, "sonstigesEinkommen": 0 },
+      { "alter": 35, "brutto": 0, "netto": 0, "sonstigesEinkommen": 0 }
+    ],
+    "kinder": [
+      { "alter": { "jahre": 2, "monate": 0 }, "einkommen": 0 },
+      { "alter": { "jahre": 5, "monate": 0 }, "einkommen": 0 }
+    ],
+    "kaltmiete": 78000,
+    "nebenkosten": 17000,
+    "heizkosten": 10000,
+    "vermoegen": { "von": 0, "bis": 999999 }
+  },
+  "annahmen": [
+    "Alter der Erwachsenen (35 Jahre) und Erspartes (unter 10.000 €) stehen nicht im Fachkonzept. Ohne Einfluss auf M2.",
+    "Kindesalter in vollen Jahren, Monate 0.",
+    "Gemeinde: Fachkonzept nennt nur den Landkreis. Für die Mietstufe in M3 nachtragen."
+  ],
+  "soll": {
+    "sgb2": {
+      "bedarf": 277600,
+      "freibetrag": 37800,
+      "quelle": "Fachkonzept v0, Tabelle Testhaushalte (aus geprüften Parametern vorgerechnet), Stand 26.10.2026"
+    },
+    "kiz": null,
+    "wohngeld": null
+  }
+}

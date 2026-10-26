@@ -1,0 +1,15 @@
+{
+  "id": "T07",
+  "haushalt": "Paar, 2 Kinder, Werte so gewählt, dass 1–100 € fehlen",
+  "prueftVorAllem": "erweiterter Zugang KiZ",
+  "erwartung": "echte Wahl zwischen A und B",
+  "stichtag": "2026-07-01",
+  "eingabe": null,
+  "annahmen": [],
+  "offen": "Eingaben hängen von KiZ und Wohngeld ab. Werden in M3 eingestellt.",
+  "soll": {
+    "sgb2": null,
+    "kiz": null,
+    "wohngeld": null
+  }
+}

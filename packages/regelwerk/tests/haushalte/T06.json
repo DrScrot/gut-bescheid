@@ -1,0 +1,36 @@
+{
+  "id": "T06",
+  "haushalt": "Paar (35 und 38), Kind 7, Würzburg, Erspartes 60.000 €",
+  "prueftVorAllem": "Vermögen: SGB II ausgeschlossen (Freibetrag 25.000 €), KiZ möglich (Grenze 70.000 €)",
+  "erwartung": "nur Weg B, Hinweis Vermögen",
+  "stichtag": "2026-07-01",
+  "eingabe": {
+    "gemeinde": "Würzburg",
+    "erwachsene": [
+      { "alter": 35, "brutto": 220000, "netto": 165000, "sonstigesEinkommen": 0 },
+      { "alter": 38, "brutto": 0, "netto": 0, "sonstigesEinkommen": 0 }
+    ],
+    "kinder": [
+      { "alter": { "jahre": 7, "monate": 0 }, "einkommen": 0 }
+    ],
+    "kaltmiete": 65000,
+    "nebenkosten": 15000,
+    "heizkosten": 9000,
+    "vermoegen": { "von": 6000000, "bis": 6000000 }
+  },
+  "annahmen": [
+    "Kindesalter in vollen Jahren, Monate 0.",
+    "Erspartes als genauer Betrag (60.000 €), wie er in M3 auch in den KiZ-Lotsen geht."
+  ],
+  "soll": {
+    "sgb2": {
+      "bedarf": 229200,
+      "freibetrag": 37800,
+      "vermoegensfreibetrag": 2500000,
+      "anspruch": "nein_vermoegen",
+      "quelle": "Fachkonzept v0, Tabelle Testhaushalte (aus geprüften Parametern vorgerechnet), Stand 26.10.2026"
+    },
+    "kiz": null,
+    "wohngeld": null
+  }
+}
