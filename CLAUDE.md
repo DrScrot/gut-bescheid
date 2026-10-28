@@ -12,6 +12,9 @@ nach Betrag UND Folgen (Pflichten, Prüfungen, Fristen). Open Source, Lizenz EUP
 ## Harte Regeln
 - Erfinde nie Gesetzeswerte. Fehlt ein Wert: Parameter mit status "pruefen" und TODO mit Fundstelle anlegen,
   Test rot lassen und am Ende der Sitzung melden.
+- Weicht ein Ergebnis von einem Sollwert, einer Quelle oder dem Fachkonzept ab: nie stillschweigend angleichen.
+  Abweichung mit Rechenweg und Vermutung melden und auf Entscheidung warten. Widersprüche zwischen Quellen ebenfalls
+  melden. Lieber eine Rückfrage zu viel als ein Wert auf falscher Grundlage.
 - Erst Tests aus packages/regelwerk/tests/haushalte schreiben, dann implementieren.
 - Ein Meilenstein pro Sitzung (M1–M6, siehe Fachkonzept). Am Ende: was fertig ist, was offen ist, was geprüft werden muss.
 - Geld intern in ganzen Cent. Wohngeld-Formel (§ 19 WoGG, Anlage 3) mit Festkomma, 10 Nachkommastellen.
