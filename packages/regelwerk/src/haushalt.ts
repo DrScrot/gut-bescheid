@@ -26,8 +26,19 @@ export interface Spanne {
   bis: Cent | null;
 }
 
+/**
+ * Wohnort in Bayern, für die Mietenstufe beim Wohngeld. Namen wie in der Anlage zu § 1 Abs. 3 WoGV.
+ * Steht die Gemeinde nicht einzeln in der Liste, gilt die Mietenstufe des Kreises.
+ */
+export interface Gemeinde {
+  /** z. B. "Pocking, Stadt" oder "Nürnberg, Stadt". */
+  name: string;
+  /** Landkreis, z. B. "Passau". null bei kreisfreien Städten. */
+  kreis: string | null;
+}
+
 export interface Haushalt {
-  gemeinde: string;
+  gemeinde: Gemeinde;
   /** Ein oder zwei Erwachsene. */
   erwachsene: Erwachsener[];
   kinder: Kind[];

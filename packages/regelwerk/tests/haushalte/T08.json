@@ -2,10 +2,10 @@
   "id": "T08",
   "haushalt": "Paar, Kind 4, München",
   "prueftVorAllem": "Miete über dem Wohngeld-Höchstbetrag (Mietstufe VII)",
-  "erwartung": "Wohngeld gedeckelt, Wohnkosten-Hinweis",
+  "erwartung": "nur Weg A: es fehlen 347 € (KiZ-Lotse sagt „ja“, dokumentierte Abweichung)",
   "stichtag": "2026-07-01",
   "eingabe": {
-    "gemeinde": "München",
+    "gemeinde": { "name": "München", "kreis": null },
     "erwachsene": [
       { "alter": 35, "brutto": 320000, "netto": 230000, "sonstigesEinkommen": 0 },
       { "alter": 35, "brutto": 0, "netto": 0, "sonstigesEinkommen": 0 }
@@ -20,7 +20,14 @@
   },
   "annahmen": [
     "Alter der Erwachsenen (35 Jahre) und Erspartes (unter 10.000 €) stehen nicht im Fachkonzept. Ohne Einfluss auf M2.",
-    "Kindesalter in vollen Jahren, Monate 0."
+    "Kindesalter in vollen Jahren, Monate 0.",
+    "Gemeinde München (WoGV-Liste 2023: „München“), Mietenstufe VII. Vom Wohngeldrechner bestätigt (Nico, 28.10.2026).",
+    "Nur eine Person verdient. Wohngeldrechner: Werbungskosten 102,50 €/Monat, Häkchen bei Einkommensteuer, KV/PV und RV. Bruttokaltmiete 1.650 €, gedeckelt auf 975 + 29,60 €."
+  ],
+  "abweichungen": [
+    "KiZ-Lotse (28.10.2026) sagt „ja“, das Regelwerk „nein“. Rechenweg nach Gesetz: Bedarf 2 × 506 + 357 + 1.770 = 3.139 €. Bereinigtes Einkommen 2.300 − 378 = 1.922 €, Kindergeld 259 €. Elternbedarf 1.012 + 83 % von 1.770 = 2.481,10 € liegt über 1.922 €, also KiZ 297 €. Wohngeld 314 €. 1.922 + 259 + 297 + 314 = 2.792 €, es fehlen 347 €, mehr als 100 € (§ 6a Abs. 1 Nr. 3, Abs. 1a BKGG).",
+    "Vermutung, von Nico am 28.10.2026 geteilt: Der Lotse schätzt das Wohngeld selbst und deckelt die Miete nicht auf den Höchstbetrag. Mit Bruttokaltmiete 1.650 € ergibt die Formel 586,98 €, also 587 €. Dann fehlen nur 74 €, das wäre erweiterter Zugang. Eine Angemessenheitsgrenze für die Wohnkosten scheidet aus: DA-KiZ C.3.1.2.1 Abs. 1 Satz 4 und 5 (tatsächliche Bedarfe, keine Angemessenheitsprüfung).",
+    "Nicht angeglichen. Offen: Hat der Lotse nach dem Wohngeld gefragt? Nico prüft nach."
   ],
   "soll": {
     "sgb2": {
@@ -28,7 +35,23 @@
       "freibetrag": 37800,
       "quelle": "Fachkonzept v0, Tabelle Testhaushalte (aus geprüften Parametern vorgerechnet), Stand 26.10.2026"
     },
-    "kiz": null,
-    "wohngeld": null
+    "wohngeld": {
+      "betrag": 31400,
+      "abzuegeImRechner": ["steuer", "kvpv", "rv"],
+      "quelle": "Wohngeld-Plus-Rechner BMWSB (Rechtsstand ab 1.1.2025), abgerufen von Nico am 28.10.2026"
+    },
+    "kiz": {
+      "anspruchLotse": true,
+      "anspruch": "nein_bedarf_nicht_gedeckt",
+      "betrag": 29700,
+      "fehlbetrag": 34700,
+      "betragStatus": "berechnet",
+      "quelle": "Anspruch laut KiZ-Lotse (Nico, 28.10.2026): ja. Regelwerk: nein, siehe abweichungen. Betrag rechnerisch 297 €."
+    },
+    "vergleich": {
+      "ergebnis": "nur_weg_a",
+      "fehlbetrag": 64400,
+      "quelle": "Lücke A 958 € minus Wohngeld 314 €; KiZ entfällt (Nico, 28.10.2026: „nur Weg A“)"
+    }
   }
 }

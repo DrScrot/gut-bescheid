@@ -1,0 +1,289 @@
+{
+  "hoechstbetraege": {
+    "wert": {
+      "jePersonenzahl": [
+        [
+          36100,
+          40800,
+          45600,
+          51100,
+          56200,
+          61500,
+          67700
+        ],
+        [
+          43700,
+          49300,
+          55100,
+          61900,
+          68000,
+          74500,
+          82000
+        ],
+        [
+          52100,
+          58700,
+          65700,
+          73700,
+          80900,
+          88700,
+          97500
+        ],
+        [
+          60800,
+          68600,
+          76600,
+          85800,
+          94600,
+          103500,
+          113900
+        ],
+        [
+          69400,
+          78200,
+          87500,
+          98200,
+          108000,
+          118300,
+          130200
+        ]
+      ],
+      "jeWeiterePerson": [
+        8200,
+        9400,
+        10600,
+        11900,
+        12900,
+        14900,
+        16300
+      ]
+    },
+    "einheit": "cent im Monat; Zeile = Haushaltsmitglieder 1 bis 5, Spalte = Mietenstufe I bis VII",
+    "fundstelle": "§ 12 Abs. 1 WoGG, Anlage 1 (BGBl. 2024 I Nr. 314, ab 1.1.2025); übernommen von gesetze-im-internet.de am 28.10.2026",
+    "gueltigAb": "2026-07-01",
+    "status": "aus_quelle"
+  },
+  "klimakomponente": {
+    "wert": {
+      "jePersonenzahl": [
+        1920,
+        2480,
+        2960,
+        3440,
+        3920
+      ],
+      "jeWeiterePerson": 480
+    },
+    "einheit": "cent im Monat, Zuschlag zum Höchstbetrag; Stelle = Haushaltsmitglieder 1 bis 5",
+    "fundstelle": "§ 12 Abs. 7 WoGG",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28"
+  },
+  "heizkostenentlastung": {
+    "wert": {
+      "jePersonenzahl": [
+        11040,
+        14260,
+        17020,
+        19780,
+        22540
+      ],
+      "jeWeiterePerson": 2760
+    },
+    "einheit": "cent im Monat, wird der Miete nach der Deckelung zugeschlagen; Stelle = Haushaltsmitglieder 1 bis 5",
+    "fundstelle": "§ 12 Abs. 6 WoGG i. V. m. § 11 Abs. 1 Satz 1 Nr. 2 WoGG",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28",
+    "hinweis": "Summe aus Entlastung wegen CO2-Bepreisung und dauerhafter Heizkostenkomponente. Gilt unabhängig von den tatsächlichen Heizkosten."
+  },
+  "formelwerte": {
+    "wert": {
+      "a": [
+        "4.000E-2",
+        "3.000E-2",
+        "2.000E-2",
+        "1.000E-2",
+        "0",
+        "-1.000E-2",
+        "-2.000E-2",
+        "-3.000E-2",
+        "-4.000E-2",
+        "-6.000E-2",
+        "-9.000E-2",
+        "-1.200E-1"
+      ],
+      "b": [
+        "4.797E-4",
+        "3.571E-4",
+        "2.917E-4",
+        "2.163E-4",
+        "1.907E-4",
+        "1.722E-4",
+        "1.592E-4",
+        "1.583E-4",
+        "1.376E-4",
+        "1.249E-4",
+        "1.141E-4",
+        "1.107E-4"
+      ],
+      "c": [
+        "4.080E-5",
+        "3.040E-5",
+        "2.450E-5",
+        "1.760E-5",
+        "1.720E-5",
+        "1.660E-5",
+        "1.650E-5",
+        "1.650E-5",
+        "1.660E-5",
+        "1.660E-5",
+        "1.960E-5",
+        "2.210E-5"
+      ]
+    },
+    "einheit": "Dezimalzahlen als Text; Stelle = Haushaltsmitglieder 1 bis 12",
+    "fundstelle": "§ 19 Abs. 1 WoGG, Anlage 2 (BGBl. 2024 I Nr. 314, ab 1.1.2025); übernommen von gesetze-im-internet.de am 28.10.2026",
+    "gueltigAb": "2026-07-01",
+    "status": "aus_quelle"
+  },
+  "mindestwerte": {
+    "wert": {
+      "m": [
+        5400,
+        6700,
+        7900,
+        9200,
+        10300,
+        10300,
+        11500,
+        12800,
+        14000,
+        15200,
+        18700,
+        29800
+      ],
+      "y": [
+        39600,
+        67900,
+        90600,
+        113200,
+        135800,
+        158500,
+        181100,
+        203700,
+        226400,
+        249000,
+        271700,
+        294300
+      ]
+    },
+    "einheit": "cent im Monat; kleinere Werte für M (Miete) und Y (Einkommen) werden ersetzt; Stelle = Haushaltsmitglieder 1 bis 12",
+    "fundstelle": "§ 19 Abs. 2 WoGG, Anlage 3 Nr. 1 (BGBl. 2024 I Nr. 314, ab 1.1.2025); übernommen von gesetze-im-internet.de am 28.10.2026",
+    "gueltigAb": "2026-07-01",
+    "status": "aus_quelle"
+  },
+  "formel": {
+    "wert": {
+      "faktor": "1.15",
+      "nachkommastellen": 10
+    },
+    "einheit": "Regel",
+    "fundstelle": "§ 19 Abs. 1 Satz 1 WoGG; Anlage 3 Nr. 2 WoGG",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28",
+    "hinweis": "W = 1,15 · (M − (a + b·M + c·Y) · Y). z1 bis z4 als Festkommazahlen mit zehn Nachkommastellen. Gut Bescheid rundet jeden Rechenschritt auf zehn Stellen, ab 5 auf (freigegeben von Nico am 28.10.2026). M und Y gehen ungerundet ein, wie im Rechenbeispiel WoGVwV Nr. 19.01."
+  },
+  "rundung": {
+    "wert": "kaufmaennisch_euro",
+    "einheit": "Regel",
+    "fundstelle": "Anlage 3 Nr. 3 WoGG",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28",
+    "hinweis": "Unter 0,50 € abrunden, ab 0,50 € aufrunden."
+  },
+  "mindestbetrag": {
+    "wert": 1000,
+    "einheit": "cent im Monat; darunter besteht kein Anspruch",
+    "fundstelle": "§ 21 Nr. 1 WoGG",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28"
+  },
+  "abzugJeArt": {
+    "wert": 10,
+    "einheit": "Prozent des Jahreseinkommens je Art: Steuern vom Einkommen, Pflichtbeiträge zur Kranken- und Pflegeversicherung, Pflichtbeiträge zur Rentenversicherung",
+    "fundstelle": "§ 16 Satz 1 WoGG",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28"
+  },
+  "werbungskostenPauschbetrag": {
+    "wert": 123000,
+    "einheit": "cent im Jahr, von den Einnahmen aus nichtselbständiger Arbeit, höchstens bis zur Höhe der Einnahmen",
+    "fundstelle": "§ 14 Abs. 1 Satz 1 WoGG i. V. m. § 2 Abs. 2 Satz 1 Nr. 2 und § 9a Satz 1 Nr. 1 Buchst. a EStG (Arbeitnehmer-Pauschbetrag)",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28",
+    "hinweis": "Version 0 rechnet nur mit dem Pauschbetrag, keine höheren Werbungskosten."
+  },
+  "freibetragAlleinerziehend": {
+    "wert": 132000,
+    "einheit": "cent im Jahr",
+    "fundstelle": "§ 17 Nr. 3 WoGG",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28",
+    "hinweis": "Wenn ein Haushaltsmitglied nur mit Kindern wohnt und mindestens ein Kind unter 18 ist, für das Kindergeld gezahlt wird."
+  },
+  "vermoegensgrenze": {
+    "wert": {
+      "erstesMitgliedCent": 6000000,
+      "jeWeiteresMitgliedCent": 3000000,
+      "hoechstensCent": null
+    },
+    "einheit": "cent, Erspartes aller Haushaltsmitglieder; darüber in der Regel kein Wohngeld",
+    "fundstelle": "§ 21 Nr. 3 WoGG i. V. m. Wohngeld-Verwaltungsvorschrift (WoGVwV Nr. 21.37)",
+    "gueltigAb": "2026-07-01",
+    "status": "pruefen",
+    "hinweis": "Text der WoGVwV nicht im Original gelesen. Die Begründung zu BT-Drs. 21/8284 (S. 83) sagt, die Formulierung der Verwaltungsvorschrift werde inhaltlich unverändert ins Gesetz übernommen. Die Obergrenze von 120.000 € kommt erst mit dem Entwurf."
+  },
+  "geringfuegigkeitsgrenze": {
+    "wert": 60300,
+    "einheit": "cent im Monat, Minijob-Grenze",
+    "fundstelle": "§ 8 Abs. 1a SGB IV i. V. m. § 1 Nr. 1 MiLoV5 (Mindestlohn ab 1.1.2026: 13,90 €): 13,90 × 130 ÷ 3 = 602,33, auf volle Euro aufgerundet 603 €",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28",
+    "hinweis": "Für die Schätzung der Abzüge nach § 16 WoGG: Bis zu dieser Grenze keine Kranken- und Pflegeversicherung aus dem Lohn."
+  },
+  "abzuegeSchaetzung": {
+    "wert": {
+      "steuerAbPromilleVomBrutto": 225
+    },
+    "einheit": "Promille des Bruttos: Ist Brutto minus Netto größer, wird ein Steuerabzug angenommen",
+    "fundstelle": "Schätzregel Gut Bescheid zu § 16 WoGG, freigegeben von Nico am 28.10.2026. Höchster Arbeitnehmeranteil 2026 rund 21,75 %: KV 14,6 % ÷ 2 (§ 241 SGB V) + Ø-Zusatzbeitrag 2,9 % ÷ 2 + PV 3,6 % ÷ 2 (§ 1 PBAV 2025) + Kinderlosenzuschlag 0,6 % (§ 55 Abs. 3 SGB XI) + RV 18,6 % ÷ 2 + AV 2,6 % ÷ 2 (§ 341 Abs. 2 SGB III); dazu Puffer für teurere Krankenkassen",
+    "gueltigAb": "2026-07-01",
+    "status": "pruefen",
+    "hinweis": "Schätzung, kein Gesetzeswert. Ø-Zusatzbeitrag 2026 (Bekanntmachung BMG vom 10.11.2025) und RV-Beitragssatz 18,6 % nur aus Sekundärquellen. Irrt in beide Richtungen: Bei Midijobs kann eine kleine Lohnsteuer übersehen werden (Wohngeld zu niedrig). Enthält das Netto andere Abzüge, etwa Entgeltumwandlung, vermögenswirksame Leistungen oder eine Pfändung, wird fälschlich Steuer angenommen (Wohngeld zu hoch)."
+  },
+  "obergrenzeMiete": {
+    "wert": "hoechstens_miete",
+    "einheit": "Regel",
+    "fundstelle": "WoGVwV Nr. 19.21, gelesen in einer Wiedergabe auf wohngeld.org",
+    "gueltigAb": "2026-07-01",
+    "status": "pruefen",
+    "hinweis": "Das Wohngeld darf die zu berücksichtigende Miete nicht übersteigen, notfalls wird abgerundet. Wirkt nur bei sehr großen Haushalten mit wenig Einkommen. WoGVwV vom 28.06.2017 nicht im Original gelesen."
+  },
+  "werbungskostenMinijob": {
+    "wert": "pauschbetrag",
+    "einheit": "Regel für Brutto bis zur Minijob-Grenze",
+    "fundstelle": "§ 14 Abs. 1 Satz 3 Nr. 2 WoGG: pauschal besteuerter Arbeitslohn „abzüglich der Aufwendungen zu dessen Erwerbung, Sicherung oder Erhaltung, höchstens jedoch bis zur Höhe dieser Einnahmen“",
+    "gueltigAb": "2026-07-01",
+    "status": "pruefen",
+    "hinweis": "Version 0 zieht den Arbeitnehmer-Pauschbetrag ab. Ob die Wohngeldstellen das bei Minijobs so machen, ist nicht geprüft. Jedes Brutto bis zur Minijob-Grenze gilt als pauschal besteuerter Minijob."
+  }
+}

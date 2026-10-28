@@ -2,10 +2,10 @@
   "id": "T03",
   "haushalt": "alleinerziehend, Kind 3, Erlangen, Unterhaltsvorschuss 227 €",
   "prueftVorAllem": "Mehrbedarf 36 %, Kindeseinkommen 45 %",
-  "erwartung": "KiZ gemindert, Weg B wahrscheinlich",
+  "erwartung": "erweiterter Zugang: es fehlen etwa 19 €",
   "stichtag": "2026-07-01",
   "eingabe": {
-    "gemeinde": "Erlangen",
+    "gemeinde": { "name": "Erlangen, Stadt", "kreis": null },
     "erwachsene": [
       { "alter": 35, "brutto": 130000, "netto": 100000, "sonstigesEinkommen": 0 }
     ],
@@ -20,7 +20,10 @@
   "annahmen": [
     "Alter der Erwachsenen (35 Jahre) und Erspartes (unter 10.000 €) stehen nicht im Fachkonzept. Ohne Einfluss auf M2.",
     "Kindesalter in vollen Jahren, Monate 0.",
-    "Unterhaltsvorschuss 2026 für 0–5 Jahre: 227 € = Mindestunterhalt 486 € (§ 1 Nr. 1 MinUhV) − Kindergeld 259 € (§ 2 Abs. 2 Satz 1 UVG, § 6 Abs. 1 BKGG). Fachkonzept nannte zuerst 230 €, korrigiert von Nico am 26.10.2026."
+    "Unterhaltsvorschuss 2026 für 0–5 Jahre: 227 € = Mindestunterhalt 486 € (§ 1 Nr. 1 MinUhV) − Kindergeld 259 € (§ 2 Abs. 2 Satz 1 UVG, § 6 Abs. 1 BKGG). Fachkonzept nannte zuerst 230 €, korrigiert von Nico am 26.10.2026.",
+    "Gemeinde Erlangen, Mietenstufe IV. Vom Wohngeldrechner bestätigt (Nico, 28.10.2026).",
+    "Wohngeldrechner: Werbungskosten 102,50 €/Monat, Häkchen bei Einkommensteuer, KV/PV und RV. Unterhaltsvorschuss 227 € als Gesamteinkommen von Mitglied 2 (Kind). Bruttokaltmiete 670 €.",
+    "KiZ-Lotse: Unterhaltsvorschuss als „sonstiges Einkommen“ des Kindes eingegeben."
   ],
   "soll": {
     "sgb2": {
@@ -28,7 +31,22 @@
       "freibetrag": 35800,
       "quelle": "Fachkonzept v0, Tabelle Testhaushalte (aus geprüften Parametern vorgerechnet), Stand 26.10.2026"
     },
-    "kiz": null,
-    "wohngeld": null
+    "wohngeld": {
+      "betrag": 53100,
+      "abzuegeImRechner": ["steuer", "kvpv", "rv"],
+      "quelle": "Wohngeld-Plus-Rechner BMWSB (Rechtsstand ab 1.1.2025), abgerufen von Nico am 28.10.2026"
+    },
+    "kiz": {
+      "anspruchLotse": true,
+      "anspruch": "erweiterter_zugang",
+      "betrag": 19500,
+      "betragStatus": "berechnet",
+      "quelle": "Anspruch: KiZ-Lotse der BA, abgerufen von Nico am 28.10.2026. Betrag: 297 − 45 % von 227 = 194,85, gerundet 195 € (Nico, 28.10.2026)."
+    },
+    "vergleich": {
+      "ergebnis": "erweiterter_zugang",
+      "fehlbetrag": 1868,
+      "quelle": "Nico, 28.10.2026: 1.872,68 − (642 + 259 + 227 + 195 + 531) = 18,68 €"
+    }
   }
 }

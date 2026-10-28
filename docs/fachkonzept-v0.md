@@ -15,7 +15,7 @@ Stand: 26.10.2026 · Autor: Nico · Lebende Fassung: Claude-Doc „Fachkonzept V
 - Checkliste der Unterlagen, Erinnerungen als Kalenderdatei (.ics)
 - Spracheingabe für freie Angaben, alles auf dem Gerät, kein Konto
 
-**Nicht im Umfang (bewusst):** Alleinstehende ohne Kinder, Selbstständige mit schwankendem Einkommen, Pflege, die Prüfung des Unterhaltsvorschusses selbst (wer ihn bekommt, gibt ihn als Einkommen des Kindes ein), Ausbildungsvergütung von Kindern, Kinder ab 18, Elterngeld (folgt als eigenes Feld), Eigentümer (Lastenzuschuss), Bundesländer außer Bayern, Antragstellung selbst, Post-Scanner, Erwachsene unter 18 oder ab 65 (vereinfacht, die Regelaltersgrenze nach § 7a hängt vom Geburtsjahr ab). Annahme: Bei zwei Erwachsenen sind beide Eltern aller Kinder; Patchwork-Familien klären wir in M3.
+**Nicht im Umfang (bewusst):** Alleinstehende ohne Kinder, Selbstständige mit schwankendem Einkommen, Pflege, die Prüfung des Unterhaltsvorschusses selbst (wer ihn bekommt, gibt ihn als Einkommen des Kindes ein), Ausbildungsvergütung von Kindern, Kinder ab 18, Elterngeld (folgt als eigenes Feld), Eigentümer (Lastenzuschuss), Bundesländer außer Bayern, Antragstellung selbst, Post-Scanner, Erwachsene unter 18 oder ab 65 (vereinfacht, die Regelaltersgrenze nach § 7a hängt vom Geburtsjahr ab), Kinder, die erst durch Kinderzuschlag und Wohngeld ihren Bedarf selbst decken und dadurch aus der Bedarfsgemeinschaft fallen (Version 0 prüft Weg B für den ganzen Haushalt). Patchwork-Familien (Kinder nur eines Partners) sind nicht im Umfang von Version 0; sie bekommen einen Hinweis statt eines Ergebnisses.
 
 Wer außerhalb des Umfangs liegt, bekommt einen klaren Hinweis und Verweise auf offizielle Rechner, statt eines falschen Ergebnisses.
 
@@ -67,6 +67,8 @@ Jeder Schritt besteht aus mehreren Bildschirmen mit je einer Frage.
 | `vermoegen` | Spanne (unter 10.000 / 10.000–40.000 / 40.000–70.000 / darüber) | Vermögensprüfung je Weg | Wie viel Erspartes habt ihr ungefähr zusammen? |
 | `betreuung` | ja/nein je Kind (Kita, Tagespflege, Schule) | Folgen-Katalog Zumutbarkeit | Ist euer Kind tagsüber betreut? |
 
+**Grundsatz: Wir fragen nach Lebenssituationen, nie nach Amtskategorien.** Niemand soll entscheiden müssen, ob ein Betrag ‚Erwerbseinkommen‘ oder ‚sonstiges Einkommen‘ ist. Die App fragt in Alltagsworten (‚Bekommt euer Kind Geld vom anderen Elternteil oder vom Jugendamt?‘ mit den Antworten Unterhalt, Unterhaltsvorschuss, nichts) und ordnet selbst richtig zu. Bei jeder Frage steht ein kurzes ‚Wo finde ich das?‘ mit dem Dokument, auf dem die Zahl steht. Auslöser: Beim Abgleich mit dem KiZ-Lotsen (28.10.2026) war unklar, in welches der Felder Brutto, Netto oder ‚sonstiges Einkommen‘ der Unterhaltsvorschuss gehört. An solchen Stellen brechen Menschen ab, weil sie sonst irgendwo anrufen müssten.
+
 **Bewusst nicht gefragt in Version 0:** Namen, Geburtsdaten (nur Alter), Adresse (nur Gemeinde), Steuer-ID, Bankdaten. Die Daten liegen nur in IndexedDB auf dem Gerät und lassen sich mit einem Klick löschen („Alles löschen“ auf jedem Bildschirm erreichbar).
 
 **Typen im Code:** Euro werden als ganze Cent in `number` (Integer) gespeichert, nie als Kommazahl. Jede Angabe trägt das Flag `geschaetzt: boolean`.
@@ -95,6 +97,7 @@ Jeder Schritt besteht aus mehreren Bildschirmen mit je einer Frage.
 | Erwerbstätigenfreibetrag | 20 % auf 100–520 €, 30 % auf 520–1.000 €, 10 % auf 1.000–1.200 € (1.500 € mit minderjährigem Kind), jeweils vom Brutto | § 11b Abs. 3 SGB II | geprüft |
 | Versicherungspauschale | 30 € vom sonstigen Einkommen Volljähriger; nicht zusätzlich bei Erwerbseinkommen, dann steckt sie im Grundabsetzbetrag | § 6 Abs. 1 Nr. 1 GrusiGV | geprüft (26.10.2026); gilt auch für den Kindergeld-Überhang (BSG B 4 AS 49/13 R) |
 | Kindergeld | 259 € je Kind | § 66 Abs. 1 EStG; § 6 Abs. 1 BKGG | geprüft |
+| Sofortzuschlag Kinder | 25 € je Kind mit Anspruch, auch wenn es nur wegen des Kindergelds keinen eigenen Anspruch hat; zählt zum Betrag von Weg A, nicht zum Bedarf | § 72 Abs. 1 SGB II | geprüft; ab 2027 prüfen (BT-Drs. 21/7860 kündigt eine Überprüfung an) |
 | Vermögensfreibetrag je Person | 0–29 Jahre: 5.000 €, 30–39 Jahre: 10.000 €, 40–49 Jahre: 12.500 €, ab 50 Jahren: 20.000 €. Der höhere Freibetrag gilt ab Beginn des Monats, in dem die Altersgrenze erreicht wird. Innerhalb der Bedarfsgemeinschaft übertragbar, keine Karenzzeit mehr. Auto und Altersvorsorge zählen nicht mit, die Frage nach dem Ersparten nimmt sie aus | § 12 Abs. 2 SGB II | geprüft |
 | Wohnkosten | tatsächliche Kosten bis zur regionalen Angemessenheitsgrenze, im ersten Jahr höchstens 1,5-fach | § 22 SGB II | geprüft; regionale Grenzen nicht in Version 0 |
 | Bewilligungszeitraum | in der Regel 12 Monate, 6 Monate bei schwankendem Einkommen | BA | geprüft |
@@ -110,11 +113,12 @@ Jeder Schritt besteht aus mehreren Bildschirmen mit je einer Frage.
 | Höchstbetrag je Kind | 297 € | § 6a BKGG, Merkblatt KiZ 2026 | geprüft |
 | Mindesteinkommen (brutto, Durchschnitt der letzten 6 Monate) | 900 € Paare, 600 € Alleinerziehende | DA-KiZ C | geprüft |
 | Anrechnung Kindeseinkommen (ohne Kindergeld) | 45 % | § 6a Abs. 3 BKGG | geprüft |
-| Anrechnung Elterneinkommen | 45 % des bereinigten Einkommens über dem elterlichen Bedarf; Rundungsregel aus DA-KiZ | § 6a Abs. 6 BKGG | geprüft; Rundung: aus Quelle laden |
+| Anrechnung Elterneinkommen | 45 % des bereinigten Einkommens über dem elterlichen Bedarf | § 6a Abs. 6 BKGG | geprüft |
+| Rundung | Gesamtbetrag kaufmännisch auf volle Euro; 0,01–0,49 € ergibt keinen KiZ | § 11 Abs. 2 BKGG, DA-KiZ E.5 Abs. 2 | geprüft |
 | Elterlicher Bedarf | Regelbedarfe der Eltern + Mehrbedarfe + Wohnkostenanteil der Eltern | DA-KiZ | geprüft |
-| Wohnkostenanteil der Eltern | Paar: 1 Kind 83 %, 2 Kinder 71 %; alleinerziehend: 1 Kind 77 %, 2 Kinder 63 %; ab 3 Kindern | 12. Existenzminimumbericht, DA-KiZ | 1–2 Kinder geprüft; ab 3 Kindern aus Quelle laden |
-| Erhebliches Vermögen (ganze Familie) | 2 Personen 55.000 €, 3 Personen 70.000 €, je weitere Person vermutlich +15.000 € | KiZ-1-Hinweisblatt 2026 | 2–3 Personen geprüft; Fortschreibung prüfen |
-| Erweiterter Zugang | wenn mit KiZ und Wohngeld höchstens 100 € zum Bedarf fehlen | § 6a Abs. 1a BKGG | geprüft |
+| Wohnkostenanteil der Eltern | Paar: 1 Kind 83 %, 2 Kinder 71 %, 3/4/5 Kinder 62/55/50 %; alleinerziehend: 1 Kind 77 %, 2 Kinder 63 %, 3/4/5 Kinder 53/46/40 % | 12. Existenzminimumbericht, DA-KiZ C.3.1.2, Merkblatt KiZ (Stand Juli 2026) | geprüft |
+| Erhebliches Vermögen (ganze Familie) | 40.000 € für die berechtigte Person plus 15.000 € je weitere Person der Bedarfsgemeinschaft | § 6a Abs. 3 Satz 5 BKGG, Merkblatt KiZ (Stand Juli 2026) | geprüft |
+| Erweiterter Zugang | wenn mit KiZ und Wohngeld höchstens 100 € zum Bedarf fehlen und die Freibeträge wegen Erwerbstätigkeit mindestens 100 € betragen (§ 6a Abs. 1a Nr. 2) | § 6a Abs. 1a BKGG | geprüft |
 | Bewilligung | 6 Monate fest, nicht rückwirkend, ab Antragsmonat | Merkblatt KiZ | geprüft |
 
 ### Wohngeld (WoGG), Stand 2026 und geplant ab 1.1.2027
@@ -131,16 +135,16 @@ Jeder Schritt besteht aus mehreren Bildschirmen mit je einer Frage.
 | Gesamteinkommen (Y) | Jahreseinkommen aller Haushaltsmitglieder minus pauschaler Abzug 10/20/30 % je nach Abgaben, minus Freibeträge, geteilt durch 12. Kindergeld und KiZ zählen nicht | §§ 14–18 WoGG | aus Quelle laden |
 | Ausschluss | kein Wohngeld bei Bezug von Grundsicherung | § 7 WoGG | geprüft |
 | Erhebliches Vermögen | 60.000 € für das erste, 30.000 € je weiteres Haushaltsmitglied | Wohngeld-VwV | prüfen |
-| **Geplant ab 1.1.2027** | Fortschreibung ausgesetzt, Heizkostenkomponente halbiert, Parameter c erhöht, Mindestbetrag 15 € statt 10 € | Regierungsentwurf BT-Drs. 21/8284, 1. Lesung 8.10.2026 | Status *geplant*, nicht beschlossen |
+| **Geplant ab 1.1.2027** | Fortschreibung ausgesetzt, Heizkostenkomponente halbiert, Parameter c erhöht, Mindestbetrag 15 € statt 10 €, neue Mietenstufen laut Entwurf, Vermögensdeckel 120.000 €, Minijob ohne Werbungskosten, Wohngeld höchstens die Miete (§ 19 Abs. 4), Übergangsregel § 42e | Regierungsentwurf BT-Drs. 21/8284, 1. Lesung 8.10.2026 | Status *geplant*: Anhörung im Ausschuss 4.11.2026, nicht beschlossen (Stand 28.10.2026); der federführende Wohnungsausschuss des Bundesrates empfahl die Ablehnung (BR-Drs. 474/1/26, Ziffer 1), das Plenum ist dem am 25.09.2026 nicht gefolgt und hat Änderungen gefordert (BT-Drs. 21/8284, Anlage 3) |
 
 ### Bildung und Teilhabe
 
 | Leistung | Wert | Status |
 | --- | --- | --- |
 | Schulbedarf | 130 € im 1., 65 € im 2. Schulhalbjahr | geprüft (BMBFSFJ-Einlegeblatt 2026) |
-| Soziale und kulturelle Teilhabe | 15 € im Monat | prüfen |
-| Mittagessen in Kita und Schule, Ausflüge, Schülerbeförderung, Lernförderung | tatsächliche Kosten | prüfen |
-| Zuständig | Weg A: Jobcenter. Weg B: Kommune (Landratsamt oder kreisfreie Stadt) | prüfen |
+| Soziale und kulturelle Teilhabe | 15 € im Monat | geprüft (§ 28 Abs. 7 SGB II) |
+| Mittagessen in Kita und Schule, Ausflüge, Schülerbeförderung, Lernförderung | tatsächliche Kosten | geprüft (§ 28 Abs. 2, 4–6 SGB II) |
+| Zuständig | Weg A: Jobcenter. Weg B: Kommune (Landratsamt oder kreisfreie Stadt) | Weg A prüfen; Weg B geprüft (Art. 109a AGSG) |
 
 **Abgleich:** GETTSIM (Open-Source-Modell für Steuern und Transfers) dient als zweite Referenz neben den offiziellen Rechnern. Lizenz und Rechtsstand prüfen, bevor Code übernommen wird.
 
@@ -156,7 +160,7 @@ Jeder Schritt besteht aus mehreren Bildschirmen mit je einer Frage.
 | Die Partnerin, die schon arbeitet | gehört zur Bedarfsgemeinschaft. Das Jobcenter kann sie in Beratung und Pflichten einbeziehen, auch mit dem Ziel, die Hilfebedürftigkeit zu verringern | keine Vorgaben | BA „Unterstützung für Familien“; Reichweite im Einzelfall prüfen |
 | Kinderbetreuung | Ist das Kind älter als 14 Monate, gilt Arbeit in der Regel als zumutbar, sofern die Betreuung (Kita, Tagespflege) gesichert ist. Die Kommune soll vorrangig einen Platz anbieten. Nur ein Elternteil kann sich auf die Betreuung berufen | keine Vorgaben | § 10 Abs. 1 Nr. 3 SGB II (Fassung ab 7/2026); geprüft |
 | Termine und Gespräche | Erstgespräch, Meldetermine, Kooperationsplan. Bei wiederholtem Meldeversäumnis werden 30 % des Regelbedarfs gekürzt, bei Pflichtverletzungen 30 % für drei Monate | keine Pflichttermine. Der KiZ-Antrag ist vollständig online möglich (KiZ Digital mit BundID) | §§ 31a, 32 SGB II; geprüft |
-| Erspartes | Freibetrag nach Alter (5.000–20.000 € je Person), Prüfung sofort | KiZ: erst ab 55.000 € (2 Personen) bzw. 70.000 € (3 Personen). Wohngeld: deutlich höhere Grenzen | § 12 SGB II geprüft; Wohngeld prüfen |
+| Erspartes | Freibetrag nach Alter (5.000–20.000 € je Person), Prüfung sofort | KiZ: 40.000 € für die berechtigte Person plus 15.000 € je weitere Person der Bedarfsgemeinschaft. Wohngeld: in der Regel 60.000 € plus 30.000 € je weitere Person | § 12 SGB II und § 6a BKGG geprüft; Wohngeld prüfen |
 | Kontoauszüge | werden in der Regel angefordert. Wer sie komplett verweigert, riskiert die Ablehnung | Einkommensnachweise, Kontoauszüge nur im Einzelfall | prüfen |
 | Wohnung | Prüfung, ob die Miete angemessen ist. Nach dem ersten Jahr kann das Jobcenter verlangen, die Kosten zu senken | keine Pflicht zum Umzug. Das Wohngeld berücksichtigt die Miete nur bis zum Höchstbetrag | § 22 SGB II; geprüft |
 | Krankenversicherung | über den Bezug pflichtversichert | **keine Absicherung durch die Leistung.** Wer nicht selbst versichert ist, braucht eine Familienversicherung oder eine eigene Versicherung | prüfen; wichtig für Arbeitssuchende ohne ALG I |
@@ -203,14 +207,14 @@ Wohnkosten = Kaltmiete + Nebenkosten + Heizung. Freibetrag = Grundabsetzbetrag 1
 | ID | Haushalt | Einkommen (brutto / netto) | Wohnkosten | Prüft vor allem | SGB-II-Bedarf | Freibetrag | Erwartung |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | T01 | Paar, Kinder 4 und 8, Nürnberg | 2.400 / 1.750 € | 750 + 180 + 110 = 1.040 € | Standardfall Weg B | 1.759 + 1.040 = 2.799 € | 378 € | Weg B deckt den Bedarf |
-| T02 | wie T01 | 1.400 / 1.120 € | 1.040 € | niedriges Einkommen | 2.799 € | 368 € | nur Weg A deckt den Bedarf |
-| T03 | alleinerziehend, Kind 3, Erlangen, Unterhaltsvorschuss 227 € | 1.300 / 1.000 € | 550 + 120 + 80 = 750 € | Mehrbedarf 36 %, Kindeseinkommen 45 % | 563 + 357 + 202,68 + 750 = 1.872,68 € | 358 € | KiZ gemindert, Weg B wahrscheinlich |
+| T02 | wie T01 | 1.400 / 1.120 € | 1.040 € | niedriges Einkommen | 2.799 € | 368 € | Weg B deckt knapp den Bedarf (5 € übrig) |
+| T03 | alleinerziehend, Kind 3, Erlangen, Unterhaltsvorschuss 227 € | 1.300 / 1.000 € | 550 + 120 + 80 = 750 € | Mehrbedarf 36 %, Kindeseinkommen 45 % | 563 + 357 + 202,68 + 750 = 1.872,68 € | 358 € | erweiterter Zugang: es fehlen etwa 19 € |
 | T04 | Paar, Kinder 6 und 9, Landkreis Passau | 850 / 680 € | 620 + 150 + 90 = 860 € | Mindesteinkommen 900 € nicht erreicht | 1.792 + 860 = 2.652 € | 283 € | kein KiZ, nur Weg A |
 | T05 | Paar, Kinder 1, 5 und 12, Augsburg | 2.900 / 2.050 € | 900 + 200 + 130 = 1.230 € | Kind unter 14 Monaten (Folgen-Karte), 3 Kinder | 2.116 + 1.230 = 3.346 € | 378 € | Grenzfall, Wohnkostenanteil für 3 Kinder nötig |
 | T06 | Paar (35 und 38), Kind 7, Würzburg, Erspartes 60.000 € | 2.200 / 1.650 € | 650 + 150 + 90 = 890 € | Vermögen: SGB II ausgeschlossen (Freibetrag 25.000 €), KiZ möglich (Grenze 70.000 €) | 1.402 + 890 = 2.292 € | 378 € | nur Weg B, Hinweis Vermögen |
-| T07 | Paar, 2 Kinder, Werte so gewählt, dass 1–100 € fehlen | beim Bau einstellen | beim Bau einstellen | erweiterter Zugang KiZ | – | – | echte Wahl zwischen A und B |
-| T08 | Paar, Kind 4, München | 3.200 / 2.300 € | 1.400 + 250 + 120 = 1.770 € | Miete über dem Wohngeld-Höchstbetrag (Mietstufe VII) | 1.369 + 1.770 = 3.139 € | 378 € | Wohngeld gedeckelt, Wohnkosten-Hinweis |
-| T09 | Paar, Kinder 14 und 16, Regensburg (1.000 € als Kaltmiete, Aufteilung in M3 nachtragen) | 4.500 / 3.100 € | 1.000 € | kein Anspruch | – | 378 € | „Kein Anspruch“, mit Verweis auf Steuer und BuT-Prüfung |
+| T07 | Paar, Kinder 4 und 8, Nürnberg | 1.300 / 1.040 € | wie T01: 1.040 € | erweiterter Zugang KiZ | 1.759 + 1.040 = 2.799 € | 358 € | erweiterter Zugang: es fehlen 65 €, echte Wahl zwischen A und B |
+| T08 | Paar, Kind 4, München | 3.200 / 2.300 € | 1.400 + 250 + 120 = 1.770 € | Miete über dem Wohngeld-Höchstbetrag (Mietstufe VII) | 1.369 + 1.770 = 3.139 € | 378 € | nur Weg A: es fehlen 347 € (KiZ-Lotse sagt „ja“, dokumentierte Abweichung) |
+| T09 | Paar, Kinder 14 und 16, Regensburg (1.000 € als Kaltmiete, Aufteilung in M3 nachtragen) | 4.500 / 3.100 € | 1.000 € | kein Anspruch | – | 378 € | Weg B deckt den Bedarf, kein Anspruch auf Weg A (Lücke A −286 €) |
 | T10 | Paar, Kinder 2 und 5, Landkreis Regensburg, eine Person ohne Einkommen und ohne ALG I | 2.800 / 2.000 € | 780 + 170 + 100 = 1.050 € | Krankenversicherungs-Karte, Partner-Karte | 1.726 + 1.050 = 2.776 € | 378 € | Weg B wahrscheinlich |
 
 **So werden die Sollwerte erfasst:** je Haushalt eine Datei `packages/regelwerk/tests/haushalte/T01.json` mit Eingaben, Sollwerten, Quelle („KiZ-Lotse, 28.10.2026“) und Rechtsstand. Weicht ein offizieller Rechner von der Gesetzesrechnung ab, wird das notiert und nicht stillschweigend angeglichen. Die Mietstufen der Orte stammen aus der WoGV-Anlage, nicht aus Annahmen.
@@ -311,7 +315,7 @@ Die Arbeitsregeln stehen nur noch in CLAUDE.md im Repository. Dieses Dokument wi
 
 - DA-KiZ: https://www.arbeitsagentur.de/datei/fw-bkgg_ba023130.pdf
 - KiZ-1-Hinweisblatt 2026: https://www.arbeitsagentur.de/datei/kiz1-hinweise_ba036545.pdf
-- Merkblatt Kinderzuschlag 2026: https://www.arbeitsagentur.de/datei/KiZ2-MerkblattKinderzuschlag_ba015395.pdf
+- Merkblatt Kinderzuschlag (Stand Juli 2026): https://www.arbeitsagentur.de/datei/kiz2-merkblattkinderzuschlag_ba034485.pdf
 - Merkblatt SGB II (2026): https://www.arbeitsagentur.de/datei/merkblatt-sgb2_ba043375.pdf
 - Fachliche Weisungen § 12 SGB II: https://www.arbeitsagentur.de/datei/fw-zu-par-12-sgb2-beruecksichtigung-von-vermoegen_ba058027.pdf
 - BA Grundsicherungsgeld: https://www.arbeitsagentur.de/grundsicherung-loest-buergergeld-ab

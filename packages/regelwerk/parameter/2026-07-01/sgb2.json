@@ -151,5 +151,14 @@
     "gueltigAb": "2026-07-01",
     "status": "pruefen",
     "hinweis": "Zwei Dezimalstellen, ab 5 in der dritten Stelle aufrunden. Gerundet wird je Freibetragsstufe und beim Kopfteil der Wohnkosten."
+  },
+  "sofortzuschlagKind": {
+    "wert": 2500,
+    "einheit": "cent im Monat je Kind",
+    "fundstelle": "§ 72 Abs. 1 SGB II",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28",
+    "hinweis": "Für Kinder mit Anspruch auf Grundsicherungsgeld (Regelbedarfsstufen 3 bis 6), auch für Kinder, die nur wegen des Kindergelds keinen Anspruch haben (Satz 2 Nr. 2). Kinder, die nur einen Anspruch auf Bildung und Teilhabe haben (Satz 2 Nr. 1), rechnet Version 0 nicht. Ob auch Kinder zählen, deren ganzer Haushalt nur wegen des Kindergelds keinen Anspruch hat, ist nicht geprüft (Fachliche Weisungen zu § 72 nicht lesbar); Version 0 zählt sie nicht."
   }
 }

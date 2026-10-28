@@ -33,6 +33,15 @@ export function geteilt(betrag: Cent, durch: number): { cent: Cent; gerundet: bo
   return bruchteil(betrag, durch);
 }
 
+/**
+ * Auf volle Euro gerundet, unter 50 Cent nach unten, sonst nach oben (§ 11 Abs. 2 BKGG). Ergebnis in Cent.
+ * Nur für Beträge ab 0.
+ */
+export function aufEuro(betrag: Cent): Cent {
+  pruefeBetrag(betrag, "betrag");
+  return bruchteil(betrag, 100).cent * 100;
+}
+
 function bruchteil(zaehler: number, nenner: number): { cent: Cent; gerundet: boolean } {
   const rest = zaehler % nenner;
   const ganz = (zaehler - rest) / nenner;

@@ -18,7 +18,7 @@ function kind(jahre: number, einkommen = 0, ausbildungsverguetung = 0): Kind {
 // Alleinerziehend (35), ein Kind von 3 Jahren, Wohnkosten 700 €, kein Einkommen, kein Erspartes.
 function haushalt(teil: Partial<Haushalt> = {}): Haushalt {
   return {
-    gemeinde: "Testort",
+    gemeinde: { name: "Testort", kreis: null },
     erwachsene: [erwachsener()],
     kinder: [kind(3)],
     kaltmiete: 50000,
@@ -43,6 +43,7 @@ describe("Lücke A (von Hand vorgerechnet, von Nico bestätigt am 26.10.2026)", 
     ["T04", 173700],
     ["T05", 89700],
     ["T06", 76100],
+    ["T07", 159900], // 2.799 − (1.040 − 358 + 518), festgelegt von Nico am 28.10.2026
     ["T08", 95800],
     ["T09", -28600],
     ["T10", 63600],
@@ -251,6 +252,28 @@ describe("Hinweis Elterngeld", () => {
   });
 });
 
+describe("Sofortzuschlag für Kinder (§ 72 SGB II)", () => {
+  // Alleinerziehend ohne Einkommen, Kind 15, Wohnkosten 600 €: Bedarf des Kindes 471 + 300 = 771 €.
+  const mitUnterhalt = (cent: number) => haushalt({ kinder: [kind(15, cent)], kaltmiete: 40000 });
+
+  it("25 € je Kind, wenn ein Anspruch besteht (T01: zwei Kinder)", () => {
+    expect(rechne(testhaushalt("T01").eingabe).sofortzuschlag).toEqual({ kinder: 2, betrag: 5000 });
+  });
+
+  it("ohne Anspruch kein Sofortzuschlag (T09)", () => {
+    expect(rechne(testhaushalt("T09").eingabe).sofortzuschlag).toEqual({ kinder: 0, betrag: 0 });
+  });
+
+  it("auch für ein Kind, das nur mit dem Kindergeld seinen Bedarf deckt (Abs. 1 Satz 2 Nr. 2)", () => {
+    // 600 € Unterhalt < 771 €, mit Kindergeld 859 €
+    expect(rechne(mitUnterhalt(60000)).sofortzuschlag).toEqual({ kinder: 1, betrag: 2500 });
+  });
+
+  it("nicht für ein Kind, das seinen Bedarf schon ohne Kindergeld deckt", () => {
+    expect(rechne(mitUnterhalt(80000)).sofortzuschlag).toEqual({ kinder: 0, betrag: 0 });
+  });
+});
+
 describe("Kindergeld-Überhang (§ 7 Abs. 3 Nr. 4, § 11 Abs. 1 Satz 5 SGB II)", () => {
   // Alleinerziehend (35), Kind 15 mit 600 € Unterhalt, Wohnkosten 600 €.
   // Kind: Bedarf 471 € + Kopfteil 300 € = 771 €. Eigenes Einkommen 259 € + 600 € = 859 €. Überschuss 88 €.
@@ -260,7 +283,13 @@ describe("Kindergeld-Überhang (§ 7 Abs. 3 Nr. 4, § 11 Abs. 1 Satz 5 SGB II)",
     const e = rechne(mitUnterhalt(60000));
     expect(e.kinderAusserhalbBedarfsgemeinschaft).toEqual([0]);
     // Mehrbedarf zählt weiter alle Kinder im Haushalt: 12 % für ein Kind von 15.
-    expect(e.bedarf).toEqual({ regelbedarfe: 56300, mehrbedarfAlleinerziehend: 6756, wohnkosten: 30000, summe: 93056 });
+    expect(e.bedarf).toEqual({
+      regelbedarfe: 56300,
+      regelbedarfeErwachsene: 56300,
+      mehrbedarfAlleinerziehend: 6756,
+      wohnkosten: 30000,
+      summe: 93056,
+    });
   });
 
   it("zählt den Überschuss beim Elternteil, abzüglich 30 € Versicherungspauschale ohne Erwerbseinkommen", () => {
@@ -550,6 +579,7 @@ describe("Stichtag ab 1.1.2027", () => {
       "sgb2.kindergeld",
       "sgb2.regelbedarfKinder",
       "sgb2.regelbedarfStufe2",
+      "sgb2.sofortzuschlagKind",
     ]);
     expect(e.parameterHinweise.every((h) => h.status === "pruefen")).toBe(true);
     expect(e.hinweise).toContainEqual({ code: "regelsaetze_offen", jahr: 2027 });

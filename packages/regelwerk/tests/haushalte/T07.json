@@ -1,15 +1,52 @@
 {
   "id": "T07",
-  "haushalt": "Paar, 2 Kinder, Werte so gewählt, dass 1–100 € fehlen",
+  "haushalt": "Paar, Kinder 4 und 8, Nürnberg",
   "prueftVorAllem": "erweiterter Zugang KiZ",
-  "erwartung": "echte Wahl zwischen A und B",
+  "erwartung": "erweiterter Zugang: es fehlen 65 €, echte Wahl zwischen A und B",
   "stichtag": "2026-07-01",
-  "eingabe": null,
-  "annahmen": [],
-  "offen": "Eingaben hängen von KiZ und Wohngeld ab. Werden in M3 eingestellt.",
+  "eingabe": {
+    "gemeinde": { "name": "Nürnberg, Stadt", "kreis": null },
+    "erwachsene": [
+      { "alter": 35, "brutto": 130000, "netto": 104000, "sonstigesEinkommen": 0 },
+      { "alter": 35, "brutto": 0, "netto": 0, "sonstigesEinkommen": 0 }
+    ],
+    "kinder": [
+      { "alter": { "jahre": 4, "monate": 0 }, "einkommen": 0, "ausbildungsverguetung": 0 },
+      { "alter": { "jahre": 8, "monate": 0 }, "einkommen": 0, "ausbildungsverguetung": 0 }
+    ],
+    "kaltmiete": 75000,
+    "nebenkosten": 18000,
+    "heizkosten": 11000,
+    "vermoegen": { "von": 0, "bis": 999999 }
+  },
+  "annahmen": [
+    "Festgelegt von Nico am 28.10.2026: wie T01, aber Brutto 1.300 €, Netto 1.040 € (keine Lohnsteuer).",
+    "Alter der Erwachsenen (35 Jahre) und Erspartes (unter 10.000 €) wie bei T01.",
+    "Gemeinde Nürnberg, Mietenstufe V. Vom Wohngeldrechner bestätigt (Nico, 28.10.2026).",
+    "Nur eine Person verdient. Wohngeldrechner: Werbungskosten 102,50 €/Monat, kein Häkchen bei Einkommensteuer, Häkchen bei KV/PV und RV. Bruttokaltmiete 930 €."
+  ],
   "soll": {
-    "sgb2": null,
-    "kiz": null,
-    "wohngeld": null
+    "sgb2": {
+      "bedarf": 279900,
+      "freibetrag": 35800,
+      "quelle": "Aus geprüften Parametern vorgerechnet: Bedarf wie T01; Freibetrag 100 + 84 + 144 + 30 € (Nico, 28.10.2026)"
+    },
+    "wohngeld": {
+      "betrag": 94000,
+      "abzuegeImRechner": ["kvpv", "rv"],
+      "quelle": "Wohngeld-Plus-Rechner BMWSB (Rechtsstand ab 1.1.2025), abgerufen von Nico am 28.10.2026"
+    },
+    "kiz": {
+      "anspruchLotse": null,
+      "anspruch": "erweiterter_zugang",
+      "betrag": 59400,
+      "betragStatus": "berechnet",
+      "quelle": "Nicht im KiZ-Lotsen geprüft. Betrag: vom Regelwerk berechnet, von Nico gegengerechnet."
+    },
+    "vergleich": {
+      "ergebnis": "erweiterter_zugang",
+      "fehlbetrag": 6500,
+      "quelle": "Nico, 28.10.2026: 682 + 518 + 940 + 594 = 2.734 € gegen Bedarf 2.799 €"
+    }
   }
 }

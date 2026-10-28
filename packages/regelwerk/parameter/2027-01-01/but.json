@@ -1,0 +1,51 @@
+{
+  "schulbedarf": {
+    "wert": {
+      "erstesHalbjahrCent": 13000,
+      "zweitesHalbjahrCent": 6500
+    },
+    "einheit": "cent je Schulhalbjahr und Schulkind, zum 1. August und zum 1. Februar",
+    "fundstelle": "§ 28 Abs. 3 SGB II i. V. m. § 34 Abs. 3 und 3a SGB XII und § 3 RBSFV 2026 (BGBl. 2025 I Nr. 243); Wert 2026 fortgeschrieben, RBSFV 2027 noch nicht verkündet; für Weg B § 6b Abs. 2 Satz 1 BKGG",
+    "gueltigAb": "2027-01-01",
+    "status": "pruefen",
+    "hinweis": "Wert für 2027 noch nicht festgelegt. Gerechnet wird mit dem Wert von 2026. Für Schülerinnen und Schüler unter 25 ohne Ausbildungsvergütung (§ 28 Abs. 1 Satz 2 SGB II)."
+  },
+  "teilhabe": {
+    "wert": 1500,
+    "einheit": "cent im Monat je Kind unter 18, wenn tatsächlich Kosten für Verein, Musikunterricht oder Freizeiten entstehen",
+    "fundstelle": "§ 28 Abs. 7 Satz 1 SGB II; für Weg B § 6b Abs. 2 Satz 1 BKGG",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28"
+  },
+  "tatsaechlicheKosten": {
+    "wert": [
+      "ausfluege_und_klassenfahrten",
+      "schuelerbefoerderung",
+      "lernfoerderung",
+      "mittagessen"
+    ],
+    "einheit": "Leistungen in Höhe der tatsächlichen Kosten",
+    "fundstelle": "§ 28 Abs. 2, 4, 5 und 6 SGB II; für Weg B § 6b Abs. 2 BKGG",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28"
+  },
+  "zustaendigWegA": {
+    "wert": "jobcenter",
+    "einheit": "Stelle, bei der man Bildung und Teilhabe beantragt",
+    "fundstelle": "§ 6 Abs. 1 Satz 1 Nr. 2 SGB II (Träger: kreisfreie Städte und Kreise), § 44b SGB II (Aufgaben im Jobcenter)",
+    "gueltigAb": "2026-07-01",
+    "status": "pruefen",
+    "hinweis": "In der Regel nimmt das Jobcenter den Antrag an. Ob einzelne bayerische Kommunen das selbst machen, ist nicht geprüft."
+  },
+  "zustaendigWegB": {
+    "wert": "landkreis_oder_kreisfreie_stadt",
+    "einheit": "Stelle, bei der man Bildung und Teilhabe beantragt",
+    "fundstelle": "§ 6b Abs. 1 Satz 1, § 7 Abs. 3 BKGG i. V. m. Art. 109a Abs. 1 AGSG (Bayern)",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28",
+    "hinweis": "Anspruch für Familien mit Kinderzuschlag oder Wohngeld."
+  }
+}

@@ -1,12 +1,13 @@
 // Grundsicherung (SGB II): Bedarf, Einkommen nach Freibeträgen, Lücke A und Vermögensprüfung.
 // Rechnet wie das Fachkonzept für den ganzen Haushalt (Entscheidungslogik, Schritte 1 und 2).
 import { anteil, geteilt, pruefeBetrag, type Cent } from "./geld";
-import type { Haushalt, Kind, Spanne } from "./haushalt";
+import type { Erwachsener, Haushalt, Kind, Spanne } from "./haushalt";
 import {
-  parameterHinweis,
+  protokoll as parameterProtokoll,
   rechtsstandZumStichtag,
   type Altersstufe,
   type ParameterHinweis,
+  type Rechtsstand,
   type RechtsstandHinweis,
   type Sgb2Parameter,
 } from "./parameter";
@@ -57,8 +58,17 @@ export type Sgb2Ergebnis =
       imUmfang: true;
       stichtag: string;
       rechtsstand: string;
-      /** Bedarf der Bedarfsgemeinschaft. Wohnkosten ohne den Kopfteil von Kindern außerhalb. */
-      bedarf: { regelbedarfe: Cent; mehrbedarfAlleinerziehend: Cent; wohnkosten: Cent; summe: Cent };
+      /**
+       * Bedarf der Bedarfsgemeinschaft. Wohnkosten ohne den Kopfteil von Kindern außerhalb.
+       * regelbedarfeErwachsene: der Teil der Regelbedarfe, der auf die Erwachsenen entfällt.
+       */
+      bedarf: {
+        regelbedarfe: Cent;
+        regelbedarfeErwachsene: Cent;
+        mehrbedarfAlleinerziehend: Cent;
+        wohnkosten: Cent;
+        summe: Cent;
+      };
       einkommen: {
         erwachsene: Sgb2EinkommenErwachsener[];
         freibetrag: Cent;
@@ -74,6 +84,19 @@ export type Sgb2Ergebnis =
       };
       /** Kinder (Index in haushalt.kinder), die ihren Bedarf selbst decken (§ 7 Abs. 3 Nr. 4 SGB II). */
       kinderAusserhalbBedarfsgemeinschaft: number[];
+      /**
+       * Je Kind wie in haushalt.kinder, für den KiZ: Regelbedarf, Kopfteil der Wohnkosten, Kindergeld, ob es zur
+       * Bedarfsgemeinschaft gehört, und sein Kindergeld-Überhang, wenn nicht.
+       */
+      kinder: {
+        regelbedarf: Cent;
+        kopfteilWohnkosten: Cent;
+        kindergeld: Cent;
+        inBedarfsgemeinschaft: boolean;
+        ueberhang: Cent;
+      }[];
+      /** § 72 SGB II: 25 € je Kind, nur wenn ein Anspruch besteht oder nur das Vermögen ihn offenlässt. */
+      sofortzuschlag: { kinder: number; betrag: Cent };
       /** Bedarf minus Einkommen. 0 oder kleiner: kein Anspruch. */
       lueckeA: Cent;
       vermoegen: {
@@ -121,20 +144,20 @@ export function berechneSgb2(haushalt: Haushalt, optionen: { stichtag: string })
     const decktBedarf = eigenes >= regelbedarf + kopfteil.cent;
     const decktUngerundet = eigenes * personen >= regelbedarf * personen + wohnkostenHaushalt;
     if (kopfteil.gerundet && (decktBedarf || decktUngerundet)) p.merkeRundung();
-    if (!decktBedarf) return { index, kind: k, inBg: true, regelbedarf, kopfteil: 0, ueberhang: 0 };
+    const kopfteilWohnkosten = kopfteil.cent;
+    if (!decktBedarf) return { index, kind: k, inBg: true, regelbedarf, kopfteilWohnkosten, kopfteil: 0, ueberhang: 0 };
     // Kindergeld zählt beim Kind nur, soweit es gebraucht wird (§ 11 Abs. 1 Satz 5 SGB II). Der Rest, höchstens
     // das Kindergeld, zählt beim kindergeldberechtigten Elternteil (BSG, B 11b AS 1/06 R; § 64 Abs. 1 EStG).
     const ueberhang = Math.min(eigenes - regelbedarf - kopfteil.cent, kindergeldJeKind);
-    return { index, kind: k, inBg: false, regelbedarf, kopfteil: kopfteil.cent, ueberhang };
+    return { index, kind: k, inBg: false, regelbedarf, kopfteilWohnkosten, kopfteil: kopfteil.cent, ueberhang };
   });
   const kinderInBg = kinderRechnung.filter((k) => k.inBg);
   const kinderAusserhalb = kinderRechnung.filter((k) => !k.inBg);
 
   // Schritt 1: Bedarf
   const alleinerziehend = erwachsene.length === 1;
-  const regelbedarfe =
-    (alleinerziehend ? p.nimm("regelbedarfStufe1") : 2 * p.nimm("regelbedarfStufe2")) +
-    summe(kinderInBg.map((k) => k.regelbedarf));
+  const regelbedarfeErwachsene = alleinerziehend ? p.nimm("regelbedarfStufe1") : 2 * p.nimm("regelbedarfStufe2");
+  const regelbedarfe = regelbedarfeErwachsene + summe(kinderInBg.map((k) => k.regelbedarf));
   // Der Mehrbedarf hängt an den Kindern im Haushalt, auch wenn sie außerhalb der Bedarfsgemeinschaft sind.
   const mehrbedarfAlleinerziehend = alleinerziehend ? mehrbedarf(kinder, p) : 0;
   const wohnkosten = wohnkostenHaushalt - summe(kinderAusserhalb.map((k) => k.kopfteil));
@@ -168,16 +191,15 @@ export function berechneSgb2(haushalt: Haushalt, optionen: { stichtag: string })
   const kindergeld = kindergeldJeKind * kinderInBg.length;
   const kindeseinkommen = summe(kinderInBg.map((k) => k.kind.einkommen));
   const kindergeldUeberhang = summe(kinderAusserhalb.map((k) => k.ueberhang));
-  // Ohne Erwerbseinkommen gilt die Versicherungspauschale einmal für das gesamte Einkommen der Person, also auch
-  // für den Überhang (BSG, B 4 AS 49/13 R). Wer das Kindergeld bekommt, fragt Version 0 nicht (Entscheidung vom
-  // 26.10.2026). Deshalb nur der Abzug, der für jeden der Erwachsenen gälte, und ein Hinweis, wenn es darauf ankommt.
-  const pauschaleAufUeberhangJePerson = erwachsene.map((e, i) => {
-    if (kindergeldUeberhang === 0 || e.brutto > 0) return 0;
-    const schon = einkommenErwachsene[i]?.versicherungspauschale ?? 0;
-    return Math.min(p.nimm("versicherungspauschale"), e.sonstigesEinkommen + kindergeldUeberhang) - schon;
-  });
-  const versicherungspauschaleAufUeberhang = Math.min(...pauschaleAufUeberhangJePerson);
-  const pauschaleHaengtAmKindergeld = Math.max(...pauschaleAufUeberhangJePerson) > versicherungspauschaleAufUeberhang;
+  const { abzug: versicherungspauschaleAufUeberhang, haengtAmKindergeld: pauschaleHaengtAmKindergeld } =
+    kindergeldUeberhang === 0
+      ? { abzug: 0, haengtAmKindergeld: false }
+      : pauschaleAufUeberhang(
+          erwachsene,
+          einkommenErwachsene.map((e) => e.versicherungspauschale),
+          kindergeldUeberhang,
+          p.nimm("versicherungspauschale"),
+        );
   const einkommenSumme =
     summe(
       einkommenErwachsene.map((e) => e.bereinigtesErwerbseinkommen + e.sonstigesEinkommen - e.versicherungspauschale),
@@ -199,6 +221,14 @@ export function berechneSgb2(haushalt: Haushalt, optionen: { stichtag: string })
   const freibetragImGeburtstagsmonat = summe(alterInBg.map((alter) => nachAlter(freibetragTabelle, alter + 1)));
 
   const anspruch = anspruchAus(lueckeA, vermoegensergebnis);
+
+  // § 72 SGB II: 25 € je Kind mit Anspruch, auch für Kinder, die ihren Bedarf nur mit dem Kindergeld decken
+  // (Abs. 1 Satz 2 Nr. 2). Kinder mit nur einem Anspruch auf Bildung und Teilhabe (Nr. 1) rechnet Version 0 nicht.
+  const kinderMitSofortzuschlag =
+    anspruch === "ja" || anspruch === "unklar_vermoegen"
+      ? kinderRechnung.filter((k) => k.inBg || k.kind.einkommen < k.regelbedarf + k.kopfteilWohnkosten).length
+      : 0;
+  const sofortzuschlag = kinderMitSofortzuschlag === 0 ? 0 : kinderMitSofortzuschlag * p.nimm("sofortzuschlagKind");
   const geburtstagsmonatAendertErgebnis =
     anspruchAus(lueckeA, vergleicheVermoegen(haushalt.vermoegen, freibetragImGeburtstagsmonat)) !== anspruch;
 
@@ -222,7 +252,7 @@ export function berechneSgb2(haushalt: Haushalt, optionen: { stichtag: string })
   return {
     imUmfang: true,
     ...kopf,
-    bedarf: { regelbedarfe, mehrbedarfAlleinerziehend, wohnkosten, summe: bedarfSumme },
+    bedarf: { regelbedarfe, regelbedarfeErwachsene, mehrbedarfAlleinerziehend, wohnkosten, summe: bedarfSumme },
     einkommen: {
       erwachsene: einkommenErwachsene,
       freibetrag: summe(einkommenErwachsene.map((e) => e.freibetrag)),
@@ -233,6 +263,14 @@ export function berechneSgb2(haushalt: Haushalt, optionen: { stichtag: string })
       summe: einkommenSumme,
     },
     kinderAusserhalbBedarfsgemeinschaft: kinderAusserhalb.map((k) => k.index),
+    kinder: kinderRechnung.map((k) => ({
+      regelbedarf: k.regelbedarf,
+      kopfteilWohnkosten: k.kopfteilWohnkosten,
+      kindergeld: kindergeldJeKind,
+      inBedarfsgemeinschaft: k.inBg,
+      ueberhang: k.ueberhang,
+    })),
+    sofortzuschlag: { kinder: kinderMitSofortzuschlag, betrag: sofortzuschlag },
     lueckeA,
     vermoegen: {
       freibetrag: vermoegensfreibetrag,
@@ -248,25 +286,37 @@ export function berechneSgb2(haushalt: Haushalt, optionen: { stichtag: string })
   };
 }
 
-/** Merkt sich, welche Parameter eingeflossen sind, damit das Ergebnis ungeprüfte Werte melden kann. */
+/**
+ * Versicherungspauschale auf einen Kindergeld-Überhang beim Elternteil. Ohne Erwerbseinkommen gilt sie einmal für
+ * das gesamte Einkommen der Person, also auch für den Überhang (BSG, B 4 AS 49/13 R). Wer das Kindergeld bekommt,
+ * fragt Version 0 nicht (Entscheidung vom 26.10.2026). Deshalb nur der Abzug, der für jeden der Erwachsenen gälte.
+ * haengtAmKindergeld: Der Abzug wäre bei einem der Erwachsenen höher.
+ */
+export function pauschaleAufUeberhang(
+  erwachsene: Erwachsener[],
+  schonAbgezogen: Cent[],
+  ueberhang: Cent,
+  pauschale: Cent,
+): { abzug: Cent; haengtAmKindergeld: boolean } {
+  const jePerson = erwachsene.map((e, i) =>
+    e.brutto > 0 ? 0 : Math.min(pauschale, e.sonstigesEinkommen + ueberhang) - (schonAbgezogen[i] ?? 0),
+  );
+  const abzug = Math.min(...jePerson);
+  return { abzug, haengtAmKindergeld: Math.max(...jePerson) > abzug };
+}
+
+/** Merkt sich, welche Parameter eingeflossen sind. Die Rundung gilt nur dann als eingeflossen, wenn sie etwas ändert. */
 function protokoll(parameter: Sgb2Parameter) {
-  const genutzt = new Set<keyof Sgb2Parameter>();
+  const p = parameterProtokoll("sgb2", parameter);
   return {
-    nimm<K extends keyof Sgb2Parameter>(name: K): Sgb2Parameter[K]["wert"] {
-      genutzt.add(name);
-      return parameter[name].wert;
-    },
-    /** Die Rundung gilt nur dann als eingeflossen, wenn sie etwas ändert. */
+    ...p,
     merkeRundung(): void {
-      genutzt.add("rundung");
+      p.merke("rundung");
     },
     anteil(betrag: Cent, prozent: number): Cent {
       const ergebnis = anteil(betrag, prozent);
-      if (ergebnis.gerundet) genutzt.add("rundung");
+      if (ergebnis.gerundet) p.merke("rundung");
       return ergebnis.cent;
-    },
-    hinweise(): ParameterHinweis[] {
-      return [...genutzt].flatMap((name) => parameterHinweis(`sgb2.${name}`, parameter[name]) ?? []);
     },
   };
 }
@@ -316,6 +366,12 @@ function vergleicheVermoegen(vermoegen: Spanne, freibetrag: Cent): Vermoegenserg
   return "unklar";
 }
 
+/** Prüft die Eingabe (wirft bei kaputten Werten) und nennt die Gründe, aus denen der Haushalt außerhalb des Umfangs liegt. */
+export function pruefeHaushalt(haushalt: Haushalt, stand: Rechtsstand): AusserhalbGrund[] {
+  pruefeEingabe(haushalt);
+  return ausserhalbDesUmfangs(haushalt, stand.sgb2);
+}
+
 function ausserhalbDesUmfangs(haushalt: Haushalt, p: Sgb2Parameter): AusserhalbGrund[] {
   const gruende: AusserhalbGrund[] = [];
   if (haushalt.erwachsene.some((e) => e.alter < ERWACHSENE_AB_ALTER)) gruende.push("erwachsener_unter_18");
@@ -350,6 +406,9 @@ function pruefeAlter(wert: unknown, feld: string, hoechstens = Number.MAX_SAFE_I
 }
 
 function pruefeEingabe(h: Haushalt): void {
+  if (typeof h.gemeinde?.name !== "string" || (h.gemeinde.kreis !== null && typeof h.gemeinde.kreis !== "string")) {
+    throw new TypeError("gemeinde braucht einen Namen (Text) und einen Kreis (Text oder null).");
+  }
   if (!Array.isArray(h.erwachsene) || h.erwachsene.length < 1 || h.erwachsene.length > 2) {
     throw new RangeError(`Erwachsene: einer oder zwei, nicht ${h.erwachsene?.length}.`);
   }

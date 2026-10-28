@@ -1,6 +1,7 @@
 // Einstieg des Regelwerks. Rein rechnend: keine Oberfläche, kein Netzwerk.
-export { anteil, geteilt, pruefeBetrag, type Cent } from "./geld";
-export type { Erwachsener, Haushalt, Kind, Spanne } from "./haushalt";
+export { anteil, aufEuro, geteilt, pruefeBetrag, type Cent } from "./geld";
+export type { Erwachsener, Gemeinde, Haushalt, Kind, Spanne } from "./haushalt";
+export { mietenstufe, type Mietenstufe, type MietenstufenFassung } from "./mietenstufen";
 export {
   RECHTSSTAENDE,
   rechtsstandZumStichtag,
@@ -17,3 +18,14 @@ export {
   type Sgb2Ergebnis,
   type Sgb2Hinweis,
 } from "./sgb2";
+export {
+  berechneWohngeld,
+  schaetzeAbzuege,
+  type Abzuege,
+  type WohngeldAnspruch,
+  type WohngeldErgebnis,
+  type WohngeldHinweis,
+} from "./wohngeld";
+export { berechneKiz, type KizAnspruch, type KizErgebnis, type KizHinweis } from "./kiz";
+export { berechneBut, type ButErgebnis } from "./but";
+export { berechne, type Ergebnis, type Vergleichsergebnis } from "./vergleich";

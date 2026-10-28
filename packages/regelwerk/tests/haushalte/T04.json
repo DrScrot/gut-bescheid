@@ -1,11 +1,11 @@
 {
   "id": "T04",
-  "haushalt": "Paar, Kinder 6 und 9, Landkreis Passau",
+  "haushalt": "Paar, Kinder 6 und 9, Pocking (Landkreis Passau)",
   "prueftVorAllem": "Mindesteinkommen 900 € nicht erreicht",
   "erwartung": "kein KiZ, nur Weg A",
   "stichtag": "2026-07-01",
   "eingabe": {
-    "gemeinde": "Landkreis Passau",
+    "gemeinde": { "name": "Pocking, Stadt", "kreis": "Passau" },
     "erwachsene": [
       { "alter": 35, "brutto": 85000, "netto": 68000, "sonstigesEinkommen": 0 },
       { "alter": 35, "brutto": 0, "netto": 0, "sonstigesEinkommen": 0 }
@@ -22,7 +22,8 @@
   "annahmen": [
     "Alter der Erwachsenen (35 Jahre) und Erspartes (unter 10.000 €) stehen nicht im Fachkonzept. Ohne Einfluss auf M2.",
     "Kindesalter in vollen Jahren, Monate 0.",
-    "Gemeinde: Fachkonzept nennt nur den Landkreis. Für die Mietstufe in M3 nachtragen."
+    "Gemeinde: Fachkonzept nennt nur den Landkreis Passau. Nico hat Pocking gewählt, Mietenstufe I. Vom Wohngeldrechner bestätigt (28.10.2026). Ab 2027 laut Entwurf Mietenstufe II.",
+    "Nur eine Person verdient. Wohngeldrechner: Werbungskosten 102,50 €/Monat, kein Häkchen bei Einkommensteuer, Häkchen bei KV/PV und RV. Bruttokaltmiete 770 €."
   ],
   "soll": {
     "sgb2": {
@@ -30,7 +31,22 @@
       "freibetrag": 28300,
       "quelle": "Fachkonzept v0, Tabelle Testhaushalte (aus geprüften Parametern vorgerechnet), Stand 26.10.2026"
     },
-    "kiz": null,
-    "wohngeld": null
+    "wohngeld": {
+      "betrag": 69100,
+      "abzuegeImRechner": ["kvpv", "rv"],
+      "quelle": "Wohngeld-Plus-Rechner BMWSB (Rechtsstand ab 1.1.2025), abgerufen von Nico am 28.10.2026"
+    },
+    "kiz": {
+      "anspruchLotse": false,
+      "anspruch": "nein_mindesteinkommen",
+      "betrag": null,
+      "betragStatus": "berechnet",
+      "quelle": "KiZ-Lotse der BA, abgerufen von Nico am 28.10.2026: kein Anspruch, Mindesteinkommen nicht erreicht."
+    },
+    "vergleich": {
+      "ergebnis": "nur_weg_a",
+      "fehlbetrag": 104600,
+      "quelle": "Lücke A 1.737 € minus Wohngeld 691 €; ohne KiZ (Nico, 28.10.2026: „nur Weg A, kein KiZ“)"
+    }
   }
 }

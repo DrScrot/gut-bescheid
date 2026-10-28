@@ -1,11 +1,11 @@
 {
   "id": "T10",
-  "haushalt": "Paar, Kinder 2 und 5, Landkreis Regensburg, eine Person ohne Einkommen und ohne ALG I",
+  "haushalt": "Paar, Kinder 2 und 5, Regenstauf (Landkreis Regensburg), eine Person ohne Einkommen und ohne ALG I",
   "prueftVorAllem": "Krankenversicherungs-Karte, Partner-Karte",
   "erwartung": "Weg B wahrscheinlich",
   "stichtag": "2026-07-01",
   "eingabe": {
-    "gemeinde": "Landkreis Regensburg",
+    "gemeinde": { "name": "Regenstauf, Markt", "kreis": "Regensburg" },
     "erwachsene": [
       { "alter": 35, "brutto": 280000, "netto": 200000, "sonstigesEinkommen": 0 },
       { "alter": 35, "brutto": 0, "netto": 0, "sonstigesEinkommen": 0 }
@@ -22,7 +22,8 @@
   "annahmen": [
     "Alter der Erwachsenen (35 Jahre) und Erspartes (unter 10.000 €) stehen nicht im Fachkonzept. Ohne Einfluss auf M2.",
     "Kindesalter in vollen Jahren, Monate 0.",
-    "Gemeinde: Fachkonzept nennt nur den Landkreis. Für die Mietstufe in M3 nachtragen."
+    "Gemeinde: Fachkonzept nennt nur den Landkreis Regensburg. Nico hat Regenstauf gewählt, Mietenstufe II. Vom Wohngeldrechner bestätigt (28.10.2026). Ab 2027 laut Entwurf Mietenstufe III.",
+    "Nur eine Person verdient. Wohngeldrechner: Werbungskosten 102,50 €/Monat, Häkchen bei Einkommensteuer, KV/PV und RV. Bruttokaltmiete 950 €."
   ],
   "soll": {
     "sgb2": {
@@ -30,7 +31,22 @@
       "freibetrag": 37800,
       "quelle": "Fachkonzept v0, Tabelle Testhaushalte (aus geprüften Parametern vorgerechnet), Stand 26.10.2026"
     },
-    "kiz": null,
-    "wohngeld": null
+    "wohngeld": {
+      "betrag": 53100,
+      "abzuegeImRechner": ["steuer", "kvpv", "rv"],
+      "quelle": "Wohngeld-Plus-Rechner BMWSB (Rechtsstand ab 1.1.2025), abgerufen von Nico am 28.10.2026"
+    },
+    "kiz": {
+      "anspruchLotse": true,
+      "anspruch": "ja",
+      "betrag": 59400,
+      "betragStatus": "berechnet",
+      "quelle": "Anspruch: KiZ-Lotse der BA, abgerufen von Nico am 28.10.2026. Betrag: vom Regelwerk berechnet, von Nico gegengerechnet."
+    },
+    "vergleich": {
+      "ergebnis": "weg_b_deckt",
+      "fehlbetrag": -48900,
+      "quelle": "Nico, 28.10.2026: Weg B deckt den Bedarf"
+    }
   }
 }

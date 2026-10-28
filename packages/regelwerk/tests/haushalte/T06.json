@@ -5,7 +5,7 @@
   "erwartung": "nur Weg B, Hinweis Vermögen",
   "stichtag": "2026-07-01",
   "eingabe": {
-    "gemeinde": "Würzburg",
+    "gemeinde": { "name": "Würzburg, Stadt", "kreis": null },
     "erwachsene": [
       { "alter": 35, "brutto": 220000, "netto": 165000, "sonstigesEinkommen": 0 },
       { "alter": 38, "brutto": 0, "netto": 0, "sonstigesEinkommen": 0 }
@@ -20,7 +20,10 @@
   },
   "annahmen": [
     "Kindesalter in vollen Jahren, Monate 0.",
-    "Erspartes als genauer Betrag (60.000 €), wie er in M3 auch in den KiZ-Lotsen geht."
+    "Erspartes als genauer Betrag (60.000 €), wie er in M3 auch in den KiZ-Lotsen geht.",
+    "Gemeinde Würzburg, Mietenstufe IV. Vom Wohngeldrechner bestätigt (Nico, 28.10.2026).",
+    "Nur eine Person verdient. Wohngeldrechner: Werbungskosten 102,50 €/Monat, Häkchen bei Einkommensteuer, KV/PV und RV. Bruttokaltmiete 800 €.",
+    "Der KiZ-Lotse fragt kein Vermögen ab (Nico, 28.10.2026). Die Vermögensgrenze für den KiZ (40.000 + 2 × 15.000 = 70.000 €) prüft nur das Regelwerk."
   ],
   "soll": {
     "sgb2": {
@@ -30,7 +33,22 @@
       "anspruch": "nein_vermoegen",
       "quelle": "Fachkonzept v0, Tabelle Testhaushalte (aus geprüften Parametern vorgerechnet), Stand 26.10.2026"
     },
-    "kiz": null,
-    "wohngeld": null
+    "wohngeld": {
+      "betrag": 52100,
+      "abzuegeImRechner": ["steuer", "kvpv", "rv"],
+      "quelle": "Wohngeld-Plus-Rechner BMWSB (Rechtsstand ab 1.1.2025), abgerufen von Nico am 28.10.2026"
+    },
+    "kiz": {
+      "anspruchLotse": true,
+      "anspruch": "ja",
+      "betrag": 29700,
+      "betragStatus": "berechnet",
+      "quelle": "Anspruch: KiZ-Lotse der BA, abgerufen von Nico am 28.10.2026 (ohne Vermögen). Betrag: vom Regelwerk berechnet, von Nico gegengerechnet."
+    },
+    "vergleich": {
+      "ergebnis": "weg_b_deckt",
+      "fehlbetrag": -5700,
+      "quelle": "Nico, 28.10.2026: Weg B deckt den Bedarf; Weg A wegen Vermögen ausgeschlossen"
+    }
   }
 }
