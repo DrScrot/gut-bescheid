@@ -95,7 +95,10 @@ export type Sgb2Ergebnis =
         inBedarfsgemeinschaft: boolean;
         ueberhang: Cent;
       }[];
-      /** § 72 SGB II: 25 € je Kind, nur wenn ein Anspruch besteht oder nur das Vermögen ihn offenlässt. */
+      /**
+       * § 72 SGB II: 25 € je Kind, wenn ein Anspruch besteht, nur das Vermögen ihn offenlässt oder ausschließt
+       * (dann: nach Einsatz des Ersparten) oder der Haushalt ihn nur wegen des angerechneten Kindergelds nicht hat.
+       */
       sofortzuschlag: { kinder: number; betrag: Cent };
       /** Bedarf minus Einkommen. 0 oder kleiner: kein Anspruch. */
       lueckeA: Cent;
@@ -223,9 +226,23 @@ export function berechneSgb2(haushalt: Haushalt, optionen: { stichtag: string })
   const anspruch = anspruchAus(lueckeA, vermoegensergebnis);
 
   // § 72 SGB II: 25 € je Kind mit Anspruch, auch für Kinder, die ihren Bedarf nur mit dem Kindergeld decken
-  // (Abs. 1 Satz 2 Nr. 2). Kinder mit nur einem Anspruch auf Bildung und Teilhabe (Nr. 1) rechnet Version 0 nicht.
+  // (Abs. 1 Satz 2 Nr. 2). Ebenso, wenn der ganze Haushalt nur wegen des angerechneten Kindergelds keinen Anspruch
+  // hat: Lücke A ohne Kindergeld wäre positiv. Ohne Kindergeld entfällt auch der Überhang samt der Pauschale, die
+  // nur seinetwegen abging, und Kinder außerhalb mit Einkommen unter ihrem Bedarf kämen in die Bedarfsgemeinschaft
+  // zurück. Gerechnet wird mit dem ganzen Kindergeld des Haushalts, nicht je Kind. Entscheidung von Nico am
+  // 28.10.2026, Status pruefen. Kinder mit nur einem Anspruch auf Bildung und Teilhabe (Nr. 1) rechnet Version 0
+  // nicht. Bei nein_vermoegen gilt der Sofortzuschlag für den Fall, dass nach Einsatz des Ersparten ein Anspruch
+  // besteht (vergleich.ts).
+  const zurueckOhneKindergeld = summe(
+    kinderAusserhalb.map((k) => Math.max(k.regelbedarf + k.kopfteil - k.kind.einkommen, 0)),
+  );
+  const lueckeOhneKindergeld =
+    lueckeA + kindergeld + kindergeldUeberhang - versicherungspauschaleAufUeberhang + zurueckOhneKindergeld;
+  const nurWegenKindergeld =
+    anspruch === "nein_einkommen" && vermoegensergebnis !== "ueber_freibetrag" && lueckeOhneKindergeld > 0;
+  if (nurWegenKindergeld) p.merke("sofortzuschlagOhneAnspruch");
   const kinderMitSofortzuschlag =
-    anspruch === "ja" || anspruch === "unklar_vermoegen"
+    anspruch !== "nein_einkommen" || nurWegenKindergeld
       ? kinderRechnung.filter((k) => k.inBg || k.kind.einkommen < k.regelbedarf + k.kopfteilWohnkosten).length
       : 0;
   const sofortzuschlag = kinderMitSofortzuschlag === 0 ? 0 : kinderMitSofortzuschlag * p.nimm("sofortzuschlagKind");
@@ -239,8 +256,11 @@ export function berechneSgb2(haushalt: Haushalt, optionen: { stichtag: string })
   ];
   if (erwachsene.some((e) => e.sonstigesEinkommen > 0)) hinweise.push({ code: "elterngeld_nicht_beruecksichtigt" });
   if (pauschaleHaengtAmKindergeld) hinweise.push({ code: "kindergeld_empfaenger_offen" });
-  // „Danach kann ein Anspruch bestehen“ stimmt nur, wenn Lücke A positiv ist.
-  if (lueckeA > 0 && vermoegensergebnis !== "unter_freibetrag") hinweise.push({ code: "erspartes_zuerst_einsetzen" });
+  // „Danach kann ein Anspruch bestehen“ stimmt nur, wenn Lücke A positiv ist oder der Sofortzuschlag ohne Anspruch
+  // in Frage kommt.
+  if ((lueckeA > 0 || nurWegenKindergeld) && vermoegensergebnis !== "unter_freibetrag") {
+    hinweise.push({ code: "erspartes_zuerst_einsetzen" });
+  }
   // Erspartes eines Kindes außerhalb der Bedarfsgemeinschaft zählt nicht für die Eltern, steckt aber in der
   // Haushaltssumme. Der Hinweis kommt nur, wenn das Vermögen über das Ergebnis entscheidet oder es offen lässt.
   if (kinderAusserhalb.length > 0 && (anspruch === "nein_vermoegen" || anspruch === "unklar_vermoegen")) {

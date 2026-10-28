@@ -30,6 +30,8 @@ export interface Testhaushalt {
       freibetrag: Cent;
       vermoegensfreibetrag?: Cent;
       anspruch?: Sgb2Anspruch;
+      /** Parameter mit Status pruefen, die bei diesem Haushalt einfließen dürfen. */
+      pruefen?: string[];
       quelle: string;
     } | null;
     wohngeld: {

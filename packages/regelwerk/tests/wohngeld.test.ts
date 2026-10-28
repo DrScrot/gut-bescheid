@@ -1,6 +1,6 @@
 // Wohngeld (§§ 11–21 WoGG, Anlagen 1–3). Amtliche Sollwerte: Wohngeld-Plus-Rechner BMWSB
 // (Rechtsstand ab 1.1.2025), abgerufen von Nico am 28.10.2026. Werte für 2027 sind aus den geplanten
-// Parametern (BT-Drs. 21/8284) berechnet, nicht amtlich.
+// Parametern (BT-Drs. 21/8284, Pauschbetrag aus BT-Drs. 21/8235) berechnet, nicht amtlich.
 import { describe, expect, it } from "vitest";
 import { berechneWohngeld, rechtsstandZumStichtag, schaetzeAbzuege } from "../src/index";
 import type { Erwachsener, Haushalt } from "../src/index";
@@ -197,15 +197,19 @@ describe("Mietenstufe aus Gemeinde oder Kreis", () => {
   });
 });
 
-describe("Geplante Fassung ab 1.1.2027 (BT-Drs. 21/8284, nicht beschlossen)", () => {
-  it("T01: Heizkostenentlastung 111,80 € statt 197,80 €, neues c: 680 € (berechnet)", () => {
+describe("Geplante Fassung ab 1.1.2027 (BT-Drs. 21/8284 und 21/8235, nicht beschlossen)", () => {
+  it("T01: Heizkostenentlastung 111,80 € statt 197,80 €, neues c, Pauschbetrag 1.430 €: 684 € (berechnet)", () => {
     const e = rechne(testhaushalt("T01").eingabe, "2027-01-01");
     expect(e.miete.heizkostenentlastung).toBe(11180);
-    expect(e.ungerundet).toBe("680.0900050959");
-    expect(e.betrag).toBe(68000);
+    // (2.400 × 12 − 1.430) × 70 % = 19.159 € im Jahr (BT-Drs. 21/8235: Pauschbetrag 1.430 €)
+    expect(e.einkommen.personen[0]?.jahreseinkommen).toBe("19159.0000000000");
+    expect(e.ungerundet).toBe("684.4432808089");
+    expect(e.betrag).toBe(68400);
     expect(e.geplant).toBe(true);
     const geplant = e.parameterHinweise.filter((h) => h.status === "geplant").map((h) => h.name);
-    expect(geplant).toEqual(expect.arrayContaining(["wohngeld.heizkostenentlastung", "wohngeld.formelwerte"]));
+    expect(geplant).toEqual(
+      expect.arrayContaining(["wohngeld.heizkostenentlastung", "wohngeld.formelwerte", "wohngeld.werbungskostenPauschbetrag"]),
+    );
   });
 
   it("T04: Pocking steigt in Mietenstufe II, Wohngeld 669 € (berechnet)", () => {
@@ -215,10 +219,10 @@ describe("Geplante Fassung ab 1.1.2027 (BT-Drs. 21/8284, nicht beschlossen)", ()
     expect(e.parameterHinweise.map((h) => h.name)).toContain("mietenstufen.bayern");
   });
 
-  it("T10: Regenstauf steigt in Mietenstufe III, Wohngeld 485 € (berechnet)", () => {
+  it("T10: Regenstauf steigt in Mietenstufe III, Wohngeld 489 € (berechnet)", () => {
     const e = rechne(testhaushalt("T10").eingabe, "2027-01-01");
     expect(e.mietenstufe).toBe("III");
-    expect(e.betrag).toBe(48500);
+    expect(e.betrag).toBe(48900);
   });
 
   it("Minijob: 2026 mit Pauschbetrag (pruefen), 2027 ohne Werbungskosten (geplant)", () => {

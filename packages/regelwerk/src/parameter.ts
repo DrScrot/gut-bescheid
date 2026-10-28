@@ -11,6 +11,10 @@ import but_2027_01_01 from "../parameter/2027-01-01/but.json";
 import kiz_2027_01_01 from "../parameter/2027-01-01/kiz.json";
 import sgb2_2027_01_01 from "../parameter/2027-01-01/sgb2.json";
 import wohngeld_2027_01_01 from "../parameter/2027-01-01/wohngeld.json";
+import but_2028_01_01 from "../parameter/2028-01-01/but.json";
+import kiz_2028_01_01 from "../parameter/2028-01-01/kiz.json";
+import sgb2_2028_01_01 from "../parameter/2028-01-01/sgb2.json";
+import wohngeld_2028_01_01 from "../parameter/2028-01-01/wohngeld.json";
 
 export type Status = "geprueft" | "aus_quelle" | "pruefen" | "geplant";
 
@@ -54,6 +58,8 @@ export interface Sgb2Parameter {
   versicherungspauschale: Parameter<Cent>;
   kindergeld: Parameter<Cent>;
   sofortzuschlagKind: Parameter<Cent>;
+  /** § 72 Abs. 1 Satz 2 Nr. 2 SGB II auf Haushalte ohne Anspruch angewendet (Entscheidung vom 28.10.2026). */
+  sofortzuschlagOhneAnspruch: Parameter<"wenn_luecke_ohne_kindergeld_positiv">;
   vermoegensfreibetrag: Parameter<Altersstufe[]>;
   wohnkosten: Parameter<"tatsaechliche_kosten">;
   rundung: Parameter<"kaufmaennisch_cent">;
@@ -110,7 +116,7 @@ export interface ButParameter {
 
 /**
  * Hinweise, die ein ganzer Rechtsstand mitbringt. {jahr} ist das Jahr des Stichtags.
- * regelsaetze_offen: „Für {jahr} sind die Regelsätze und das Kindergeld noch nicht festgelegt. Gerechnet wird mit den Werten von 2026.“
+ * regelsaetze_offen: „Für {jahr} sind die Regelsätze noch nicht festgelegt. Dafür rechnen wir mit den Werten von 2026.“
  */
 export type RechtsstandHinweis = "regelsaetze_offen";
 
@@ -158,7 +164,11 @@ function pruefeTeil<T>(
   return roh as T;
 }
 
-const SGB2_TEXTWERTE = { wohnkosten: ["tatsaechliche_kosten"], rundung: ["kaufmaennisch_cent"] } as const;
+const SGB2_TEXTWERTE = {
+  wohnkosten: ["tatsaechliche_kosten"],
+  rundung: ["kaufmaennisch_cent"],
+  sofortzuschlagOhneAnspruch: ["wenn_luecke_ohne_kindergeld_positiv"],
+} as const;
 const KIZ_TEXTWERTE = { rundung: ["kaufmaennisch_euro_gesamt"] } as const;
 const WOHNGELD_TEXTWERTE = {
   rundung: ["kaufmaennisch_euro"],
@@ -226,8 +236,9 @@ export const RECHTSSTAENDE: readonly Rechtsstand[] = [
     },
     [],
   ),
-  // Fortschreibung: Regelsätze, Kindergeld, KiZ-Höchstbetrag und Schulbedarf 2027 sind noch nicht festgelegt
-  // (Status pruefen). Wohngeld nach dem Regierungsentwurf BT-Drs. 21/8284 (Status geplant).
+  // Fortschreibung: Regelsätze und Schulbedarf 2027 sind noch nicht festgelegt (Status pruefen). Status geplant
+  // nach Regierungsentwürfen: Wohngeld (BT-Drs. 21/8284), KiZ-Höchstbetrag (BT-Drs. 21/7860), Kindergeld und
+  // Arbeitnehmer-Pauschbetrag (BT-Drs. 21/8235).
   stand(
     "2027-01-01",
     {
@@ -235,6 +246,17 @@ export const RECHTSSTAENDE: readonly Rechtsstand[] = [
       kiz: kiz_2027_01_01 satisfies Roh<KizParameter>,
       wohngeld: wohngeld_2027_01_01 satisfies Roh<WohngeldParameter>,
       but: but_2027_01_01 satisfies Roh<ButParameter>,
+    },
+    ["regelsaetze_offen"],
+  ),
+  // Wie 2027, Kindergeld 272 € ab 1.1.2028 (BT-Drs. 21/8235, Art. 2 und 5, Status geplant).
+  stand(
+    "2028-01-01",
+    {
+      sgb2: sgb2_2028_01_01 satisfies Roh<Sgb2Parameter>,
+      kiz: kiz_2028_01_01 satisfies Roh<KizParameter>,
+      wohngeld: wohngeld_2028_01_01 satisfies Roh<WohngeldParameter>,
+      but: but_2028_01_01 satisfies Roh<ButParameter>,
     },
     ["regelsaetze_offen"],
   ),

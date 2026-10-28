@@ -2,7 +2,7 @@
   "id": "T09",
   "haushalt": "Paar, Kinder 14 und 16, Regensburg",
   "prueftVorAllem": "kein Anspruch auf Grundsicherung",
-  "erwartung": "Weg B deckt den Bedarf, kein Anspruch auf Weg A (Lücke A −286 €)",
+  "erwartung": "Weg B deckt den Bedarf; Weg A: keine Grundsicherung (Lücke A −286 €), nur Sofortzuschlag 2 × 25 € (prüfen)",
   "stichtag": "2026-07-01",
   "eingabe": {
     "gemeinde": { "name": "Regensburg, Stadt", "kreis": null },
@@ -36,7 +36,8 @@
       "bedarf": 295400,
       "freibetrag": 37800,
       "anspruch": "nein_einkommen",
-      "quelle": "Fachkonzept v0, Tabelle Testhaushalte (Bedarf in M2 von Hand vorgerechnet), Stand 26.10.2026"
+      "pruefen": ["sgb2.sofortzuschlagOhneAnspruch"],
+      "quelle": "Fachkonzept v0, Tabelle Testhaushalte (Bedarf in M2 von Hand vorgerechnet), Stand 26.10.2026. Sofortzuschlag 2 × 25 € nach § 72 Abs. 1 Satz 2 Nr. 2 SGB II: Entscheidung von Nico am 28.10.2026, Status pruefen"
     },
     "wohngeld": {
       "betrag": 22500,

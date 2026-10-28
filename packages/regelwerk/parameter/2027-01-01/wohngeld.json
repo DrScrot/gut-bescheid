@@ -224,13 +224,12 @@
     "geprueftAm": "2026-10-28"
   },
   "werbungskostenPauschbetrag": {
-    "wert": 123000,
+    "wert": 143000,
     "einheit": "cent im Jahr, von den Einnahmen aus nichtselbständiger Arbeit, höchstens bis zur Höhe der Einnahmen",
-    "fundstelle": "§ 14 Abs. 1 Satz 1 WoGG i. V. m. § 2 Abs. 2 Satz 1 Nr. 2 und § 9a Satz 1 Nr. 1 Buchst. a EStG (Arbeitnehmer-Pauschbetrag)",
-    "gueltigAb": "2026-07-01",
-    "status": "geprueft",
-    "geprueftAm": "2026-10-28",
-    "hinweis": "Version 0 rechnet nur mit dem Pauschbetrag, keine höheren Werbungskosten."
+    "fundstelle": "§ 14 Abs. 1 Satz 1 WoGG i. V. m. § 2 Abs. 2 Satz 1 Nr. 2 und § 9a Satz 1 Nr. 1 Buchst. a EStG i. d. F. des Regierungsentwurfs eines Einkommensteuerreformgesetzes 2027, BT-Drs. 21/8235 vom 28.09.2026 (Vorabfassung), Art. 1 Nr. 2 (Arbeitnehmer-Pauschbetrag 1.430 €); Inkrafttreten 1.1.2027 (Art. 7 Abs. 1)",
+    "gueltigAb": "2027-01-01",
+    "status": "geplant",
+    "hinweis": "Version 0 rechnet nur mit dem Pauschbetrag, keine höheren Werbungskosten. 1.430 € im Jahr sind 119,17 € im Monat. Erste Lesung am 08.10.2026. Der Bundesrat hat am 16.10.2026 Stellung genommen, ohne Einwand zu diesem Wert (BR-Drs. 507/26(B)). Anhörung im Finanzausschuss am 04.11.2026. Nicht beschlossen (Stand 28.10.2026). Das Gesetz braucht die Zustimmung des Bundesrates. Artikel und Nummern im Original geprüft am 28.10.2026. Übernommen auf Entscheidung von Nico am 28.10.2026."
   },
   "freibetragAlleinerziehend": {
     "wert": 132000,

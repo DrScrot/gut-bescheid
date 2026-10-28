@@ -26,7 +26,9 @@ export type KizHinweis =
   /** „Euer Erspartes liegt über dem Freibetrag der Grundsicherung. Nach den Regeln ist Kinderzuschlag dann möglich, auch wenn noch Geld fehlt.“ */
   | { code: "erspartes_ueber_freibetrag" }
   /** „Habt ihr mindestens {ab} € Erspartes, ist Kinderzuschlag nach den Regeln trotzdem möglich.“ */
-  | { code: "erspartes_freibetrag_unklar"; ab: Cent };
+  | { code: "erspartes_freibetrag_unklar"; ab: Cent }
+  /** „Nach den Regeln zählt euer Erspartes über dem Freibetrag der Grundsicherung mit. Erst dadurch ist Kinderzuschlag möglich. Ist das Ersparte aufgebraucht, kann wieder Geld fehlen.“ */
+  | { code: "erweiterter_zugang_mit_erspartem" };
 
 export type KizErgebnis =
   | { imUmfang: false; stichtag: string; rechtsstand: string; gruende: AusserhalbGrund[] }
@@ -62,7 +64,8 @@ export type KizErgebnis =
        * § 6a Abs. 1 Nr. 3 und Abs. 1a BKGG. fehlbetrag = Bedarf − Einkommen − wirksamer KiZ − Wohngeld.
        * kinderzuschlagWirksam: der Teil des KiZ, der nach SGB II beim Haushalt ankommt (siehe unten).
        * erspartesDecktFehlbetrag: Der Teil des Ersparten über dem SGB-II-Freibetrag deckt den Fehlbetrag,
-       * Hilfebedürftigkeit besteht nicht.
+       * Hilfebedürftigkeit besteht nicht. fehlbetragNachErspartem: was nach diesem Teil noch fehlt, für den
+       * erweiterten Zugang (DA-KiZ C.4.2 Abs. 2).
        */
       bedarfspruefung: {
         bedarf: Cent;
@@ -71,6 +74,7 @@ export type KizErgebnis =
         kinderzuschlagWirksam: Cent;
         wohngeld: Cent;
         fehlbetrag: Cent;
+        fehlbetragNachErspartem: Cent;
         absetzbetraegeErwerb: Cent;
         erspartesDecktFehlbetrag: boolean;
       };
@@ -208,23 +212,26 @@ export function berechneKiz(haushalt: Haushalt, optionen: { stichtag: string; wo
     return s + Math.max(anteilKind - raum, 0);
   }, 0);
   const kinderzuschlagWirksam = betrag - unwirksam;
+  // Das Wohngeld zählt für den ganzen Haushalt. Dass ein Teil davon bei Kindern außerhalb der Bedarfsgemeinschaft
+  // hängen bleiben kann, bildet Version 0 nicht ab (Vereinfachung, Entscheidung von Nico am 28.10.2026).
   const fehlbetrag = sgb2.lueckeA - kinderzuschlagWirksam - optionen.wohngeld;
   // Erspartes über dem SGB-II-Freibetrag schließt Hilfebedürftigkeit aus, soweit es den Fehlbetrag deckt
-  // (§ 9 Abs. 1 SGB II, DA-KiZ C.4.1 Abs. 2 und 7). Bei einer Spanne zählt die untere Grenze.
+  // (§ 9 Abs. 1 SGB II, DA-KiZ C.4.1 Abs. 2 und 7). Bei einer Spanne zählt die untere Grenze. Beim erweiterten
+  // Zugang zählt es ebenfalls mit (DA-KiZ C.4.2 Abs. 2 Satz 2, über den Wortlaut von § 6a Abs. 1a Nr. 1 BKGG hinaus;
+  // Gut Bescheid folgt der DA, Entscheidung von Nico am 28.10.2026).
   const ueberFreibetrag = sgb2.vermoegen.ueberFreibetrag;
   const erspartesDecktFehlbetrag = fehlbetrag > 0 && ueberFreibetrag.von >= fehlbetrag;
+  const fehlbetragNachErspartem = Math.max(fehlbetrag - ueberFreibetrag.von, 0);
   const absetzbetraegeErwerb = sgb2.einkommen.freibetrag;
   const zugang = p.nimm("erweiterterZugang");
+  const absetzbetraegeReichen = absetzbetraegeErwerb >= zugang.mindestensAbsetzbetraegeErwerbCent;
 
   let anspruch: KizAnspruch;
   if (mindesteinkommen < mindesteinkommenGrenze) anspruch = "nein_mindesteinkommen";
   else if (betrag === 0) anspruch = "nein_kein_betrag";
   else if (vermoegen === "ueber_grenze") anspruch = "nein_vermoegen";
   else if (fehlbetrag <= 0 || erspartesDecktFehlbetrag) anspruch = "ja";
-  else if (
-    fehlbetrag <= zugang.hoechstensFehlbetragCent &&
-    absetzbetraegeErwerb >= zugang.mindestensAbsetzbetraegeErwerbCent
-  ) {
+  else if (fehlbetragNachErspartem <= zugang.hoechstensFehlbetragCent && absetzbetraegeReichen) {
     anspruch = "erweiterter_zugang";
   } else anspruch = "nein_bedarf_nicht_gedeckt";
 
@@ -232,9 +239,17 @@ export function berechneKiz(haushalt: Haushalt, optionen: { stichtag: string; wo
   const hinweise: KizHinweis[] = [];
   if (zahlt && vermoegen === "unklar") hinweise.push({ code: "vermoegen_unklar", grenze: vermoegensgrenze });
   if (anspruch === "ja" && fehlbetrag > 0) hinweise.push({ code: "erspartes_ueber_freibetrag" });
-  // Nur wenn allein das Ersparte über den KiZ entscheidet: Die obere Grenze der Spanne würde den Fehlbetrag decken.
-  if (anspruch === "nein_bedarf_nicht_gedeckt" && (ueberFreibetrag.bis === null || ueberFreibetrag.bis >= fehlbetrag)) {
-    hinweise.push({ code: "erspartes_freibetrag_unklar", ab: sgb2.vermoegen.freibetrag + fehlbetrag });
+  if (anspruch === "erweiterter_zugang" && fehlbetrag > zugang.hoechstensFehlbetragCent) {
+    hinweise.push({ code: "erweiterter_zugang_mit_erspartem" });
+  }
+  // Nur wenn allein das Ersparte über den KiZ entscheidet: Mit der oberen Grenze der Spanne fehlte nichts mehr
+  // oder, bei genug Absetzbeträgen, höchstens 100 € (erweiterter Zugang).
+  const noetigUeberFreibetrag = absetzbetraegeReichen ? fehlbetrag - zugang.hoechstensFehlbetragCent : fehlbetrag;
+  if (
+    anspruch === "nein_bedarf_nicht_gedeckt" &&
+    (ueberFreibetrag.bis === null || ueberFreibetrag.bis >= noetigUeberFreibetrag)
+  ) {
+    hinweise.push({ code: "erspartes_freibetrag_unklar", ab: sgb2.vermoegen.freibetrag + noetigUeberFreibetrag });
   }
 
   return {
@@ -266,6 +281,7 @@ export function berechneKiz(haushalt: Haushalt, optionen: { stichtag: string; wo
       kinderzuschlagWirksam,
       wohngeld: optionen.wohngeld,
       fehlbetrag,
+      fehlbetragNachErspartem,
       absetzbetraegeErwerb,
       erspartesDecktFehlbetrag,
     },

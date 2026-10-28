@@ -5,7 +5,7 @@
     "fundstelle": "§ 6a Abs. 2 Satz 3 BKGG i. d. F. des Regierungsentwurfs Haushaltsbegleitgesetz 2027, BT-Drs. 21/7860 vom 07.09.2026, Art. 7 (§ 6a Abs. 2 Satz 4 BKGG, Sofortzuschlag 25 €, gestrichen), Inkrafttreten 1.1.2027 (Art. 10 Abs. 1)",
     "gueltigAb": "2027-01-01",
     "status": "geplant",
-    "hinweis": "272 € = 297 € ohne den Sofortzuschlag von 25 €. Das ist der Mindestbetrag nach § 6a Abs. 2 Satz 3 BKGG (Betrag des Vorjahres ohne Sofortzuschlag). Ergibt das Existenzminimum 2027 mehr, steigt er. Entwurf nicht beschlossen (Stand 28.10.2026, laut Nico). Entscheidung von Nico am 28.10.2026: wie das Wohngeld als geplant führen."
+    "hinweis": "272 € = 297 € ohne den Sofortzuschlag von 25 €. Das ist der Mindestbetrag nach § 6a Abs. 2 Satz 3 BKGG (Betrag des Vorjahres ohne Sofortzuschlag). Höchstbetrag und Kindergeld für ein erstes Kind decken zusammen ein Zwölftel des sächlichen Existenzminimums eines Kindes ohne Bildung und Teilhabe, mindestens den Betrag des Vorjahres (§ 6a Abs. 2 Satz 1 und 3 BKGG). Das höhere Kindergeld (geplant 267 € ab 2027, 272 € ab 2028) drückt deshalb den Höchstbetrag. Ergibt die Rechnung trotzdem mehr als 272 €, steigt er. Entwurf nicht beschlossen (Stand 28.10.2026, laut Nico). Entscheidung von Nico am 28.10.2026: wie das Wohngeld als geplant führen."
   },
   "mindesteinkommen": {
     "wert": {
@@ -91,11 +91,11 @@
       "mindestensAbsetzbetraegeErwerbCent": 10000
     },
     "einheit": "cent im Monat",
-    "fundstelle": "§ 6a Abs. 1a Nr. 1 und 2 BKGG; DA-KiZ C.4.2 (Stand 20.02.2026)",
+    "fundstelle": "§ 6a Abs. 1a Nr. 1 und 2 BKGG; DA-KiZ C.4.2 Abs. 2 Satz 2 und Abs. 3 (Stand 20.02.2026)",
     "gueltigAb": "2026-07-01",
     "status": "geprueft",
     "geprueftAm": "2026-10-28",
-    "hinweis": "Mit Einkommen, Kinderzuschlag und Wohngeld fehlen höchstens 100 €, und die Absetzbeträge wegen Erwerbstätigkeit (§ 11b Abs. 2 und 3 SGB II) betragen mindestens 100 €. Nur ohne beantragte oder bezogene Grundsicherung (§ 6a Abs. 1a Nr. 3 BKGG)."
+    "hinweis": "Mit Einkommen und Vermögen, Kinderzuschlag und Wohngeld fehlen höchstens 100 € (DA-KiZ C.4.2 Abs. 2 Satz 2: „unter Berücksichtigung des Einkommens und Vermögens“; das geht über den Wortlaut von § 6a Abs. 1a Nr. 1 BKGG hinaus, der nur Einkommen nennt). Gut Bescheid folgt der DA, weil die Familienkasse an sie gebunden ist (Entscheidung von Nico am 28.10.2026). Vermögen zählt mit dem Teil über dem SGB-II-Freibetrag. Dazu Absetzbeträge wegen Erwerbstätigkeit (§ 11b Abs. 2 und 3 SGB II) von mindestens 100 €. Nur ohne beantragte oder bezogene Grundsicherung (§ 6a Abs. 1a Nr. 3 BKGG)."
   },
   "rundung": {
     "wert": "kaufmaennisch_euro_gesamt",

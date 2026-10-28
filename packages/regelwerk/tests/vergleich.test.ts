@@ -35,7 +35,7 @@ describe("Kontrollwerte wie T01 und T07 (Netto 80 %, Wohngeld amtlich)", () => {
 describe("Ergebnis", () => {
   it("Weg B deckt: KiZ und Wohngeld zählen, Weg A zeigt Lücke A plus Sofortzuschlag (§ 72 SGB II)", () => {
     const e = rechne(testhaushalt("T01").eingabe);
-    expect(e.wegA).toEqual({ anspruch: "ja", betrag: 95900, sofortzuschlag: 5000 });
+    expect(e.wegA).toEqual({ anspruch: "ja", betrag: 95900, sofortzuschlag: 5000, nachEinsatzDesErsparten: false });
     expect(e.wegB).toEqual({
       kinderzuschlag: 59400,
       wohngeld: 77500,
@@ -67,16 +67,16 @@ describe("Ergebnis", () => {
     expect(e.ergebnis).toBe("nur_weg_a");
   });
 
-  it("Weg A ausgeschlossen (T09): Weg B deckt, Weg A ohne Anspruch und ohne Sofortzuschlag", () => {
+  it("Keine Grundsicherung (T09): Weg B deckt, Weg A zeigt nur den Sofortzuschlag (nur wegen Kindergeld kein Anspruch)", () => {
     const e = rechne(testhaushalt("T09").eingabe);
-    expect(e.wegA).toEqual({ anspruch: "nein_einkommen", betrag: 0, sofortzuschlag: 0 });
+    expect(e.wegA).toEqual({ anspruch: "nein_einkommen", betrag: 5000, sofortzuschlag: 5000, nachEinsatzDesErsparten: false });
     expect(e.wegB.kinderzuschlag).toBe(14400);
     expect(e.ergebnis).toBe("weg_b_deckt");
   });
 
   it("Weg A wegen Vermögen ausgeschlossen (T06): Weg B deckt", () => {
     const e = rechne(testhaushalt("T06").eingabe);
-    expect(e.wegA).toEqual({ anspruch: "nein_vermoegen", betrag: 0, sofortzuschlag: 0 });
+    expect(e.wegA).toEqual({ anspruch: "nein_vermoegen", betrag: 0, sofortzuschlag: 0, nachEinsatzDesErsparten: false });
     expect(e.wegB.restAusErspartem).toBe(false);
     expect(e.ergebnis).toBe("weg_b_deckt");
   });
@@ -85,15 +85,27 @@ describe("Ergebnis", () => {
     const h = { ...mitEinkommen("T01", 120000, 96000), vermoegen: { von: 5000000, bis: 5000000 } };
     const e = rechne(h);
     expect(e.wegA.anspruch).toBe("nein_vermoegen");
+    expect(e.wegA).toEqual({ anspruch: "nein_vermoegen", betrag: 0, sofortzuschlag: 0, nachEinsatzDesErsparten: false });
     expect(e.wegB).toMatchObject({ kinderzuschlag: 59400, wohngeld: 94000, fehlbetrag: 13500, restAusErspartem: true });
     expect(e.ergebnis).toBe("weg_b_deckt");
   });
 
-  it("Erspartes nur knapp über dem Freibetrag (50 € über 30.000 €) deckt den Fehlbetrag nicht: nur Weg A", () => {
+  it("Erspartes 50 € über dem Freibetrag: zählt beim erweiterten Zugang mit (DA-KiZ C.4.2 Abs. 2), echte Wahl", () => {
     const h = { ...mitEinkommen("T01", 120000, 96000), vermoegen: { von: 3005000, bis: 3005000 } };
     const e = rechne(h);
     expect(e.wegA.anspruch).toBe("nein_vermoegen");
+    expect(e.kiz.anspruch).toBe("erweiterter_zugang");
+    // Weg A nach Einsatz des Ersparten: Lücke A 1.669 € plus 2 × 25 € Sofortzuschlag
+    expect(e.wegA).toEqual({ anspruch: "nein_vermoegen", betrag: 171900, sofortzuschlag: 5000, nachEinsatzDesErsparten: true });
+    expect(e.wegB).toMatchObject({ kinderzuschlag: 59400, wohngeld: 94000, fehlbetrag: 13500, restAusErspartem: false });
+    expect(e.ergebnis).toBe("erweiterter_zugang");
+  });
+
+  it("Erspartes 20 € über dem Freibetrag deckt den Fehlbetrag nicht, auch nicht für den erweiterten Zugang: nur Weg A", () => {
+    const h = { ...mitEinkommen("T01", 120000, 96000), vermoegen: { von: 3002000, bis: 3002000 } };
+    const e = rechne(h);
     expect(e.kiz.anspruch).toBe("nein_bedarf_nicht_gedeckt");
+    expect(e.wegA).toEqual({ anspruch: "nein_vermoegen", betrag: 171900, sofortzuschlag: 5000, nachEinsatzDesErsparten: true });
     expect(e.wegB).toMatchObject({ kinderzuschlag: 0, wohngeld: 94000, fehlbetrag: 72900, restAusErspartem: false });
     expect(e.sgb2.hinweise).toContainEqual({ code: "erspartes_zuerst_einsetzen" });
     expect(e.ergebnis).toBe("nur_weg_a");
@@ -137,6 +149,20 @@ describe("Umfang und Stichtag", () => {
     expect(e.rechtsstand).toBe("2027-01-01");
     expect(e.wohngeld.geplant).toBe(true);
     expect(e.parameterHinweise.some((h) => h.status === "geplant")).toBe(true);
+  });
+
+  it("Stichtag 2027, T01: Kindergeld 267 €, KiZ 272 €, Wohngeld 684 € (alles geplant), Weg B deckt", () => {
+    // Lücke A 893 € (16 € weniger als 2026 wegen 2 × 8 € mehr Kindergeld). Gegengerechnet vom rechts-pruefer.
+    const e = rechne(testhaushalt("T01").eingabe, "2027-01-01");
+    expect(e.wegA).toEqual({ anspruch: "ja", betrag: 94300, sofortzuschlag: 5000, nachEinsatzDesErsparten: false });
+    expect(e.wegB).toEqual({
+      kinderzuschlag: 54400,
+      wohngeld: 68400,
+      summe: 122800,
+      fehlbetrag: -33500,
+      restAusErspartem: false,
+    });
+    expect(e.ergebnis).toBe("weg_b_deckt");
   });
 
   it("Parameterhinweise kommen ohne Doppelungen", () => {

@@ -99,12 +99,12 @@
     "geprueftAm": "2026-10-26"
   },
   "kindergeld": {
-    "wert": 25900,
+    "wert": 26700,
     "einheit": "cent im Monat je Kind",
-    "fundstelle": "§ 66 Abs. 1 EStG; § 6 Abs. 1 BKGG; Wert 2026 fortgeschrieben. Erhöhung auf 267 € bisher nur im Regierungsentwurf (BT-Drs. 21/8235), in M3 als geplant",
+    "fundstelle": "§ 66 Abs. 1 EStG, § 6 Abs. 1 BKGG i. d. F. des Regierungsentwurfs eines Einkommensteuerreformgesetzes 2027, BT-Drs. 21/8235 vom 28.09.2026 (Vorabfassung), Art. 1 Nr. 9 und Art. 4; Inkrafttreten 1.1.2027 (Art. 7 Abs. 1)",
     "gueltigAb": "2027-01-01",
-    "status": "pruefen",
-    "hinweis": "Wert für 2027 noch nicht festgelegt. Gerechnet wird mit dem Wert von 2026."
+    "status": "geplant",
+    "hinweis": "Erste Lesung am 08.10.2026. Der Bundesrat hat am 16.10.2026 Stellung genommen, ohne Einwand zu diesem Wert (BR-Drs. 507/26(B)). Anhörung im Finanzausschuss am 04.11.2026. Nicht beschlossen (Stand 28.10.2026). Das Gesetz braucht die Zustimmung des Bundesrates. Artikel und Nummern im Original geprüft am 28.10.2026. Übernommen auf Entscheidung von Nico am 28.10.2026."
   },
   "vermoegensfreibetrag": {
     "wert": [
@@ -158,6 +158,14 @@
     "fundstelle": "§ 72 Abs. 1 SGB II; Wert 2026 fortgeschrieben",
     "gueltigAb": "2027-01-01",
     "status": "pruefen",
-    "hinweis": "Für Kinder mit Anspruch auf Grundsicherungsgeld (Regelbedarfsstufen 3 bis 6), auch für Kinder, die nur wegen des Kindergelds keinen Anspruch haben (Satz 2 Nr. 2). Kinder, die nur einen Anspruch auf Bildung und Teilhabe haben (Satz 2 Nr. 1), rechnet Version 0 nicht. Ob auch Kinder zählen, deren ganzer Haushalt nur wegen des Kindergelds keinen Anspruch hat, ist nicht geprüft (Fachliche Weisungen zu § 72 nicht lesbar); Version 0 zählt sie nicht. Laut Begründung zum Entwurf des Haushaltsbegleitgesetzes 2027 (BT-Drs. 21/7860) soll auch der Sofortzuschlag im SGB II überprüft und angepasst werden, bei der Aktualisierung des Regelbedarfsermittlungsgesetzes noch 2026."
+    "hinweis": "Für Kinder mit Anspruch auf Grundsicherungsgeld (Regelbedarfsstufen 3 bis 6), auch für Kinder, die nur wegen des Kindergelds keinen Anspruch haben (Satz 2 Nr. 2). Kinder, die nur einen Anspruch auf Bildung und Teilhabe haben (Satz 2 Nr. 1), rechnet Version 0 nicht. Haushalte, die nur wegen des Kindergelds keinen Anspruch haben: siehe sofortzuschlagOhneAnspruch. Laut Begründung zum Entwurf des Haushaltsbegleitgesetzes 2027 (BT-Drs. 21/7860) soll auch der Sofortzuschlag im SGB II überprüft und angepasst werden, bei der Aktualisierung des Regelbedarfsermittlungsgesetzes noch 2026."
+  },
+  "sofortzuschlagOhneAnspruch": {
+    "wert": "wenn_luecke_ohne_kindergeld_positiv",
+    "einheit": "Regel",
+    "fundstelle": "§ 72 Abs. 1 Satz 2 Nr. 2 SGB II (Wortlaut: Kinder, die „nur deshalb keinen Anspruch auf Grundsicherungsgeld haben, weil im Rahmen der Prüfung der Hilfebedürftigkeit Kindergeld berücksichtigt wurde“)",
+    "status": "pruefen",
+    "hinweis": "Hat der Haushalt keinen Anspruch, hätte er ihn aber ohne das angerechnete Kindergeld (Lücke A ohne Kindergeld > 0), zeigt Weg A je Kind 25 € Sofortzuschlag. Gerechnet wird mit dem ganzen Kindergeld des Haushalts, nicht je Kind; bei T09 entscheidet das (je Kind, Werte von 2026: −286 + 259 = −27 €, kein Sofortzuschlag). Entscheidung von Nico am 28.10.2026. Status pruefen: Die Anwendung auf ganze Haushalte ohne Anspruch ist in den Fachlichen Weisungen zu § 72 nicht nachgelesen (PDF nicht lesbar). Weg B bekommt ihn nicht dazu: 2026 steckt er im KiZ (§ 6a Abs. 2 Satz 4 BKGG; das ist eine Auslegung). Für 2027 streicht der Entwurf BT-Drs. 21/7860 den Sofortzuschlag im KiZ; ob KiZ-Haushalte ihn dann nach § 72 SGB II bekommen, ist offen.",
+    "gueltigAb": "2026-07-01"
   }
 }

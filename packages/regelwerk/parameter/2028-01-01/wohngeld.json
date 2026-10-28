@@ -1,0 +1,289 @@
+{
+  "hoechstbetraege": {
+    "wert": {
+      "jePersonenzahl": [
+        [
+          36100,
+          40800,
+          45600,
+          51100,
+          56200,
+          61500,
+          67700
+        ],
+        [
+          43700,
+          49300,
+          55100,
+          61900,
+          68000,
+          74500,
+          82000
+        ],
+        [
+          52100,
+          58700,
+          65700,
+          73700,
+          80900,
+          88700,
+          97500
+        ],
+        [
+          60800,
+          68600,
+          76600,
+          85800,
+          94600,
+          103500,
+          113900
+        ],
+        [
+          69400,
+          78200,
+          87500,
+          98200,
+          108000,
+          118300,
+          130200
+        ]
+      ],
+      "jeWeiterePerson": [
+        8200,
+        9400,
+        10600,
+        11900,
+        12900,
+        14900,
+        16300
+      ]
+    },
+    "einheit": "cent im Monat; Zeile = Haushaltsmitglieder 1 bis 5, Spalte = Mietenstufe I bis VII",
+    "fundstelle": "Regierungsentwurf BT-Drs. 21/8284 vom 30.09.2026, Art. 1 Nr. 26 Buchst. g (§ 43 Abs. 11 WoGG neu: keine Fortschreibung zum 1.1.2027) und Nr. 28 (Anlage 1 neu, Höchstbeträge wie 2025)",
+    "gueltigAb": "2027-01-01",
+    "status": "geplant",
+    "hinweis": "Ohne den Entwurf würden die Werte nach § 43 Abs. 1 und 4 bis 8 WoGG zum 1.1.2027 fortgeschrieben. Anhörung im Ausschuss am 4.11.2026, nicht beschlossen (Stand 28.10.2026). Der federführende Wohnungsausschuss des Bundesrates empfahl die Ablehnung (BR-Drs. 474/1/26, Ziffer 1). Das Plenum ist dem am 25.09.2026 nicht gefolgt und hat Änderungen gefordert (BT-Drs. 21/8284, Anlage 3). Das Gesetz braucht die Zustimmung des Bundesrates."
+  },
+  "klimakomponente": {
+    "wert": {
+      "jePersonenzahl": [
+        1920,
+        2480,
+        2960,
+        3440,
+        3920
+      ],
+      "jeWeiterePerson": 480
+    },
+    "einheit": "cent im Monat, Zuschlag zum Höchstbetrag; Stelle = Haushaltsmitglieder 1 bis 5",
+    "fundstelle": "§ 12 Abs. 7 WoGG; laut Regierungsentwurf BT-Drs. 21/8284 vom 30.09.2026 ab 1.1.2027 in Anlage 1 (Art. 1 Nr. 8 Buchst. a, Nr. 28), Wert unverändert",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28"
+  },
+  "heizkostenentlastung": {
+    "wert": {
+      "jePersonenzahl": [
+        6240,
+        8060,
+        9620,
+        11180,
+        12740
+      ],
+      "jeWeiterePerson": 1560
+    },
+    "einheit": "cent im Monat, wird der Miete nach der Deckelung zugeschlagen; Stelle = Haushaltsmitglieder 1 bis 5",
+    "fundstelle": "Regierungsentwurf BT-Drs. 21/8284 vom 30.09.2026, Art. 1 Nr. 8 Buchst. d (§ 12 Abs. 6 WoGG neu): dauerhafte Heizkostenkomponente halbiert",
+    "gueltigAb": "2027-01-01",
+    "status": "geplant",
+    "hinweis": "Anhörung im Ausschuss am 4.11.2026, nicht beschlossen (Stand 28.10.2026). Der federführende Wohnungsausschuss des Bundesrates empfahl die Ablehnung (BR-Drs. 474/1/26, Ziffer 1). Das Plenum ist dem am 25.09.2026 nicht gefolgt und hat Änderungen gefordert (BT-Drs. 21/8284, Anlage 3). Das Gesetz braucht die Zustimmung des Bundesrates."
+  },
+  "formelwerte": {
+    "wert": {
+      "a": [
+        "4.000E-2",
+        "3.000E-2",
+        "2.000E-2",
+        "1.000E-2",
+        "0",
+        "-1.000E-2",
+        "-2.000E-2",
+        "-3.000E-2",
+        "-4.000E-2",
+        "-6.000E-2",
+        "-9.000E-2",
+        "-1.200E-1"
+      ],
+      "b": [
+        "4.797E-4",
+        "3.571E-4",
+        "2.917E-4",
+        "2.163E-4",
+        "1.907E-4",
+        "1.722E-4",
+        "1.592E-4",
+        "1.583E-4",
+        "1.376E-4",
+        "1.249E-4",
+        "1.141E-4",
+        "1.107E-4"
+      ],
+      "c": [
+        "6.446E-5",
+        "4.803E-5",
+        "3.871E-5",
+        "2.781E-5",
+        "2.718E-5",
+        "2.623E-5",
+        "2.607E-5",
+        "2.607E-5",
+        "2.623E-5",
+        "2.623E-5",
+        "3.097E-5",
+        "3.492E-5"
+      ]
+    },
+    "einheit": "Dezimalzahlen als Text; Stelle = Haushaltsmitglieder 1 bis 12",
+    "fundstelle": "Regierungsentwurf BT-Drs. 21/8284 vom 30.09.2026, Art. 1 Nr. 29 (Anlage 2 WoGG neu): a und b unverändert, c erhöht",
+    "gueltigAb": "2027-01-01",
+    "status": "geplant",
+    "hinweis": "Auch b bleibt nur wegen § 43 Abs. 11 WoGG neu (Art. 1 Nr. 26 Buchst. g) unverändert. Anhörung im Ausschuss am 4.11.2026, nicht beschlossen (Stand 28.10.2026). Der federführende Wohnungsausschuss des Bundesrates empfahl die Ablehnung (BR-Drs. 474/1/26, Ziffer 1). Das Plenum ist dem am 25.09.2026 nicht gefolgt und hat Änderungen gefordert (BT-Drs. 21/8284, Anlage 3). Das Gesetz braucht die Zustimmung des Bundesrates."
+  },
+  "mindestwerte": {
+    "wert": {
+      "m": [
+        5400,
+        6700,
+        7900,
+        9200,
+        10300,
+        10300,
+        11500,
+        12800,
+        14000,
+        15200,
+        18700,
+        29800
+      ],
+      "y": [
+        39600,
+        67900,
+        90600,
+        113200,
+        135800,
+        158500,
+        181100,
+        203700,
+        226400,
+        249000,
+        271700,
+        294300
+      ]
+    },
+    "einheit": "cent im Monat; kleinere Werte für M (Miete) und Y (Einkommen) werden ersetzt; Stelle = Haushaltsmitglieder 1 bis 12",
+    "fundstelle": "Regierungsentwurf BT-Drs. 21/8284 vom 30.09.2026, Art. 1 Nr. 26 Buchst. g (§ 43 Abs. 11 WoGG neu: keine Fortschreibung zum 1.1.2027); Anlage 3 unverändert",
+    "gueltigAb": "2027-01-01",
+    "status": "geplant",
+    "hinweis": "Ohne den Entwurf würden die Werte nach § 43 Abs. 1 und 4 bis 8 WoGG zum 1.1.2027 fortgeschrieben. Anhörung im Ausschuss am 4.11.2026, nicht beschlossen (Stand 28.10.2026). Der federführende Wohnungsausschuss des Bundesrates empfahl die Ablehnung (BR-Drs. 474/1/26, Ziffer 1). Das Plenum ist dem am 25.09.2026 nicht gefolgt und hat Änderungen gefordert (BT-Drs. 21/8284, Anlage 3). Das Gesetz braucht die Zustimmung des Bundesrates."
+  },
+  "formel": {
+    "wert": {
+      "faktor": "1.15",
+      "nachkommastellen": 10
+    },
+    "einheit": "Regel",
+    "fundstelle": "§ 19 Abs. 1 Satz 1 WoGG; Anlage 3 Nr. 2 WoGG",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28",
+    "hinweis": "W = 1,15 · (M − (a + b·M + c·Y) · Y). z1 bis z4 als Festkommazahlen mit zehn Nachkommastellen. Gut Bescheid rundet jeden Rechenschritt auf zehn Stellen, ab 5 auf (freigegeben von Nico am 28.10.2026). M und Y gehen ungerundet ein, wie im Rechenbeispiel WoGVwV Nr. 19.01."
+  },
+  "rundung": {
+    "wert": "kaufmaennisch_euro",
+    "einheit": "Regel",
+    "fundstelle": "Anlage 3 Nr. 3 WoGG",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28",
+    "hinweis": "Unter 0,50 € abrunden, ab 0,50 € aufrunden."
+  },
+  "mindestbetrag": {
+    "wert": 1500,
+    "einheit": "cent im Monat; darunter besteht kein Anspruch",
+    "fundstelle": "Regierungsentwurf BT-Drs. 21/8284 vom 30.09.2026, Art. 1 Nr. 12 (§ 21 Abs. 1 Nr. 1 WoGG neu)",
+    "gueltigAb": "2027-01-01",
+    "status": "geplant",
+    "hinweis": "Anhörung im Ausschuss am 4.11.2026, nicht beschlossen (Stand 28.10.2026). Der federführende Wohnungsausschuss des Bundesrates empfahl die Ablehnung (BR-Drs. 474/1/26, Ziffer 1). Das Plenum ist dem am 25.09.2026 nicht gefolgt und hat Änderungen gefordert (BT-Drs. 21/8284, Anlage 3). Das Gesetz braucht die Zustimmung des Bundesrates."
+  },
+  "abzugJeArt": {
+    "wert": 10,
+    "einheit": "Prozent des Jahreseinkommens je Art: Steuern vom Einkommen, Pflichtbeiträge zur Kranken- und Pflegeversicherung, Pflichtbeiträge zur Rentenversicherung",
+    "fundstelle": "§ 16 Satz 1 WoGG",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28"
+  },
+  "werbungskostenPauschbetrag": {
+    "wert": 143000,
+    "einheit": "cent im Jahr, von den Einnahmen aus nichtselbständiger Arbeit, höchstens bis zur Höhe der Einnahmen",
+    "fundstelle": "§ 14 Abs. 1 Satz 1 WoGG i. V. m. § 2 Abs. 2 Satz 1 Nr. 2 und § 9a Satz 1 Nr. 1 Buchst. a EStG i. d. F. des Regierungsentwurfs eines Einkommensteuerreformgesetzes 2027, BT-Drs. 21/8235 vom 28.09.2026 (Vorabfassung), Art. 1 Nr. 2 (Arbeitnehmer-Pauschbetrag 1.430 €); Inkrafttreten 1.1.2027 (Art. 7 Abs. 1)",
+    "gueltigAb": "2027-01-01",
+    "status": "geplant",
+    "hinweis": "Version 0 rechnet nur mit dem Pauschbetrag, keine höheren Werbungskosten. 1.430 € im Jahr sind 119,17 € im Monat. Erste Lesung am 08.10.2026. Der Bundesrat hat am 16.10.2026 Stellung genommen, ohne Einwand zu diesem Wert (BR-Drs. 507/26(B)). Anhörung im Finanzausschuss am 04.11.2026. Nicht beschlossen (Stand 28.10.2026). Das Gesetz braucht die Zustimmung des Bundesrates. Artikel und Nummern im Original geprüft am 28.10.2026. Übernommen auf Entscheidung von Nico am 28.10.2026."
+  },
+  "freibetragAlleinerziehend": {
+    "wert": 132000,
+    "einheit": "cent im Jahr",
+    "fundstelle": "§ 17 Nr. 3 WoGG",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28",
+    "hinweis": "Wenn ein Haushaltsmitglied nur mit Kindern wohnt und mindestens ein Kind unter 18 ist, für das Kindergeld gezahlt wird."
+  },
+  "vermoegensgrenze": {
+    "wert": {
+      "erstesMitgliedCent": 6000000,
+      "jeWeiteresMitgliedCent": 3000000,
+      "hoechstensCent": 12000000
+    },
+    "einheit": "cent, Erspartes aller Haushaltsmitglieder; darüber in der Regel kein Wohngeld",
+    "fundstelle": "Regierungsentwurf BT-Drs. 21/8284 vom 30.09.2026, Art. 1 Nr. 12 (§ 21 Abs. 1 Nr. 3, Abs. 2 WoGG neu)",
+    "gueltigAb": "2027-01-01",
+    "status": "geplant",
+    "hinweis": "Neu ist die Obergrenze von 120.000 € (Begründung S. 83). Anhörung im Ausschuss am 4.11.2026, nicht beschlossen (Stand 28.10.2026). Der federführende Wohnungsausschuss des Bundesrates empfahl die Ablehnung (BR-Drs. 474/1/26, Ziffer 1). Das Plenum ist dem am 25.09.2026 nicht gefolgt und hat Änderungen gefordert (BT-Drs. 21/8284, Anlage 3). Das Gesetz braucht die Zustimmung des Bundesrates."
+  },
+  "geringfuegigkeitsgrenze": {
+    "wert": 63300,
+    "einheit": "cent im Monat, Minijob-Grenze",
+    "fundstelle": "§ 8 Abs. 1a SGB IV i. V. m. § 1 Nr. 2 MiLoV5 (Mindestlohn ab 1.1.2027: 14,60 €): 14,60 × 130 ÷ 3 = 632,67, auf volle Euro aufgerundet 633 €; Wert 2027 fortgeschrieben",
+    "gueltigAb": "2027-01-01",
+    "status": "pruefen",
+    "hinweis": "Für die Schätzung der Abzüge nach § 16 WoGG: Bis zu dieser Grenze keine Kranken- und Pflegeversicherung aus dem Lohn. Der Mindestlohn ab 2028 ist noch nicht festgelegt. Die Mindestlohnkommission entscheidet darüber bis Mitte 2027 (§ 9 Abs. 1 MiLoG). Gerechnet wird mit 633 €."
+  },
+  "abzuegeSchaetzung": {
+    "wert": {
+      "steuerAbPromilleVomBrutto": 225
+    },
+    "einheit": "Promille des Bruttos: Ist Brutto minus Netto größer, wird ein Steuerabzug angenommen",
+    "fundstelle": "Schätzregel Gut Bescheid zu § 16 WoGG, freigegeben von Nico am 28.10.2026. Höchster Arbeitnehmeranteil 2026 rund 21,75 %: KV 14,6 % ÷ 2 (§ 241 SGB V) + Ø-Zusatzbeitrag 2,9 % ÷ 2 + PV 3,6 % ÷ 2 (§ 1 PBAV 2025) + Kinderlosenzuschlag 0,6 % (§ 55 Abs. 3 SGB XI) + RV 18,6 % ÷ 2 + AV 2,6 % ÷ 2 (§ 341 Abs. 2 SGB III); dazu Puffer für teurere Krankenkassen",
+    "gueltigAb": "2026-07-01",
+    "status": "pruefen",
+    "hinweis": "Schätzung, kein Gesetzeswert. Ø-Zusatzbeitrag 2026 (Bekanntmachung BMG vom 10.11.2025) und RV-Beitragssatz 18,6 % nur aus Sekundärquellen. Irrt in beide Richtungen: Bei Midijobs kann eine kleine Lohnsteuer übersehen werden (Wohngeld zu niedrig). Enthält das Netto andere Abzüge, etwa Entgeltumwandlung, vermögenswirksame Leistungen oder eine Pfändung, wird fälschlich Steuer angenommen (Wohngeld zu hoch)."
+  },
+  "obergrenzeMiete": {
+    "wert": "hoechstens_miete",
+    "einheit": "Regel",
+    "fundstelle": "Regierungsentwurf BT-Drs. 21/8284 vom 30.09.2026, Art. 1 Nr. 11 (§ 19 Abs. 4 WoGG neu): „Das Wohngeld darf die zu berücksichtigende Miete oder Belastung nicht übersteigen.“",
+    "gueltigAb": "2027-01-01",
+    "status": "geplant",
+    "hinweis": "Anhörung im Ausschuss am 4.11.2026, nicht beschlossen (Stand 28.10.2026). Der federführende Wohnungsausschuss des Bundesrates empfahl die Ablehnung (BR-Drs. 474/1/26, Ziffer 1). Das Plenum ist dem am 25.09.2026 nicht gefolgt und hat Änderungen gefordert (BT-Drs. 21/8284, Anlage 3). Das Gesetz braucht die Zustimmung des Bundesrates."
+  },
+  "werbungskostenMinijob": {
+    "wert": "keine",
+    "einheit": "Regel für Brutto bis zur Minijob-Grenze",
+    "fundstelle": "Regierungsentwurf BT-Drs. 21/8284 vom 30.09.2026, Art. 1 Nr. 9 Buchst. a Doppelbuchst. aa (§ 14 Abs. 1 Satz 3 Nr. 2 WoGG neu): „der nach § 40a des Einkommensteuergesetzes pauschal besteuerte Arbeitslohn und das pauschal besteuerte Arbeitsentgelt“, ohne Abzug von Werbungskosten",
+    "gueltigAb": "2027-01-01",
+    "status": "geplant",
+    "hinweis": "Jedes Brutto bis zur Minijob-Grenze gilt als pauschal besteuerter Minijob. Anhörung im Ausschuss am 4.11.2026, nicht beschlossen (Stand 28.10.2026). Der federführende Wohnungsausschuss des Bundesrates empfahl die Ablehnung (BR-Drs. 474/1/26, Ziffer 1). Das Plenum ist dem am 25.09.2026 nicht gefolgt und hat Änderungen gefordert (BT-Drs. 21/8284, Anlage 3). Das Gesetz braucht die Zustimmung des Bundesrates."
+  }
+}

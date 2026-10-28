@@ -11,7 +11,8 @@ import { berechneWohngeld, type WohngeldErgebnis } from "./wohngeld";
 /**
  * weg_b_deckt: Einkommen, Kindergeld, KiZ und Wohngeld decken den Bedarf. Oder Weg A ist wegen Erspartem über dem
  * Freibetrag ausgeschlossen, dann kommt der Rest aus dem Ersparten.
- * erweiterter_zugang: Es fehlen höchstens 100 €. Echte Wahl, Weg B bringt etwas weniger Geld.
+ * erweiterter_zugang: Mit Einkommen, Erspartem über dem Freibetrag, KiZ und Wohngeld fehlen höchstens 100 €
+ * (wegB.fehlbetrag rechnet ohne Erspartes). Echte Wahl, Weg B bringt etwas weniger Geld.
  * nur_weg_a: Mit Weg B fehlt mehr. Nur die Grundsicherung deckt den Bedarf.
  * kein_anspruch: Einkommen oder Erspartes decken den Bedarf, und auf keinem Weg gibt es Geld.
  */
@@ -27,10 +28,12 @@ export type Ergebnis =
       rechtsstand: string;
       ergebnis: Vergleichsergebnis;
       /**
-       * betrag: Lücke A plus Sofortzuschlag (§ 72 SGB II), wenn ein Anspruch besteht oder nur das Vermögen ihn
-       * offenlässt, sonst 0.
+       * betrag: Lücke A, wenn ein Anspruch besteht oder nur das Vermögen ihn offenlässt, plus Sofortzuschlag
+       * (§ 72 SGB II). Ohne Anspruch nur der Sofortzuschlag, wenn allein das Kindergeld den Anspruch verhindert.
+       * nachEinsatzDesErsparten: Erspartes über dem Freibetrag schließt den Anspruch erst einmal aus, deckt aber
+       * nicht, was mit Weg B fehlt. betrag gilt dann, sobald das Ersparte eingesetzt ist.
        */
-      wegA: { anspruch: Sgb2Anspruch; betrag: Cent; sofortzuschlag: Cent };
+      wegA: { anspruch: Sgb2Anspruch; betrag: Cent; sofortzuschlag: Cent; nachEinsatzDesErsparten: boolean };
       /**
        * Ausgezahlter KiZ und ausgezahltes Wohngeld. fehlbetrag: Lücke A minus wirksamer KiZ und Wohngeld,
        * 0 oder kleiner: gedeckt. restAusErspartem: Es fehlt noch Geld, Weg A ist aber wegen Erspartem über dem
@@ -59,10 +62,6 @@ export function berechne(haushalt: Haushalt, optionen: { stichtag: string }): Er
   if (!wohngeld.imUmfang || !kiz.imUmfang) throw new Error("Umfang von SGB II, KiZ und Wohngeld widerspricht sich.");
   const but = berechneBut(haushalt, { stichtag });
 
-  const wegAHatAnspruch = sgb2.anspruch === "ja" || sgb2.anspruch === "unklar_vermoegen";
-  const sofortzuschlag = wegAHatAnspruch ? sgb2.sofortzuschlag.betrag : 0;
-  const wegA = { anspruch: sgb2.anspruch, betrag: wegAHatAnspruch ? sgb2.lueckeA + sofortzuschlag : 0, sofortzuschlag };
-
   const summe = kiz.auszahlung + wohngeld.auszahlung;
   // Für den Bedarf zählt vom KiZ nur, was nach SGB II beim Haushalt ankommt (siehe kiz.ts).
   const kizWirksam = kiz.auszahlung > 0 ? kiz.bedarfspruefung.kinderzuschlagWirksam : 0;
@@ -72,6 +71,18 @@ export function berechne(haushalt: Haushalt, optionen: { stichtag: string }): Er
   // ihn nicht, bleibt Weg A; das SGB-II-Ergebnis meldet, dass Erspartes zuerst eingesetzt wird.
   const wegAWegenVermoegenAusgeschlossen =
     sgb2.anspruch === "nein_vermoegen" && sgb2.vermoegen.ueberFreibetrag.von >= fehlbetrag;
+  const nachEinsatzDesErsparten = sgb2.anspruch === "nein_vermoegen" && !wegAWegenVermoegenAusgeschlossen;
+  const wegAHatAnspruch = sgb2.anspruch === "ja" || sgb2.anspruch === "unklar_vermoegen";
+  // Den Sofortzuschlag gibt es auch ohne Grundsicherung, wenn nur das Kindergeld den Anspruch verhindert (sgb2.ts).
+  // Auf Weg B kommt er nicht dazu: 2026 steckt er im KiZ (§ 6a Abs. 2 Satz 4 BKGG). Ob KiZ-Haushalte ihn 2027 nach
+  // dem Entwurf (Sofortzuschlag im KiZ gestrichen) nach § 72 SGB II bekommen, ist offen (docs/offene-rechtsfragen.md).
+  const sofortzuschlag = wegAWegenVermoegenAusgeschlossen ? 0 : sgb2.sofortzuschlag.betrag;
+  const wegA = {
+    anspruch: sgb2.anspruch,
+    betrag: (wegAHatAnspruch || nachEinsatzDesErsparten ? sgb2.lueckeA : 0) + sofortzuschlag,
+    sofortzuschlag,
+    nachEinsatzDesErsparten,
+  };
   const wegB = {
     kinderzuschlag: kiz.auszahlung,
     wohngeld: wohngeld.auszahlung,
@@ -95,7 +106,7 @@ export function berechne(haushalt: Haushalt, optionen: { stichtag: string }): Er
     wegB,
     // Weg B nur mit KiZ oder Wohngeld (§ 6b Abs. 1 Satz 1 BKGG).
     but: {
-      wegA: { zustaendig: but.zustaendig.wegA, moeglich: wegAHatAnspruch },
+      wegA: { zustaendig: but.zustaendig.wegA, moeglich: wegAHatAnspruch || nachEinsatzDesErsparten },
       wegB: { zustaendig: but.zustaendig.wegB, moeglich: summe > 0 },
     },
     sgb2,

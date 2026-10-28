@@ -148,7 +148,9 @@ describe("Freibetrag bei Erwerbstätigkeit (§ 11b Abs. 2 und 3 SGB II)", () => 
   ])("Brutto %i Cent: Freibetrag %i Cent", (brutto, freibetrag) => {
     const e = rechne(haushalt({ erwachsene: [erwachsener({ brutto, netto: brutto })] }));
     expect(e.einkommen.freibetrag).toBe(freibetrag);
-    expect(e.parameterHinweise).toEqual([]);
+    // Die Freibeträge gehen auf den Cent auf, die Rundung fließt nicht ein. (Bei 2.000 € verhindert nur das
+    // Kindergeld den Anspruch; dann meldet das Ergebnis den Sofortzuschlag nach § 72 mit Status pruefen.)
+    expect(e.parameterHinweise.map((h) => h.name)).not.toContain("sgb2.rundung");
   });
 
   it("teilt sich in Grundabsetzbetrag und Erwerbstätigenfreibetrag", () => {
@@ -260,8 +262,46 @@ describe("Sofortzuschlag für Kinder (§ 72 SGB II)", () => {
     expect(rechne(testhaushalt("T01").eingabe).sofortzuschlag).toEqual({ kinder: 2, betrag: 5000 });
   });
 
-  it("ohne Anspruch kein Sofortzuschlag (T09)", () => {
-    expect(rechne(testhaushalt("T09").eingabe).sofortzuschlag).toEqual({ kinder: 0, betrag: 0 });
+  it("Haushalt nur wegen des Kindergelds ohne Anspruch (T09): 25 € je Kind, Status pruefen (Abs. 1 Satz 2 Nr. 2)", () => {
+    // Lücke A −286 €, ohne die 518 € Kindergeld +232 €. Entscheidung von Nico am 28.10.2026.
+    const e = rechne(testhaushalt("T09").eingabe);
+    expect(e.sofortzuschlag).toEqual({ kinder: 2, betrag: 5000 });
+    expect(e.parameterHinweise).toContainEqual(
+      expect.objectContaining({ name: "sgb2.sofortzuschlagOhneAnspruch", status: "pruefen" }),
+    );
+  });
+
+  it("Gegenrechnung ohne Kindergeld: Kind außerhalb, das nur mit Kindergeld seinen Bedarf deckt, käme zurück", () => {
+    // Alleinerziehend, bereinigt 950 € (Brutto 1.500, Netto 1.328), Kind 15 mit 600 € Unterhalt, Wohnkosten 600 €.
+    // Lücke A −107,44 €. Ohne Kindergeld: Kind in der BG, Bedarf 1.701,56 € − Einkommen 1.550 € = +151,56 €.
+    const h = haushalt({
+      erwachsene: [erwachsener({ brutto: 150000, netto: 132800 })],
+      kinder: [kind(15, 60000)],
+      kaltmiete: 40000,
+    });
+    const e = rechne(h);
+    expect(e.lueckeA).toBe(-10744);
+    expect(e.sofortzuschlag).toEqual({ kinder: 1, betrag: 2500 });
+  });
+
+  it("Sofortzuschlag ohne Anspruch bei unklarem Ersparten: mit Hinweis, dass Erspartes zuerst zählt", () => {
+    const e = rechne({ ...testhaushalt("T09").eingabe, vermoegen: { von: 2000000, bis: 4000000 } });
+    expect(e.sofortzuschlag.betrag).toBe(5000);
+    expect(e.hinweise).toContainEqual({ code: "erspartes_zuerst_einsetzen" });
+  });
+
+  it("Lücke (offene Rechtsfragen Punkt 9): nur wegen Kindergeld ohne Anspruch, Erspartes sicher über dem Freibetrag: kein Sofortzuschlag", () => {
+    // Folgerichtig wären 25 € je Kind, sobald das Ersparte bis auf den Freibetrag eingesetzt ist. Version 0 bildet das
+    // nicht ab. Bei unklarem Ersparten gibt es den Sofortzuschlag dagegen (Test oben).
+    const e = rechne({ ...testhaushalt("T09").eingabe, vermoegen: { von: 10000000, bis: 10000000 } });
+    expect(e.sofortzuschlag).toEqual({ kinder: 0, betrag: 0 });
+  });
+
+  it("auch ohne Kindergeld kein Anspruch: kein Sofortzuschlag", () => {
+    const h = { ...testhaushalt("T09").eingabe, erwachsene: [erwachsener({ brutto: 800000, netto: 500000 }), erwachsener()] };
+    const e = rechne(h);
+    expect(e.sofortzuschlag).toEqual({ kinder: 0, betrag: 0 });
+    expect(e.parameterHinweise).toEqual([]);
   });
 
   it("auch für ein Kind, das nur mit dem Kindergeld seinen Bedarf deckt (Abs. 1 Satz 2 Nr. 2)", () => {
@@ -570,24 +610,26 @@ describe("Umfang", () => {
 });
 
 describe("Stichtag ab 1.1.2027", () => {
-  it("rechnet mit den Werten von 2026 und meldet sie als pruefen", () => {
+  it("rechnet mit den Regelsätzen von 2026 (pruefen) und dem geplanten Kindergeld 267 € (BT-Drs. 21/8235)", () => {
     const e = rechne(testhaushalt("T01").eingabe, "2027-03-01");
     expect(e.rechtsstand).toBe("2027-01-01");
     expect(e.bedarf.summe).toBe(279900);
     expect(e.einkommen.freibetrag).toBe(37800);
-    expect(e.parameterHinweise.map((h) => h.name).sort()).toEqual([
-      "sgb2.kindergeld",
-      "sgb2.regelbedarfKinder",
-      "sgb2.regelbedarfStufe2",
-      "sgb2.sofortzuschlagKind",
-    ]);
-    expect(e.parameterHinweise.every((h) => h.status === "pruefen")).toBe(true);
+    expect(e.einkommen.kindergeld).toBe(2 * 26700);
+    const status = Object.fromEntries(e.parameterHinweise.map((h) => [h.name, h.status]));
+    expect(status).toEqual({
+      "sgb2.kindergeld": "geplant",
+      "sgb2.regelbedarfKinder": "pruefen",
+      "sgb2.regelbedarfStufe2": "pruefen",
+      "sgb2.sofortzuschlagKind": "pruefen",
+    });
     expect(e.hinweise).toContainEqual({ code: "regelsaetze_offen", jahr: 2027 });
   });
 
-  it("nennt im Hinweis das Jahr des Stichtags, auch nach 2027", () => {
+  it("ab 2028: eigener Stand mit Kindergeld 272 € (geplant), Hinweis mit dem Jahr des Stichtags", () => {
     const e = rechne(testhaushalt("T01").eingabe, "2028-02-01");
-    expect(e.rechtsstand).toBe("2027-01-01");
+    expect(e.rechtsstand).toBe("2028-01-01");
+    expect(e.einkommen.kindergeld).toBe(2 * 27200);
     expect(e.hinweise).toContainEqual({ code: "regelsaetze_offen", jahr: 2028 });
   });
 

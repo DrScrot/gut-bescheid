@@ -54,8 +54,9 @@ describe("Testhaushalte SGB II", () => {
         });
       }
 
-      it("kein Parameter mit Status pruefen oder geplant eingeflossen", () => {
-        expect(ergebnis().parameterHinweise).toEqual([]);
+      const pruefen = soll.pruefen ?? [];
+      it(pruefen.length === 0 ? "kein Parameter mit Status pruefen oder geplant eingeflossen" : `ungeprüft nur: ${pruefen.join(", ")}`, () => {
+        expect(ergebnis().parameterHinweise.map((h) => h.name)).toEqual(pruefen);
       });
     });
   }
@@ -132,12 +133,10 @@ describe("Testhaushalte Weg B und Vergleich", () => {
         });
       }
 
-      it("ungeprüfte Werte: nur Vermögensgrenze Wohngeld, Abzüge-Schätzung und Zuständigkeit Weg A", () => {
-        expect(ergebnis().parameterHinweise.map((h) => h.name).sort()).toEqual([
-          "but.zustaendigWegA",
-          "wohngeld.abzuegeSchaetzung",
-          "wohngeld.vermoegensgrenze",
-        ]);
+      it("ungeprüfte Werte: Vermögensgrenze Wohngeld, Abzüge-Schätzung, Zuständigkeit Weg A und was T*.json nennt", () => {
+        expect(ergebnis().parameterHinweise.map((h) => h.name).sort()).toEqual(
+          ["but.zustaendigWegA", "wohngeld.abzuegeSchaetzung", "wohngeld.vermoegensgrenze", ...(t.soll.sgb2?.pruefen ?? [])].sort(),
+        );
       });
     });
   }

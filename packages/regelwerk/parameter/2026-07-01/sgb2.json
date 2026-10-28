@@ -159,6 +159,14 @@
     "gueltigAb": "2026-07-01",
     "status": "geprueft",
     "geprueftAm": "2026-10-28",
-    "hinweis": "Für Kinder mit Anspruch auf Grundsicherungsgeld (Regelbedarfsstufen 3 bis 6), auch für Kinder, die nur wegen des Kindergelds keinen Anspruch haben (Satz 2 Nr. 2). Kinder, die nur einen Anspruch auf Bildung und Teilhabe haben (Satz 2 Nr. 1), rechnet Version 0 nicht. Ob auch Kinder zählen, deren ganzer Haushalt nur wegen des Kindergelds keinen Anspruch hat, ist nicht geprüft (Fachliche Weisungen zu § 72 nicht lesbar); Version 0 zählt sie nicht."
+    "hinweis": "Für Kinder mit Anspruch auf Grundsicherungsgeld (Regelbedarfsstufen 3 bis 6), auch für Kinder, die nur wegen des Kindergelds keinen Anspruch haben (Satz 2 Nr. 2). Kinder, die nur einen Anspruch auf Bildung und Teilhabe haben (Satz 2 Nr. 1), rechnet Version 0 nicht. Haushalte, die nur wegen des Kindergelds keinen Anspruch haben: siehe sofortzuschlagOhneAnspruch."
+  },
+  "sofortzuschlagOhneAnspruch": {
+    "wert": "wenn_luecke_ohne_kindergeld_positiv",
+    "einheit": "Regel",
+    "fundstelle": "§ 72 Abs. 1 Satz 2 Nr. 2 SGB II (Wortlaut: Kinder, die „nur deshalb keinen Anspruch auf Grundsicherungsgeld haben, weil im Rahmen der Prüfung der Hilfebedürftigkeit Kindergeld berücksichtigt wurde“)",
+    "status": "pruefen",
+    "hinweis": "Hat der Haushalt keinen Anspruch, hätte er ihn aber ohne das angerechnete Kindergeld (Lücke A ohne Kindergeld > 0), zeigt Weg A je Kind 25 € Sofortzuschlag. Gerechnet wird mit dem ganzen Kindergeld des Haushalts, nicht je Kind; bei T09 entscheidet das (je Kind: −286 + 259 = −27 €, kein Sofortzuschlag). Entscheidung von Nico am 28.10.2026. Status pruefen: Die Anwendung auf ganze Haushalte ohne Anspruch ist in den Fachlichen Weisungen zu § 72 nicht nachgelesen (PDF nicht lesbar). Weg B bekommt ihn nicht dazu: 2026 steckt er im KiZ (§ 6a Abs. 2 Satz 4 BKGG; das ist eine Auslegung). Für 2027 streicht der Entwurf BT-Drs. 21/7860 den Sofortzuschlag im KiZ; ob KiZ-Haushalte ihn dann nach § 72 SGB II bekommen, ist offen.",
+    "gueltigAb": "2026-07-01"
   }
 }

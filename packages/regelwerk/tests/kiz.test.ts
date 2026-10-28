@@ -220,9 +220,30 @@ describe("Bedarfsprüfung mit Vermögen (§ 6a Abs. 1 Nr. 3 BKGG, § 9 SGB II, D
     expect(e.hinweise).toContainEqual({ code: "erspartes_ueber_freibetrag" });
   });
 
-  it("Teil über dem Freibetrag kleiner als der Fehlbetrag (50 € < 135 €): Hilfebedürftigkeit bleibt, kein KiZ", () => {
+  it("DA-KiZ C.4.2 Abs. 2: Erspartes zählt beim erweiterten Zugang mit (50 € über dem Freibetrag, Rest 85 €)", () => {
     const e = rechne({ ...knapp, vermoegen: { von: 3005000, bis: 3005000 } }, 94000);
     expect(e.bedarfspruefung.erspartesDecktFehlbetrag).toBe(false);
+    expect(e.bedarfspruefung.fehlbetragNachErspartem).toBe(8500);
+    expect(e.anspruch).toBe("erweiterter_zugang");
+    expect(e.hinweise).toContainEqual({ code: "erweiterter_zugang_mit_erspartem" });
+  });
+
+  it("erweiterter Zugang ohne Erspartes (K03): kein Hinweis zum Ersparten", () => {
+    const e = rechne(K03, 60000);
+    expect(e.anspruch).toBe("erweiterter_zugang");
+    expect(e.hinweise).not.toContainEqual({ code: "erweiterter_zugang_mit_erspartem" });
+  });
+
+  it("erweiterter Zugang ohnehin (K03), Erspartes 10 € über dem Freibetrag: kein Hinweis zum Ersparten", () => {
+    const e = rechne({ ...K03, vermoegen: { von: 3001000, bis: 3001000 } }, 60000);
+    expect(e.bedarfspruefung.fehlbetrag).toBeLessThanOrEqual(10000);
+    expect(e.anspruch).toBe("erweiterter_zugang");
+    expect(e.hinweise).not.toContainEqual({ code: "erweiterter_zugang_mit_erspartem" });
+  });
+
+  it("20 € über dem Freibetrag: Rest 115 €, auch kein erweiterter Zugang", () => {
+    const e = rechne({ ...knapp, vermoegen: { von: 3002000, bis: 3002000 } }, 94000);
+    expect(e.bedarfspruefung.fehlbetragNachErspartem).toBe(11500);
     expect(e.anspruch).toBe("nein_bedarf_nicht_gedeckt");
   });
 
@@ -240,8 +261,8 @@ describe("Bedarfsprüfung mit Vermögen (§ 6a Abs. 1 Nr. 3 BKGG, § 9 SGB II, D
   it("Erspartes rund um den SGB-II-Freibetrag: Anspruch nach Einkommen, mit Hinweis", () => {
     const e = rechne({ ...knapp, vermoegen: { von: 2000000, bis: 4000000 } }, 94000);
     expect(e.anspruch).toBe("nein_bedarf_nicht_gedeckt");
-    // Ab 30.000 € Freibetrag plus 135 € Fehlbetrag wäre KiZ möglich.
-    expect(e.hinweise).toContainEqual({ code: "erspartes_freibetrag_unklar", ab: 3013500 });
+    // Ab 30.000 € Freibetrag plus 35 € wäre KiZ möglich: Dann fehlen höchstens 100 € (erweiterter Zugang).
+    expect(e.hinweise).toContainEqual({ code: "erspartes_freibetrag_unklar", ab: 3003500 });
   });
 });
 
