@@ -105,5 +105,14 @@
     "status": "geprueft",
     "geprueftAm": "2026-10-28",
     "hinweis": "Der Gesamtkinderzuschlag wird nach allen Minderungen einmal auf volle Euro gerundet, unter 50 Cent nach unten, sonst nach oben. 0,01 bis 0,49 € ergibt keinen Kinderzuschlag. Das Merkblatt (Stand Juli 2026, Beispiel 2 in Abschnitt 2.2) schreibt bei 106,20 € „aufgerundet“, zahlt aber richtig 106 €. Freigegeben von Nico am 28.10.2026."
+  },
+  "entwurfGeprueftAm": {
+    "wert": "2026-10-28",
+    "einheit": "Datum (JJJJ-MM-TT)",
+    "fundstelle": "Stand des Gesetzgebungsverfahrens zum Regierungsentwurf Haushaltsbegleitgesetz 2027, BT-Drs. 21/7860 vom 07.09.2026 (Art. 7: KiZ ohne Sofortzuschlag ab 1.1.2027): nicht beschlossen am 28.10.2026 (Nico); bestätigt am 29.10.2026: Der Bundestag beschreibt die Abschaffung weiter als Vorhaben („soll abgeschafft werden“, bundestag.de, Textarchiv Haushaltsbegleitgesetz), 2./3. Lesung ausstehend",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28",
+    "hinweis": "Nur für die Folgen-Karten zu 2027 (Platzhalter {kiz.entwurfGeprueftAm}, „28. Oktober 2026“). Ändert sich der Stand des Verfahrens, Datum, Karten und Werte mit Status geplant zusammen nachziehen."
   }
 }

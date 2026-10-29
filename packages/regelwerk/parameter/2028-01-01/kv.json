@@ -1,0 +1,51 @@
+{
+  "bezugsgroesse": {
+    "wert": 413000,
+    "einheit": "cent im Monat",
+    "fundstelle": "§ 18 Abs. 1 SGB IV; § 1 Sozialversicherungsrechengrößen-Verordnung 2027, Verordnung der Bundesregierung vom 07.10.2026, BR-Drs. 576/26: 49.560 € im Jahr, 4.130 € im Monat",
+    "gueltigAb": "2028-01-01",
+    "status": "pruefen",
+    "hinweis": "Wert für 2027 fortgeschrieben (geplant, BR-Drs. 576/26). Für 2028 gibt es noch keine Verordnung (Stand 29.10.2026)."
+  },
+  "mindestbemessung": {
+    "wert": {
+      "teilJeKalendertag": 90,
+      "tageJeMonat": 30
+    },
+    "einheit": "beitragspflichtige Einnahmen freiwilliger Mitglieder mindestens Bezugsgröße ÷ teilJeKalendertag je Tag, Monat zu tageJeMonat Tagen",
+    "fundstelle": "§ 240 Abs. 4 Satz 1, § 223 Abs. 2 Satz 2 SGB V; für die Pflegeversicherung § 57 Abs. 4 Satz 1 SGB XI",
+    "gueltigAb": "2026-01-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-29"
+  },
+  "beitragssatzErmaessigt": {
+    "wert": 1400,
+    "einheit": "Hundertstel Prozent (1400 = 14,00 %)",
+    "fundstelle": "§ 243 Satz 1 SGB V (ohne Anspruch auf Krankengeld)",
+    "gueltigAb": "2026-01-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-29"
+  },
+  "zusatzbeitragDurchschnitt": {
+    "wert": 290,
+    "einheit": "Hundertstel Prozent (290 = 2,9 %)",
+    "fundstelle": "§ 242a SGB V; Bekanntmachung des BMG über den durchschnittlichen Zusatzbeitragssatz für das Jahr 2026 vom 07.11.2025 (BAnz AT 10.11.2025 B7)",
+    "gueltigAb": "2028-01-01",
+    "status": "pruefen",
+    "hinweis": "Jede Krankenkasse hat ihren eigenen Zusatzbeitrag; der Durchschnitt dient nur für den Überschlag „etwa“. Wert von 2026 fortgeschrieben. Das BMG macht den Durchschnitt für 2028 jeweils bis zum 1. November des Vorjahres bekannt (§ 242a Abs. 2 SGB V); ab 01.11.2026 im Bundesanzeiger nachsehen."
+  },
+  "pflegeBeitragssatz": {
+    "wert": {
+      "eltern": 360,
+      "abschlagJeKind": 25,
+      "abschlagAbKind": 2,
+      "abschlagBisKind": 5,
+      "kinderUnterJahren": 25
+    },
+    "einheit": "Hundertstel Prozent; Abschlag je Kind unter kinderUnterJahren vom abschlagAbKind. bis zum abschlagBisKind. Kind",
+    "fundstelle": "§ 55 Abs. 1 Satz 1 und Abs. 3 Satz 3 bis 5 SGB XI; § 1 Abs. 1 PBAV 2025 (3,6 % ab 01.01.2025). Eltern zahlen keinen Beitragszuschlag für Kinderlose.",
+    "gueltigAb": "2028-01-01",
+    "status": "pruefen",
+    "hinweis": "Wert von 2026 fortgeschrieben. Die PBAV 2025 nennt kein Enddatum; ob sich der Satz für 2028 ändert, ist offen."
+  }
+}

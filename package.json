@@ -10,6 +10,7 @@
   "scripts": {
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
-    "dev": "pnpm --filter @gut-bescheid/web dev"
+    "dev": "pnpm --filter @gut-bescheid/web dev",
+    "katalog": "pnpm --filter @gut-bescheid/regelwerk katalog"
   }
 }

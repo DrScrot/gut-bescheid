@@ -49,6 +49,21 @@
       "ergebnis": "weg_b_deckt",
       "fehlbetrag": -5700,
       "quelle": "Nico, 28.10.2026: Weg B deckt den Bedarf; Weg A wegen Vermögen ausgeschlossen"
-    }
+    },
+    "folgen": [
+      {
+        "stichtag": "2026-07-01",
+        "einordnung": "einordnung_erspartes",
+        "wegA": ["a_erspartes_zuerst","a_zustaendig"],
+        "wegB": ["b_arbeit_und_betreuung","b_krankenversicherung","b_kiz_6_monate","b_kiz_ab_antragsmonat","b_wohngeld_12_monate","b_wohngeld_aenderungen","b_erspartes_kiz","b_erspartes_wohngeld","b_wohnung","b_kontoauszuege","b_wohngeld_2027","b_einkommen_zaehlt","b_zustaendig"],
+        "beide": ["beide_bildung_teilhabe"],
+        "naechsterSchritt": {"art":"einer","ids":["kiz_und_wohngeld_online"]},
+        "unterlagen": {
+          "wegA": [],
+          "wegB": ["kiz_lohn","kiz_wohnkosten","kiz_fahrtkosten","kiz_versicherungen","kiz_aufenthaltstitel","wohngeld_mietvertrag","wohngeld_mietbescheinigung","wohngeld_mietzahlung","wohngeld_verdienst","wohngeld_bescheide","wohngeld_versicherung","wohngeld_vermoegen","wohngeld_aufenthaltstitel"]
+        },
+        "quelle": "Von Hand aus folgen/*.json und den Bedingungen abgeleitet (Claude, 28.10.2026). Reihenfolge und Auswahl von Nico noch freizugeben."
+      }
+    ]
   }
 }

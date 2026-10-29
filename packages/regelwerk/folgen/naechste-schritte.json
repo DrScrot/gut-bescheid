@@ -1,0 +1,122 @@
+{
+  "beschreibung": "Nächster Schritt je Weg. Je Weg gilt der erste Schritt nach prioritaet, dessen Bedingung zutrifft. Treffen Schritte für Weg A und Weg B zu, fragt die Oberfläche: „Welchen Weg willst du gehen?“ (Entscheidung von Nico am 28.10.2026). dauer.minuten nur aus einer amtlichen Angabe, sonst null mit Status pruefen.",
+  "schritte": [
+    {
+      "id": "kiz_und_wohngeld_online",
+      "weg": "B",
+      "prioritaet": 1,
+      "titel": "Kinderzuschlag online beantragen",
+      "stelle": "Familienkasse der Bundesagentur für Arbeit",
+      "kanal": "online mit KiZ Digital",
+      "link": "https://www.kiz-digital.de",
+      "dauer": { "minuten": null, "fundstelle": null, "status": "pruefen" },
+      "text": "Stell den Antrag online bei der Familienkasse. Das geht mit KiZ Digital. Hast du eine BundID, musst du nichts drucken. Die BundID ist ein Konto für Anträge bei Ämtern im Internet. Fehlende Nachweise kannst du später schicken. Wohngeld beantragst du getrennt bei der Wohngeldstelle. Das geht online über das BayernPortal. Beides gibt es meist erst ab dem Monat des Antrags.",
+      "textLeicht": "Stell den Antrag für den Kinder-Zuschlag im Internet. Das geht bei der Familien-Kasse. Die Seite heißt KiZ Digital. Fehlende Papiere kannst du später schicken. Den Antrag für das Wohn-Geld stellst du im Bayern-Portal. Beides gibt es meistens erst ab dem Monat, in dem du den Antrag stellst.",
+      "fundstelle": "§ 5 Abs. 3, § 9 Abs. 1 BKGG; § 25 Abs. 2 WoGG; Merkblatt Kinderzuschlag der BA (Stand Juli 2026), Kap. 6; StMB Bayern: Wohngeld (abgerufen 28.10.2026)",
+      "quelle": ["https://www.arbeitsagentur.de/datei/kiz2-merkblattkinderzuschlag_ba034485.pdf", "https://www.stmb.bayern.de/wohnen/wohnraum_nutzen/wohngeld/index.php"],
+      "status": "geprueft",
+      "gueltigAb": "2026-07-01",
+      "geprueftAm": "2026-10-28",
+      "notiz": "Keine amtliche Angabe zur Dauer gefunden (Suche am 28.10.2026). Nico misst beim Test mit der Zielgruppe.",
+      "bedingung": {
+        "alle": [
+          { "fakt": "ergebnis", "in": ["weg_b_deckt", "erweiterter_zugang"] },
+          { "fakt": "kiz.auszahlung", "ab": 1 },
+          { "fakt": "wohngeld.auszahlung", "ab": 1 }
+        ]
+      }
+    },
+    {
+      "id": "kiz_online",
+      "weg": "B",
+      "prioritaet": 2,
+      "titel": "Kinderzuschlag online beantragen",
+      "stelle": "Familienkasse der Bundesagentur für Arbeit",
+      "kanal": "online mit KiZ Digital",
+      "link": "https://www.kiz-digital.de",
+      "dauer": { "minuten": null, "fundstelle": null, "status": "pruefen" },
+      "text": "Stell den Antrag online bei der Familienkasse. Das geht mit KiZ Digital. Hast du eine BundID, musst du nichts drucken. Die BundID ist ein Konto für Anträge bei Ämtern im Internet. Fehlende Nachweise kannst du später schicken. Geld gibt es meist erst ab dem Monat des Antrags.",
+      "textLeicht": "Stell den Antrag für den Kinder-Zuschlag im Internet. Das geht bei der Familien-Kasse. Die Seite heißt KiZ Digital. Fehlende Papiere kannst du später schicken. Geld gibt es meistens erst ab dem Monat, in dem du den Antrag stellst.",
+      "fundstelle": "§ 5 Abs. 3, § 9 Abs. 1 BKGG; Merkblatt Kinderzuschlag der BA (Stand Juli 2026), Kap. 6",
+      "quelle": ["https://www.arbeitsagentur.de/datei/kiz2-merkblattkinderzuschlag_ba034485.pdf"],
+      "status": "geprueft",
+      "gueltigAb": "2026-07-01",
+      "geprueftAm": "2026-10-28",
+      "notiz": "Keine amtliche Angabe zur Dauer gefunden (Suche am 28.10.2026).",
+      "bedingung": {
+        "alle": [
+          { "fakt": "ergebnis", "in": ["weg_b_deckt", "erweiterter_zugang"] },
+          { "fakt": "kiz.auszahlung", "ab": 1 },
+          { "fakt": "wohngeld.auszahlung", "ist": 0 }
+        ]
+      }
+    },
+    {
+      "id": "wohngeld_online",
+      "weg": "B",
+      "prioritaet": 3,
+      "titel": "Wohngeld online beantragen",
+      "stelle": "Wohngeldstelle im Landratsamt, in manchen Städten bei der Stadt",
+      "kanal": "online über das BayernPortal",
+      "link": "https://www.bayernportal.de/dokumente/onlineservice/41887779239",
+      "dauer": { "minuten": null, "fundstelle": null, "status": "pruefen" },
+      "text": "Beantrage Wohngeld online über das BayernPortal. Wähle dort deinen Ort. Dann kommst du zu deiner Wohngeldstelle. Wohngeld gibt es meist ab dem Monat, in dem dein Antrag ankommt. Nachweise kannst du später nachreichen.",
+      "textLeicht": "Stell den Antrag für das Wohn-Geld im Internet. Die Seite heißt Bayern-Portal. Dort wählst du deinen Wohn-Ort. Wohn-Geld gibt es meistens ab dem Monat, in dem dein Antrag ankommt. Fehlende Papiere kannst du später schicken.",
+      "fundstelle": "§ 22 Abs. 1, § 25 Abs. 2 WoGG; Bayerisches Staatsministerium für Wohnen, Bau und Verkehr: Wohngeld (abgerufen 28.10.2026)",
+      "quelle": ["https://www.stmb.bayern.de/wohnen/wohnraum_nutzen/wohngeld/index.php"],
+      "status": "geprueft",
+      "gueltigAb": "2026-07-01",
+      "geprueftAm": "2026-10-28",
+      "notiz": "Keine amtliche Angabe zur Dauer gefunden (Suche am 28.10.2026).",
+      "bedingung": {
+        "alle": [
+          { "fakt": "ergebnis", "in": ["weg_b_deckt", "erweiterter_zugang"] },
+          { "fakt": "kiz.auszahlung", "ist": 0 },
+          { "fakt": "wohngeld.auszahlung", "ab": 1 }
+        ]
+      }
+    },
+    {
+      "id": "grundsicherung_online",
+      "weg": "A",
+      "prioritaet": 4,
+      "titel": "Grundsicherung online beantragen",
+      "stelle": "Jobcenter an deinem Wohnort",
+      "kanal": "online über jobcenter.digital",
+      "link": "https://www.jobcenter.digital",
+      "dauer": { "minuten": null, "fundstelle": null, "status": "pruefen" },
+      "text": "Stell den Antrag am besten online über jobcenter.digital. Es geht auch vor Ort, per Telefon oder per Brief. Geld gibt es ab dem Ersten des Monats, in dem du den Antrag stellst. Nachweise kannst du später schicken. Danach lädt dich das Jobcenter zu einem Gespräch ein.",
+      "textLeicht": "Stell den Antrag für die Grund-Sicherung im Internet. Die Seite heißt jobcenter.digital. Du kannst auch zum Job-Center gehen. Oder anrufen. Das Geld gibt es für den ganzen Monat, in dem du den Antrag stellst. Fehlende Papiere kannst du später schicken. Danach lädt dich das Job-Center zu einem Gespräch ein.",
+      "fundstelle": "§ 37 Abs. 2, § 15 Abs. 4 SGB II; Merkblatt Grundsicherung für Arbeitsuchende der BA (August 2026), Kap. 2.3 und 4.3; BA: Grundsicherungsgeld – Antrag und Bescheid (abgerufen 28.10.2026)",
+      "quelle": ["https://www.arbeitsagentur.de/grundsicherung/finanziell-absichern/antrag-bescheid", "https://www.arbeitsagentur.de/datei/merkblatt-sgb2_ba043375.pdf"],
+      "status": "geprueft",
+      "gueltigAb": "2026-07-01",
+      "geprueftAm": "2026-10-28",
+      "notiz": "Keine amtliche Angabe zur Dauer gefunden (Suche am 28.10.2026). Auch für den Randfall „kein Anspruch, nur Sofortzuschlag“ (Hinweis des rechts-pruefer vom 28.10.2026).",
+      "bedingung": {
+        "eines": [
+          { "fakt": "ergebnis", "in": ["nur_weg_a", "erweiterter_zugang"] },
+          { "alle": [{ "fakt": "ergebnis", "ist": "kein_anspruch" }, { "fakt": "wegA.betrag", "ab": 1 }] }
+        ]
+      }
+    },
+    {
+      "id": "kein_antrag",
+      "weg": "beide",
+      "prioritaet": 5,
+      "titel": "Nach den Regeln gerade kein Geld",
+      "stelle": null,
+      "kanal": null,
+      "link": null,
+      "dauer": null,
+      "text": "Nach den Regeln gibt es bei euren Angaben auf keinem der beiden Wege Geld. Einen Antrag stellen darfst du trotzdem. Verbindlich entscheidet die Behörde. Ändern sich Einkommen, Miete oder Familie, mach den Check noch einmal.",
+      "textLeicht": "Nach den Regeln gibt es für euch gerade kein Geld. Ihr dürft trotzdem einen Antrag stellen. Das Amt entscheidet. Bei euch ändert sich etwas? Zum Beispiel beim Geld, bei der Miete oder in der Familie? Dann macht den Check noch einmal.",
+      "fundstelle": "§ 9 Abs. 1 SGB II; § 6a Abs. 1 BKGG; § 21 WoGG",
+      "quelle": ["https://www.gesetze-im-internet.de/sgb_2/__9.html"],
+      "status": "geprueft",
+      "gueltigAb": "2026-07-01",
+      "geprueftAm": "2026-10-28",
+      "bedingung": { "alle": [{ "fakt": "ergebnis", "ist": "kein_anspruch" }, { "fakt": "wegA.betrag", "ist": 0 }] }
+    }
+  ]
+}

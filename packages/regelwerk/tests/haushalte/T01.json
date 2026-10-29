@@ -47,6 +47,34 @@
       "ergebnis": "weg_b_deckt",
       "fehlbetrag": -46000,
       "quelle": "Nico, 28.10.2026: 1.372 + 518 + 594 + 775 = 3.259 € gegen Bedarf 2.799 €"
-    }
+    },
+    "folgen": [
+      {
+        "stichtag": "2026-07-01",
+        "einordnung": "einordnung_weg_b_deckt",
+        "wegA": ["a_kinderbetreuung_ab_14_monate","a_partner","a_vorrang_kiz_wohngeld","a_arbeit","a_erstgespraech","a_meldetermine","a_kuerzungen","a_arbeit_abgelehnt","a_wohnung","a_erspartes","a_kontoauszuege","a_krankenversicherung","a_ab_wann_geld","a_bewilligung","a_aenderungen","a_einkommen_zaehlt","a_zustaendig"],
+        "wegB": ["b_arbeit_und_betreuung","b_krankenversicherung","b_kiz_6_monate","b_kiz_ab_antragsmonat","b_wohngeld_12_monate","b_wohngeld_aenderungen","b_erspartes_kiz","b_erspartes_wohngeld","b_wohnung","b_kontoauszuege","b_wohngeld_2027","b_einkommen_zaehlt","b_zustaendig"],
+        "beide": ["beide_bildung_teilhabe"],
+        "naechsterSchritt": {"art":"einer","ids":["kiz_und_wohngeld_online"]},
+        "unterlagen": {
+          "wegA": ["sgb2_ausweis","sgb2_kontoauszuege","sgb2_lohn","sgb2_mietvertrag","sgb2_nebenkosten","sgb2_mietquittungen","sgb2_ausgaben","sgb2_vermoegen"],
+          "wegB": ["kiz_lohn","kiz_wohnkosten","kiz_fahrtkosten","kiz_versicherungen","kiz_aufenthaltstitel","wohngeld_mietvertrag","wohngeld_mietbescheinigung","wohngeld_mietzahlung","wohngeld_verdienst","wohngeld_bescheide","wohngeld_versicherung","wohngeld_vermoegen","wohngeld_aufenthaltstitel"]
+        },
+        "quelle": "Von Hand aus folgen/*.json und den Bedingungen abgeleitet (Claude, 28.10.2026). Reihenfolge und Auswahl von Nico noch freizugeben."
+      },
+      {
+        "stichtag": "2027-01-01",
+        "einordnung": "einordnung_weg_b_deckt",
+        "wegA": ["a_kinderbetreuung_ab_14_monate","a_partner","a_vorrang_kiz_wohngeld","a_arbeit","a_erstgespraech","a_meldetermine","a_kuerzungen","a_arbeit_abgelehnt","a_wohnung","a_erspartes","a_kontoauszuege","a_krankenversicherung","a_ab_wann_geld","a_bewilligung","a_aenderungen","a_einkommen_zaehlt","a_zustaendig"],
+        "wegB": ["b_arbeit_und_betreuung","b_krankenversicherung","b_kiz_6_monate","b_kiz_ab_antragsmonat","b_wohngeld_12_monate","b_wohngeld_aenderungen","b_erspartes_kiz","b_erspartes_wohngeld","b_wohnung","b_kontoauszuege","b_kiz_ab_2027","b_wohngeld_ab_2027","b_einkommen_zaehlt","b_zustaendig"],
+        "beide": ["beide_bildung_teilhabe"],
+        "naechsterSchritt": {"art":"einer","ids":["kiz_und_wohngeld_online"]},
+        "unterlagen": {
+          "wegA": ["sgb2_ausweis","sgb2_kontoauszuege","sgb2_lohn","sgb2_mietvertrag","sgb2_nebenkosten","sgb2_mietquittungen","sgb2_ausgaben","sgb2_vermoegen"],
+          "wegB": ["kiz_lohn","kiz_wohnkosten","kiz_fahrtkosten","kiz_versicherungen","kiz_aufenthaltstitel","wohngeld_mietvertrag","wohngeld_mietbescheinigung","wohngeld_mietzahlung","wohngeld_verdienst","wohngeld_bescheide","wohngeld_versicherung","wohngeld_vermoegen","wohngeld_aufenthaltstitel"]
+        },
+        "quelle": "Von Hand aus folgen/*.json und den Bedingungen abgeleitet (Claude, 28.10.2026). Nach dem rechts-pruefer (28.10.2026) ab Stichtag 2027 die Karten b_kiz_ab_2027 und b_wohngeld_ab_2027 statt der Ankündigung. Reihenfolge und Auswahl von Nico noch freizugeben."
+      }
+    ]
   }
 }

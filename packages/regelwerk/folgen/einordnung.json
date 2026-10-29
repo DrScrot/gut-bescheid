@@ -1,0 +1,90 @@
+{
+  "beschreibung": "Einordnung je Ergebnis (Entscheidung von Nico am 28.10.2026): Bei weg_b_deckt verweist das Jobcenter zuerst auf Kinderzuschlag und Wohngeld, bei nur_weg_a deckt nur die Grundsicherung den Bedarf, nur beim erweiterten Zugang gibt es eine echte Wahl. Es gilt der erste Eintrag nach prioritaet, dessen Bedingung zutrifft.",
+  "eintraege": [
+    {
+      "id": "einordnung_erspartes",
+      "prioritaet": 1,
+      "text": "Nach euren Angaben habt ihr mehr gespart, als ihr in der Grundsicherung behalten dürft. Deshalb gibt es sie nach den Regeln erst einmal nicht. Kinderzuschlag oder Wohngeld sind aber möglich.",
+      "textLeicht": "Nach den Regeln gibt es für euch erst mal keine Grund-Sicherung. Der Grund ist euer Erspartes. Aber ihr könnt Kinder-Zuschlag oder Wohn-Geld beantragen.",
+      "fundstelle": "§ 9 Abs. 1, § 12 Abs. 2 SGB II; DA-KiZ C.4.1 (Stand 20.02.2026)",
+      "quelle": ["https://www.gesetze-im-internet.de/sgb_2/__12.html", "https://www.arbeitsagentur.de/datei/fw-bkgg_ba023130.pdf"],
+      "status": "geprueft",
+      "gueltigAb": "2026-07-01",
+      "geprueftAm": "2026-10-29",
+      "bedingung": { "alle": [{ "fakt": "ergebnis", "ist": "weg_b_deckt" }, { "fakt": "wegA.ausgeschlossenWegenErspartem", "ist": true }] }
+    },
+    {
+      "id": "einordnung_ohne_grundsicherung",
+      "prioritaet": 2,
+      "text": "Bei euren Angaben gibt es nach den Regeln kein Grundsicherungsgeld. Euer Geld liegt mit dem Kindergeld über dem, was die Grundsicherung zum Leben vorsieht. Möglich sind aber Kinderzuschlag oder Wohngeld. Die gibt es mit eigenem Antrag.",
+      "textLeicht": "Nach den Regeln gibt es für euch kein Grund-Sicherungs-Geld. Euer Geld liegt mit dem Kinder-Geld über dem, was die Grund-Sicherung zum Leben rechnet. Aber ihr könnt Kinder-Zuschlag oder Wohn-Geld beantragen.",
+      "fundstelle": "§ 9 Abs. 1 SGB II; § 6a Abs. 1 BKGG; Wohngeldgesetz",
+      "quelle": ["https://www.gesetze-im-internet.de/sgb_2/__9.html", "https://www.gesetze-im-internet.de/bkgg_1996/__6a.html"],
+      "status": "geprueft",
+      "gueltigAb": "2026-07-01",
+      "geprueftAm": "2026-10-29",
+      "bedingung": { "alle": [{ "fakt": "ergebnis", "ist": "weg_b_deckt" }, { "fakt": "wegA.grundsicherung", "ist": false }] }
+    },
+    {
+      "id": "einordnung_weg_b_deckt",
+      "prioritaet": 3,
+      "text": "Nach den Regeln reichen Kinderzuschlag und Wohngeld bei euren Angaben für den Bedarf. Der Bedarf ist der Betrag, den die Grundsicherung zum Leben vorsieht. Dann müsst ihr diese beiden zuerst beantragen. Grundsicherung gibt es dann meist nicht.",
+      "textLeicht": "Nach den Regeln reichen Kinder-Zuschlag und Wohn-Geld bei euch zum Leben. Darum gibt es meistens keine Grund-Sicherung. Diese beiden Anträge stellt ihr zuerst.",
+      "fundstelle": "§ 12a Satz 1 und Satz 2 Nr. 2, § 5 Abs. 3 SGB II; Merkblatt Grundsicherung für Arbeitsuchende der BA (August 2026), Kap. 8.1.3",
+      "quelle": ["https://www.gesetze-im-internet.de/sgb_2/__12a.html", "https://www.arbeitsagentur.de/datei/merkblatt-sgb2_ba043375.pdf"],
+      "status": "geprueft",
+      "gueltigAb": "2026-07-01",
+      "geprueftAm": "2026-10-29",
+      "bedingung": { "fakt": "ergebnis", "ist": "weg_b_deckt" }
+    },
+    {
+      "id": "einordnung_erweiterter_zugang",
+      "prioritaet": 4,
+      "text": "Bei euren Angaben könnt ihr nach den Regeln wählen. Beide Wege sind ein Recht. Mit Weg B fehlt euch etwas zu dem, was die Grundsicherung zum Leben vorsieht. Das sind höchstens {kiz.erweiterterZugangHoechstens} im Monat. Dafür gibt es auf Weg B keine Pflicht zur Arbeitssuche.",
+      "textLeicht": "Nach den Regeln könnt ihr wählen. Beide Wege sind euer Recht. Bei Weg B fehlt euch etwas Geld. So rechnet die Grund-Sicherung. Es fehlen höchstens {kiz.erweiterterZugangHoechstens} im Monat. Bei Weg B müsst ihr aber keine Arbeit suchen.",
+      "fundstelle": "§ 6a Abs. 1a BKGG; DA-KiZ C.4.2 (Stand 20.02.2026)",
+      "quelle": ["https://www.gesetze-im-internet.de/bkgg_1996/__6a.html", "https://www.arbeitsagentur.de/datei/fw-bkgg_ba023130.pdf"],
+      "status": "geprueft",
+      "gueltigAb": "2026-07-01",
+      "geprueftAm": "2026-10-29",
+      "bedingung": { "fakt": "ergebnis", "ist": "erweiterter_zugang" }
+    },
+    {
+      "id": "einordnung_nur_weg_a_erspartes",
+      "prioritaet": 5,
+      "text": "Nach den Regeln reichen Kinderzuschlag und Wohngeld bei euren Angaben nicht. Grundsicherung gibt es erst, wenn ein Teil vom Ersparten verbraucht ist. Sie ist ein Recht, wenn die Bedingungen erfüllt sind. Verbindlich entscheidet das Jobcenter.",
+      "textLeicht": "Nach den Regeln reichen Kinder-Zuschlag und Wohn-Geld bei euch nicht. Ihr habt aber Erspartes. Einen Teil davon müsst ihr zuerst aufbrauchen. Danach kann es Grund-Sicherung geben. Das Job-Center entscheidet.",
+      "fundstelle": "§ 9 Abs. 1, § 12 Abs. 2 SGB II; § 6a Abs. 1 Nr. 3 und Abs. 1a BKGG",
+      "quelle": ["https://www.gesetze-im-internet.de/sgb_2/__12.html", "https://www.gesetze-im-internet.de/bkgg_1996/__6a.html"],
+      "status": "geprueft",
+      "gueltigAb": "2026-07-01",
+      "geprueftAm": "2026-10-29",
+      "notiz": "Hinweis des rechts-pruefer vom 28.10.2026: nur_weg_a gibt es auch, wenn erst das Ersparte eingesetzt wird (vergleich.ts, nachEinsatzDesErsparten).",
+      "bedingung": { "alle": [{ "fakt": "ergebnis", "ist": "nur_weg_a" }, { "fakt": "wegA.nachEinsatzDesErsparten", "ist": true }] }
+    },
+    {
+      "id": "einordnung_nur_weg_a",
+      "prioritaet": 6,
+      "text": "Mit Kinderzuschlag und Wohngeld würde euch bei euren Angaben Geld fehlen. Es fehlt zu dem Betrag, den die Grundsicherung zum Leben vorsieht. Nach den Regeln reicht nur die Grundsicherung. Sie ist ein Recht, wenn die Bedingungen erfüllt sind. Verbindlich entscheidet das Jobcenter.",
+      "textLeicht": "Nach den Regeln reichen Kinder-Zuschlag und Wohn-Geld bei euch nicht. Nur mit Grund-Sicherung reicht das Geld. Grund-Sicherung ist ein Recht. Das Job-Center entscheidet.",
+      "fundstelle": "§ 6a Abs. 1 Nr. 3 und Abs. 1a BKGG; § 9 Abs. 1, § 19 SGB II",
+      "quelle": ["https://www.gesetze-im-internet.de/bkgg_1996/__6a.html", "https://www.gesetze-im-internet.de/sgb_2/__9.html"],
+      "status": "geprueft",
+      "gueltigAb": "2026-07-01",
+      "geprueftAm": "2026-10-29",
+      "bedingung": { "fakt": "ergebnis", "ist": "nur_weg_a" }
+    },
+    {
+      "id": "einordnung_kein_anspruch",
+      "prioritaet": 7,
+      "text": "Bei euren Angaben gibt es nach den Regeln keinen Kinderzuschlag und kein Wohngeld. Es gibt auch kein Grundsicherungsgeld. Euer Geld oder Erspartes liegt über den Grenzen dafür.",
+      "textLeicht": "Nach den Regeln gibt es für euch gerade keinen Kinder-Zuschlag. Es gibt auch kein Wohn-Geld und keine Grund-Sicherung. Euer Geld oder Erspartes liegt über den Grenzen.",
+      "fundstelle": "§ 9 Abs. 1, § 12 SGB II; § 6a Abs. 1 BKGG; §§ 19 und 21 WoGG",
+      "quelle": ["https://www.gesetze-im-internet.de/sgb_2/__9.html"],
+      "status": "geprueft",
+      "gueltigAb": "2026-07-01",
+      "geprueftAm": "2026-10-29",
+      "bedingung": { "fakt": "ergebnis", "ist": "kein_anspruch" }
+    }
+  ]
+}

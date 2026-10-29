@@ -67,9 +67,9 @@ describe("Ergebnis", () => {
     expect(e.ergebnis).toBe("nur_weg_a");
   });
 
-  it("Keine Grundsicherung (T09): Weg B deckt, Weg A zeigt nur den Sofortzuschlag (nur wegen Kindergeld kein Anspruch)", () => {
+  it("Keine Grundsicherung (T09): Weg B deckt, Weg A zeigt kein Geld (kein Sofortzuschlag nach den Weisungen zu § 72)", () => {
     const e = rechne(testhaushalt("T09").eingabe);
-    expect(e.wegA).toEqual({ anspruch: "nein_einkommen", betrag: 5000, sofortzuschlag: 5000, nachEinsatzDesErsparten: false });
+    expect(e.wegA).toEqual({ anspruch: "nein_einkommen", betrag: 0, sofortzuschlag: 0, nachEinsatzDesErsparten: false });
     expect(e.wegB.kinderzuschlag).toBe(14400);
     expect(e.ergebnis).toBe("weg_b_deckt");
   });

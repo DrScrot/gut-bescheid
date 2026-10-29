@@ -18,6 +18,11 @@ export interface Kind {
   einkommen: Cent;
   /** Ausbildungsvergütung des Kindes. Größer 0: außerhalb des Umfangs von Version 0. */
   ausbildungsverguetung: Cent;
+  /**
+   * Ist das Kind tagsüber betreut (Kita, Tagespflege, Schule, Hort)? Fehlt: unbekannt.
+   * Nur für die Folgen-Karten (Zumutbarkeit, § 10 Abs. 1 Nr. 3 SGB II), die Rechnung nutzt es nicht.
+   */
+  betreuung?: boolean;
 }
 
 /** Betrag als Spanne, beide Grenzen eingeschlossen. Ein genauer Betrag hat von = bis. bis = null: nach oben offen. */

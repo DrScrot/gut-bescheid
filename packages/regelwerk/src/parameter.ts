@@ -5,20 +5,23 @@ import { indexiere, type MietenstufenFassung } from "./mietenstufen";
 import mietenstufenBayern from "../daten/mietstufen-bayern.json";
 import but_2026_07_01 from "../parameter/2026-07-01/but.json";
 import kiz_2026_07_01 from "../parameter/2026-07-01/kiz.json";
+import kv_2026_07_01 from "../parameter/2026-07-01/kv.json";
 import sgb2_2026_07_01 from "../parameter/2026-07-01/sgb2.json";
 import wohngeld_2026_07_01 from "../parameter/2026-07-01/wohngeld.json";
 import but_2027_01_01 from "../parameter/2027-01-01/but.json";
 import kiz_2027_01_01 from "../parameter/2027-01-01/kiz.json";
+import kv_2027_01_01 from "../parameter/2027-01-01/kv.json";
 import sgb2_2027_01_01 from "../parameter/2027-01-01/sgb2.json";
 import wohngeld_2027_01_01 from "../parameter/2027-01-01/wohngeld.json";
 import but_2028_01_01 from "../parameter/2028-01-01/but.json";
 import kiz_2028_01_01 from "../parameter/2028-01-01/kiz.json";
+import kv_2028_01_01 from "../parameter/2028-01-01/kv.json";
 import sgb2_2028_01_01 from "../parameter/2028-01-01/sgb2.json";
 import wohngeld_2028_01_01 from "../parameter/2028-01-01/wohngeld.json";
 
 export type Status = "geprueft" | "aus_quelle" | "pruefen" | "geplant";
 
-const STATUS: readonly Status[] = ["geprueft", "aus_quelle", "pruefen", "geplant"];
+export const STATUS: readonly Status[] = ["geprueft", "aus_quelle", "pruefen", "geplant"];
 
 export interface Parameter<W> {
   wert: W;
@@ -58,11 +61,19 @@ export interface Sgb2Parameter {
   versicherungspauschale: Parameter<Cent>;
   kindergeld: Parameter<Cent>;
   sofortzuschlagKind: Parameter<Cent>;
-  /** § 72 Abs. 1 Satz 2 Nr. 2 SGB II auf Haushalte ohne Anspruch angewendet (Entscheidung vom 28.10.2026). */
-  sofortzuschlagOhneAnspruch: Parameter<"wenn_luecke_ohne_kindergeld_positiv">;
+  /**
+   * § 72 Abs. 1 Satz 2 Nr. 2 SGB II für Haushalte, die nur wegen des Kindergelds keinen Anspruch haben.
+   * nicht_ohne_leistungsbezug: kein Sofortzuschlag (FW § 72 Rz. 72.7, Entscheidung vom 28.10.2026 in M4).
+   * wenn_luecke_ohne_kindergeld_positiv: 25 € je Kind nach dem Wortlaut (Entscheidung aus M3, abgelöst).
+   */
+  sofortzuschlagOhneAnspruch: Parameter<"nicht_ohne_leistungsbezug" | "wenn_luecke_ohne_kindergeld_positiv">;
   vermoegensfreibetrag: Parameter<Altersstufe[]>;
   wohnkosten: Parameter<"tatsaechliche_kosten">;
   rundung: Parameter<"kaufmaennisch_cent">;
+  /** Nur für die Folgen-Karten (M4): § 10 Abs. 1 Nr. 3 SGB II, vollendete Lebensmonate. */
+  kinderbetreuungZumutbarAbMonaten: Parameter<number>;
+  /** Nur für die Folgen-Karten (M4): Kinder unter diesem Alter brauchen Betreuung (FW § 10 Kap. 2.3 Abs. 3). */
+  kinderbetreuungBedarfUnterJahren: Parameter<number>;
 }
 
 export interface KizParameter {
@@ -75,6 +86,26 @@ export interface KizParameter {
   vermoegensgrenze: Parameter<{ berechtigtCent: Cent; jeWeiterePersonCent: Cent }>;
   erweiterterZugang: Parameter<{ hoechstensFehlbetragCent: Cent; mindestensAbsetzbetraegeErwerbCent: Cent }>;
   rundung: Parameter<"kaufmaennisch_euro_gesamt">;
+  /** Nur für die Folgen-Karten zu 2027: an diesem Tag war der Entwurf BT-Drs. 21/7860 nicht beschlossen. */
+  entwurfGeprueftAm: Parameter<string>;
+}
+
+/**
+ * Nur für die Folgen-Karte zur Krankenversicherung (M4): Mindestbeitrag einer freiwilligen Versicherung ohne
+ * eigenes Einkommen. Beitragssätze in Hundertstel Prozent (1400 = 14,00 %).
+ */
+export interface KvParameter {
+  bezugsgroesse: Parameter<Cent>;
+  mindestbemessung: Parameter<{ teilJeKalendertag: number; tageJeMonat: number }>;
+  beitragssatzErmaessigt: Parameter<number>;
+  zusatzbeitragDurchschnitt: Parameter<number>;
+  pflegeBeitragssatz: Parameter<{
+    eltern: number;
+    abschlagJeKind: number;
+    abschlagAbKind: number;
+    abschlagBisKind: number;
+    kinderUnterJahren: number;
+  }>;
 }
 
 /** Betrag nach Zahl der Haushaltsmitglieder: Stelle 0 = eine Person, ab der letzten Stelle jeWeiterePerson dazu. */
@@ -104,6 +135,8 @@ export interface WohngeldParameter {
   vermoegensgrenze: Parameter<{ erstesMitgliedCent: Cent; jeWeiteresMitgliedCent: Cent; hoechstensCent: Cent | null }>;
   geringfuegigkeitsgrenze: Parameter<Cent>;
   abzuegeSchaetzung: Parameter<{ steuerAbPromilleVomBrutto: number }>;
+  /** Nur für die Folgen-Karten zu 2027: an diesem Tag war der Entwurf BT-Drs. 21/8284 nicht beschlossen. */
+  entwurfGeprueftAm: Parameter<string>;
 }
 
 export interface ButParameter {
@@ -126,6 +159,7 @@ export interface Rechtsstand {
   kiz: KizParameter;
   wohngeld: WohngeldParameter;
   but: ButParameter;
+  kv: KvParameter;
   mietenstufen: MietenstufenFassung;
   hinweise: RechtsstandHinweis[];
 }
@@ -167,7 +201,7 @@ function pruefeTeil<T>(
 const SGB2_TEXTWERTE = {
   wohnkosten: ["tatsaechliche_kosten"],
   rundung: ["kaufmaennisch_cent"],
-  sofortzuschlagOhneAnspruch: ["wenn_luecke_ohne_kindergeld_positiv"],
+  sofortzuschlagOhneAnspruch: ["nicht_ohne_leistungsbezug", "wenn_luecke_ohne_kindergeld_positiv"],
 } as const;
 const KIZ_TEXTWERTE = { rundung: ["kaufmaennisch_euro_gesamt"] } as const;
 const WOHNGELD_TEXTWERTE = {
@@ -182,17 +216,24 @@ function stand(
   dateien: {
     sgb2: Roh<Sgb2Parameter>;
     kiz: Roh<KizParameter>;
+    kv: Roh<KvParameter>;
     wohngeld: Roh<WohngeldParameter>;
     but: Roh<ButParameter>;
   },
   hinweise: RechtsstandHinweis[],
 ): Rechtsstand {
+  const kiz = pruefeTeil("kiz.json", gueltigAb, dateien.kiz, KIZ_TEXTWERTE);
+  const wohngeld = pruefeTeil("wohngeld.json", gueltigAb, dateien.wohngeld, WOHNGELD_TEXTWERTE);
+  for (const [datei, p] of [["kiz.json", kiz.entwurfGeprueftAm], ["wohngeld.json", wohngeld.entwurfGeprueftAm]] as const) {
+    if (!istDatum(p.wert)) throw new Error(`parameter/${gueltigAb}/${datei}: entwurfGeprueftAm ist kein Datum.`);
+  }
   return {
     gueltigAb,
     sgb2: pruefeTeil("sgb2.json", gueltigAb, dateien.sgb2, SGB2_TEXTWERTE),
-    kiz: pruefeTeil("kiz.json", gueltigAb, dateien.kiz, KIZ_TEXTWERTE),
-    wohngeld: pruefeTeil("wohngeld.json", gueltigAb, dateien.wohngeld, WOHNGELD_TEXTWERTE),
+    kiz,
+    wohngeld,
     but: pruefeTeil("but.json", gueltigAb, dateien.but, BUT_TEXTWERTE),
+    kv: pruefeTeil("kv.json", gueltigAb, dateien.kv, {}),
     mietenstufen: mietenstufenZum(gueltigAb),
     hinweise,
   };
@@ -231,6 +272,7 @@ export const RECHTSSTAENDE: readonly Rechtsstand[] = [
     {
       sgb2: sgb2_2026_07_01 satisfies Roh<Sgb2Parameter>,
       kiz: kiz_2026_07_01 satisfies Roh<KizParameter>,
+      kv: kv_2026_07_01 satisfies Roh<KvParameter>,
       wohngeld: wohngeld_2026_07_01 satisfies Roh<WohngeldParameter>,
       but: but_2026_07_01 satisfies Roh<ButParameter>,
     },
@@ -244,6 +286,7 @@ export const RECHTSSTAENDE: readonly Rechtsstand[] = [
     {
       sgb2: sgb2_2027_01_01 satisfies Roh<Sgb2Parameter>,
       kiz: kiz_2027_01_01 satisfies Roh<KizParameter>,
+      kv: kv_2027_01_01 satisfies Roh<KvParameter>,
       wohngeld: wohngeld_2027_01_01 satisfies Roh<WohngeldParameter>,
       but: but_2027_01_01 satisfies Roh<ButParameter>,
     },
@@ -255,6 +298,7 @@ export const RECHTSSTAENDE: readonly Rechtsstand[] = [
     {
       sgb2: sgb2_2028_01_01 satisfies Roh<Sgb2Parameter>,
       kiz: kiz_2028_01_01 satisfies Roh<KizParameter>,
+      kv: kv_2028_01_01 satisfies Roh<KvParameter>,
       wohngeld: wohngeld_2028_01_01 satisfies Roh<WohngeldParameter>,
       but: but_2028_01_01 satisfies Roh<ButParameter>,
     },
@@ -262,7 +306,7 @@ export const RECHTSSTAENDE: readonly Rechtsstand[] = [
   ),
 ];
 
-function istDatum(text: string): boolean {
+export function istDatum(text: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(text)) return false;
   const datum = new Date(`${text}T00:00:00Z`);
   return !Number.isNaN(datum.getTime()) && datum.toISOString().slice(0, 10) === text;

@@ -262,10 +262,14 @@ describe("Sofortzuschlag für Kinder (§ 72 SGB II)", () => {
     expect(rechne(testhaushalt("T01").eingabe).sofortzuschlag).toEqual({ kinder: 2, betrag: 5000 });
   });
 
-  it("Haushalt nur wegen des Kindergelds ohne Anspruch (T09): 25 € je Kind, Status pruefen (Abs. 1 Satz 2 Nr. 2)", () => {
-    // Lücke A −286 €, ohne die 518 € Kindergeld +232 €. Entscheidung von Nico am 28.10.2026.
+  // Haushalte, die nur wegen des angerechneten Kindergelds keinen Anspruch haben: kein Sofortzuschlag. Die Fachlichen
+  // Weisungen zu § 72 (Rz. 72.7) beschreiben Abs. 1 Satz 2 Nr. 2 nur für Kinder leistungsbeziehender Eltern.
+  // Entscheidung von Nico am 28.10.2026 (M4, ersetzt die Entscheidung aus M3). Der Parameter bleibt auf pruefen und
+  // erscheint als Hinweis, wenn die Regel das Ergebnis bestimmt (Wortlaut gegen Weisungen, offene-rechtsfragen Punkt 7).
+  it("Haushalt nur wegen des Kindergelds ohne Anspruch (T09): kein Sofortzuschlag nach den Weisungen, Hinweis pruefen", () => {
+    // Lücke A −286 €, ohne die 518 € Kindergeld +232 €.
     const e = rechne(testhaushalt("T09").eingabe);
-    expect(e.sofortzuschlag).toEqual({ kinder: 2, betrag: 5000 });
+    expect(e.sofortzuschlag).toEqual({ kinder: 0, betrag: 0 });
     expect(e.parameterHinweise).toContainEqual(
       expect.objectContaining({ name: "sgb2.sofortzuschlagOhneAnspruch", status: "pruefen" }),
     );
@@ -274,6 +278,7 @@ describe("Sofortzuschlag für Kinder (§ 72 SGB II)", () => {
   it("Gegenrechnung ohne Kindergeld: Kind außerhalb, das nur mit Kindergeld seinen Bedarf deckt, käme zurück", () => {
     // Alleinerziehend, bereinigt 950 € (Brutto 1.500, Netto 1.328), Kind 15 mit 600 € Unterhalt, Wohnkosten 600 €.
     // Lücke A −107,44 €. Ohne Kindergeld: Kind in der BG, Bedarf 1.701,56 € − Einkommen 1.550 € = +151,56 €.
+    // Nach dem Wortlaut gäbe es den Sofortzuschlag; nach den Weisungen nicht. Der Hinweis zeigt, dass die Regel greift.
     const h = haushalt({
       erwachsene: [erwachsener({ brutto: 150000, netto: 132800 })],
       kinder: [kind(15, 60000)],
@@ -281,18 +286,17 @@ describe("Sofortzuschlag für Kinder (§ 72 SGB II)", () => {
     });
     const e = rechne(h);
     expect(e.lueckeA).toBe(-10744);
-    expect(e.sofortzuschlag).toEqual({ kinder: 1, betrag: 2500 });
+    expect(e.sofortzuschlag).toEqual({ kinder: 0, betrag: 0 });
+    expect(e.parameterHinweise.map((p) => p.name)).toContain("sgb2.sofortzuschlagOhneAnspruch");
   });
 
-  it("Sofortzuschlag ohne Anspruch bei unklarem Ersparten: mit Hinweis, dass Erspartes zuerst zählt", () => {
+  it("nur wegen Kindergeld ohne Anspruch, Erspartes unklar: kein Sofortzuschlag, kein Hinweis „Erspartes zuerst“", () => {
     const e = rechne({ ...testhaushalt("T09").eingabe, vermoegen: { von: 2000000, bis: 4000000 } });
-    expect(e.sofortzuschlag.betrag).toBe(5000);
-    expect(e.hinweise).toContainEqual({ code: "erspartes_zuerst_einsetzen" });
+    expect(e.sofortzuschlag.betrag).toBe(0);
+    expect(e.hinweise).not.toContainEqual({ code: "erspartes_zuerst_einsetzen" });
   });
 
-  it("Lücke (offene Rechtsfragen Punkt 9): nur wegen Kindergeld ohne Anspruch, Erspartes sicher über dem Freibetrag: kein Sofortzuschlag", () => {
-    // Folgerichtig wären 25 € je Kind, sobald das Ersparte bis auf den Freibetrag eingesetzt ist. Version 0 bildet das
-    // nicht ab. Bei unklarem Ersparten gibt es den Sofortzuschlag dagegen (Test oben).
+  it("nur wegen Kindergeld ohne Anspruch, Erspartes sicher über dem Freibetrag: kein Sofortzuschlag", () => {
     const e = rechne({ ...testhaushalt("T09").eingabe, vermoegen: { von: 10000000, bis: 10000000 } });
     expect(e.sofortzuschlag).toEqual({ kinder: 0, betrag: 0 });
   });

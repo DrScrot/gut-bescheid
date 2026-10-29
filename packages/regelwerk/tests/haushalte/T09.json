@@ -2,7 +2,7 @@
   "id": "T09",
   "haushalt": "Paar, Kinder 14 und 16, Regensburg",
   "prueftVorAllem": "kein Anspruch auf Grundsicherung",
-  "erwartung": "Weg B deckt den Bedarf; Weg A: keine Grundsicherung (Lücke A −286 €), nur Sofortzuschlag 2 × 25 € (prüfen)",
+  "erwartung": "Weg B deckt den Bedarf; Weg A: keine Grundsicherung (Lücke A −286 €) und kein Sofortzuschlag (nach den Weisungen zu § 72, prüfen)",
   "stichtag": "2026-07-01",
   "eingabe": {
     "gemeinde": { "name": "Regensburg, Stadt", "kreis": null },
@@ -37,7 +37,7 @@
       "freibetrag": 37800,
       "anspruch": "nein_einkommen",
       "pruefen": ["sgb2.sofortzuschlagOhneAnspruch"],
-      "quelle": "Fachkonzept v0, Tabelle Testhaushalte (Bedarf in M2 von Hand vorgerechnet), Stand 26.10.2026. Sofortzuschlag 2 × 25 € nach § 72 Abs. 1 Satz 2 Nr. 2 SGB II: Entscheidung von Nico am 28.10.2026, Status pruefen"
+      "quelle": "Fachkonzept v0, Tabelle Testhaushalte (Bedarf in M2 von Hand vorgerechnet), Stand 26.10.2026. Kein Sofortzuschlag: Fachliche Weisungen der BA zu § 72 SGB II, Rz. 72.7; Entscheidung von Nico am 28.10.2026 in M4 (ersetzt 2 × 25 € aus M3), Status pruefen"
     },
     "wohngeld": {
       "betrag": 22500,
@@ -55,6 +55,21 @@
       "ergebnis": "weg_b_deckt",
       "fehlbetrag": null,
       "quelle": "Nico, 28.10.2026: keine Grundsicherung, aber KiZ und Wohngeld. Fehlbetrag nicht festgelegt, weil das Wohngeld 1 € abweicht."
-    }
+    },
+    "folgen": [
+      {
+        "stichtag": "2026-07-01",
+        "einordnung": "einordnung_ohne_grundsicherung",
+        "wegA": ["a_kein_geld","a_zustaendig"],
+        "wegB": ["b_arbeit_und_betreuung","b_krankenversicherung","b_kiz_6_monate","b_kiz_ab_antragsmonat","b_wohngeld_12_monate","b_wohngeld_aenderungen","b_erspartes_kiz","b_erspartes_wohngeld","b_wohnung","b_kontoauszuege","b_wohngeld_2027","b_einkommen_zaehlt","b_zustaendig"],
+        "beide": ["beide_bildung_teilhabe"],
+        "naechsterSchritt": {"art":"einer","ids":["kiz_und_wohngeld_online"]},
+        "unterlagen": {
+          "wegA": [],
+          "wegB": ["kiz_lohn","kiz_wohnkosten","kiz_fahrtkosten","kiz_versicherungen","kiz_aufenthaltstitel","wohngeld_mietvertrag","wohngeld_mietbescheinigung","wohngeld_mietzahlung","wohngeld_verdienst","wohngeld_bescheide","wohngeld_versicherung","wohngeld_vermoegen","wohngeld_schulbescheinigung","wohngeld_aufenthaltstitel"]
+        },
+        "quelle": "Von Hand aus folgen/*.json und den Bedingungen abgeleitet (Claude, 28.10.2026). Weg A ohne Sofortzuschlag nach Entscheidung von Nico am 28.10.2026. Reihenfolge und Auswahl von Nico noch freizugeben."
+      }
+    ]
   }
 }

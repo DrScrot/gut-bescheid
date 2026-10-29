@@ -60,9 +60,59 @@ describe("Parameterdateien", () => {
     expect(erweiterterZugang.hinweis).toContain("geht über den Wortlaut von § 6a Abs. 1a Nr. 1 BKGG hinaus");
   });
 
-  it("Sofortzuschlag für Haushalte nur wegen Kindergeld ohne Anspruch: Status pruefen", () => {
+  it("Sofortzuschlag für Haushalte nur wegen Kindergeld ohne Anspruch: nicht ohne Leistungsbezug (FW § 72 Rz. 72.7), Status pruefen", () => {
     for (const stichtag of ["2026-07-01", "2027-01-01", "2028-01-01"]) {
-      expect(rechtsstandZumStichtag(stichtag).sgb2.sofortzuschlagOhneAnspruch.status).toBe("pruefen");
+      const p = rechtsstandZumStichtag(stichtag).sgb2.sofortzuschlagOhneAnspruch;
+      expect(p.wert).toBe("nicht_ohne_leistungsbezug");
+      expect(p.status).toBe("pruefen");
+      expect(p.fundstelle).toContain("Rz. 72.7");
+    }
+  });
+
+  it("Stand der Gesetzentwürfe 2027 als Datum, in jedem Stand (für die Folgen-Karten)", () => {
+    for (const stand of RECHTSSTAENDE) {
+      expect(stand.kiz.entwurfGeprueftAm).toMatchObject({ wert: "2026-10-28", status: "geprueft" });
+      expect(stand.kiz.entwurfGeprueftAm.fundstelle).toContain("BT-Drs. 21/7860");
+      expect(stand.wohngeld.entwurfGeprueftAm).toMatchObject({ wert: "2026-10-28", status: "geprueft" });
+      expect(stand.wohngeld.entwurfGeprueftAm.fundstelle).toContain("BT-Drs. 21/8284");
+    }
+  });
+
+  it("Krankenversicherung (M4): Bezugsgröße 2026, ermäßigter Satz, Ø-Zusatzbeitrag, Pflege mit Kinderabschlag", () => {
+    const kv = rechtsstandZumStichtag("2026-07-01").kv;
+    expect(kv.bezugsgroesse).toMatchObject({ wert: 395500, status: "geprueft" });
+    expect(kv.bezugsgroesse.fundstelle).toContain("SVBezGrV 2026");
+    expect(kv.beitragssatzErmaessigt).toMatchObject({ wert: 1400, status: "geprueft" });
+    expect(kv.zusatzbeitragDurchschnitt).toMatchObject({ wert: 290, status: "geprueft" });
+    expect(kv.zusatzbeitragDurchschnitt.fundstelle).toContain("BAnz AT 10.11.2025 B7");
+    expect(kv.mindestbemessung).toMatchObject({ wert: { teilJeKalendertag: 90, tageJeMonat: 30 }, status: "geprueft" });
+    expect(kv.pflegeBeitragssatz).toMatchObject({
+      wert: { eltern: 360, abschlagJeKind: 25, abschlagAbKind: 2, abschlagBisKind: 5, kinderUnterJahren: 25 },
+      status: "geprueft",
+    });
+    expect(kv.pflegeBeitragssatz.fundstelle).toContain("PBAV 2025");
+  });
+
+  it("Krankenversicherung 2027: Bezugsgröße 4.130 € nach der Verordnung der Bundesregierung, geplant (Nico, 29.10.2026)", () => {
+    const kv = rechtsstandZumStichtag("2027-01-01").kv;
+    expect(kv.bezugsgroesse).toMatchObject({ wert: 413000, status: "geplant", gueltigAb: "2027-01-01" });
+    expect(kv.bezugsgroesse.fundstelle).toContain("BR-Drs. 576/26");
+    expect(kv.zusatzbeitragDurchschnitt).toMatchObject({ wert: 290, status: "pruefen" });
+  });
+
+  it("Krankenversicherung 2028: Bezugsgröße wie 2027 fortgeschrieben, pruefen (noch keine Verordnung für 2028)", () => {
+    const kv = rechtsstandZumStichtag("2028-01-01").kv;
+    expect(kv.bezugsgroesse).toMatchObject({ wert: 413000, status: "pruefen" });
+    expect(kv.zusatzbeitragDurchschnitt).toMatchObject({ wert: 290, status: "pruefen" });
+  });
+
+  it("Kinderbetreuung (M4): 14 Monate nach § 10 Abs. 1 Nr. 3 SGB II, Betreuungsbedarf unter 14 Jahren, in jedem Stand", () => {
+    for (const stand of RECHTSSTAENDE) {
+      const { kinderbetreuungZumutbarAbMonaten: monate, kinderbetreuungBedarfUnterJahren: jahre } = stand.sgb2;
+      expect(monate).toMatchObject({ wert: 14, status: "geprueft", gueltigAb: "2026-07-01" });
+      expect(monate.fundstelle).toContain("§ 10 Abs. 1 Nr. 3 SGB II");
+      expect(jahre).toMatchObject({ wert: 14, status: "geprueft", gueltigAb: "2026-07-01" });
+      expect(jahre.fundstelle).toContain("Kap. 2.3 Abs. 3");
     }
   });
 

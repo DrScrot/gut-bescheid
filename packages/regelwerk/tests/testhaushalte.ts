@@ -11,6 +11,19 @@ import T08 from "./haushalte/T08.json";
 import T09 from "./haushalte/T09.json";
 import T10 from "./haushalte/T10.json";
 
+/** M4: Folgen zu einem Stichtag. Karten je Weg in der Reihenfolge der Anzeige, nächster Schritt und Unterlagen als ids. */
+export interface FolgenSoll {
+  stichtag: string;
+  einordnung: string;
+  wegA: string[];
+  wegB: string[];
+  beide: string[];
+  /** einer: genau ein Schritt. wahl: je ein Schritt für Weg A und Weg B, in dieser Reihenfolge. */
+  naechsterSchritt: { art: "einer" | "wahl"; ids: string[] };
+  unterlagen: { wegA: string[]; wegB: string[] };
+  quelle: string;
+}
+
 export interface Testhaushalt {
   id: string;
   haushalt: string;
@@ -58,6 +71,7 @@ export interface Testhaushalt {
       fehlbetrag: Cent | null;
       quelle: string;
     } | null;
+    folgen?: FolgenSoll[];
   };
 }
 

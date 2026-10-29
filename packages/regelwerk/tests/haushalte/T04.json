@@ -47,6 +47,21 @@
       "ergebnis": "nur_weg_a",
       "fehlbetrag": 104600,
       "quelle": "Lücke A 1.737 € minus Wohngeld 691 €; ohne KiZ (Nico, 28.10.2026: „nur Weg A, kein KiZ“)"
-    }
+    },
+    "folgen": [
+      {
+        "stichtag": "2026-07-01",
+        "einordnung": "einordnung_nur_weg_a",
+        "wegA": ["a_kinderbetreuung_ab_14_monate","a_partner","a_arbeit","a_erstgespraech","a_meldetermine","a_kuerzungen","a_arbeit_abgelehnt","a_wohnung","a_erspartes","a_kontoauszuege","a_krankenversicherung","a_ab_wann_geld","a_bewilligung","a_aenderungen","a_einkommen_zaehlt","a_zustaendig"],
+        "wegB": ["b_arbeit_und_betreuung","b_krankenversicherung","b_wohngeld_12_monate","b_wohngeld_aenderungen","b_erspartes_wohngeld","b_wohnung","b_kontoauszuege","b_wohngeld_2027","b_einkommen_zaehlt","b_zustaendig"],
+        "beide": ["beide_bildung_teilhabe"],
+        "naechsterSchritt": {"art":"einer","ids":["grundsicherung_online"]},
+        "unterlagen": {
+          "wegA": ["sgb2_ausweis","sgb2_kontoauszuege","sgb2_lohn","sgb2_mietvertrag","sgb2_nebenkosten","sgb2_mietquittungen","sgb2_ausgaben","sgb2_vermoegen"],
+          "wegB": ["wohngeld_mietvertrag","wohngeld_mietbescheinigung","wohngeld_mietzahlung","wohngeld_verdienst","wohngeld_versicherung","wohngeld_vermoegen","wohngeld_aufenthaltstitel"]
+        },
+        "quelle": "Von Hand aus folgen/*.json und den Bedingungen abgeleitet (Claude, 28.10.2026). Reihenfolge und Auswahl von Nico noch freizugeben."
+      }
+    ]
   }
 }

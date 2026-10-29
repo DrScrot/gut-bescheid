@@ -161,11 +161,29 @@
     "hinweis": "Für Kinder mit Anspruch auf Grundsicherungsgeld (Regelbedarfsstufen 3 bis 6), auch für Kinder, die nur wegen des Kindergelds keinen Anspruch haben (Satz 2 Nr. 2). Kinder, die nur einen Anspruch auf Bildung und Teilhabe haben (Satz 2 Nr. 1), rechnet Version 0 nicht. Haushalte, die nur wegen des Kindergelds keinen Anspruch haben: siehe sofortzuschlagOhneAnspruch. Laut Begründung zum Entwurf des Haushaltsbegleitgesetzes 2027 (BT-Drs. 21/7860) soll auch der Sofortzuschlag im SGB II überprüft und angepasst werden, bei der Aktualisierung des Regelbedarfsermittlungsgesetzes noch 2026."
   },
   "sofortzuschlagOhneAnspruch": {
-    "wert": "wenn_luecke_ohne_kindergeld_positiv",
+    "wert": "nicht_ohne_leistungsbezug",
     "einheit": "Regel",
-    "fundstelle": "§ 72 Abs. 1 Satz 2 Nr. 2 SGB II (Wortlaut: Kinder, die „nur deshalb keinen Anspruch auf Grundsicherungsgeld haben, weil im Rahmen der Prüfung der Hilfebedürftigkeit Kindergeld berücksichtigt wurde“)",
+    "fundstelle": "§ 72 Abs. 1 Satz 2 Nr. 2 SGB II; Fachliche Weisungen der BA zu § 72 SGB II, Kap. 2.3 Abs. 1 (Rz. 72.7, Stand 21.01.2025): Satz 2 Nr. 2 gilt für Kinder, „die mit ihren leistungsbeziehenden Eltern … in einem Haushalt leben“",
     "status": "pruefen",
-    "hinweis": "Hat der Haushalt keinen Anspruch, hätte er ihn aber ohne das angerechnete Kindergeld (Lücke A ohne Kindergeld > 0), zeigt Weg A je Kind 25 € Sofortzuschlag. Gerechnet wird mit dem ganzen Kindergeld des Haushalts, nicht je Kind; bei T09 entscheidet das (je Kind, Werte von 2026: −286 + 259 = −27 €, kein Sofortzuschlag). Entscheidung von Nico am 28.10.2026. Status pruefen: Die Anwendung auf ganze Haushalte ohne Anspruch ist in den Fachlichen Weisungen zu § 72 nicht nachgelesen (PDF nicht lesbar). Weg B bekommt ihn nicht dazu: 2026 steckt er im KiZ (§ 6a Abs. 2 Satz 4 BKGG; das ist eine Auslegung). Für 2027 streicht der Entwurf BT-Drs. 21/7860 den Sofortzuschlag im KiZ; ob KiZ-Haushalte ihn dann nach § 72 SGB II bekommen, ist offen.",
+    "hinweis": "Hat der ganze Haushalt nur wegen des angerechneten Kindergelds keinen Anspruch (Lücke A ohne Kindergeld > 0, gerechnet mit dem ganzen Kindergeld des Haushalts), zeigt Weg A keinen Sofortzuschlag. Entscheidung von Nico am 28.10.2026 (M4): Jobcenter entscheiden nach den Weisungen, Gut Bescheid zeigt kein Geld, das in der Praxis abgelehnt wird. Sie ersetzt die Entscheidung aus M3 (Wert wenn_luecke_ohne_kindergeld_positiv: 25 € je Kind; bei T09 je Kind gerechnet, Werte von 2026: −286 + 259 = −27 €, also auch dann keiner). Status pruefen: Der Wortlaut („nur deshalb keinen Anspruch …, weil … Kindergeld berücksichtigt wurde“) ließe den Sofortzuschlag zu; die Weisungen stammen von vor dem 13. SGB-II-ÄndG (offene-rechtsfragen.md Punkt 7). Der Parameter erscheint als Hinweis, wenn die Regel das Ergebnis bestimmt. Weg B bekommt ihn nicht dazu: 2026 steckt er im KiZ (§ 6a Abs. 2 Satz 4 BKGG; das ist eine Auslegung). Für 2027 streicht der Entwurf BT-Drs. 21/7860 den Sofortzuschlag im KiZ; ob KiZ-Haushalte ihn dann nach § 72 SGB II bekommen, ist offen.",
     "gueltigAb": "2026-07-01"
+  },
+  "kinderbetreuungZumutbarAbMonaten": {
+    "wert": 14,
+    "einheit": "vollendete Lebensmonate des Kindes",
+    "fundstelle": "§ 10 Abs. 1 Nr. 3 SGB II i. d. F. des Dreizehnten Gesetzes zur Änderung des SGB II vom 16.04.2026 (BGBl. 2026 I Nr. 107); Fachliche Weisungen der BA zu § 10 SGB II, Kap. 2.3 Abs. 4 und 5 (Stand 01.07.2026)",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28",
+    "hinweis": "Hat das Kind den 14. Lebensmonat vollendet, ist die Erziehung in der Regel nicht gefährdet, soweit die Betreuung sichergestellt ist. Davor muss ein Elternteil in der Regel nicht arbeiten; Paare können sich nicht beide für dieselben Zeiträume darauf berufen (FW Kap. 2.3 Abs. 4). Nur für die Folgen-Karten, ohne Einfluss auf die Rechnung."
+  },
+  "kinderbetreuungBedarfUnterJahren": {
+    "wert": 14,
+    "einheit": "Jahre",
+    "fundstelle": "Fachliche Weisungen der BA zu § 10 SGB II, Kap. 2.3 Abs. 3 (Stand 01.07.2026): bei Jugendlichen im Sinne von § 1 Abs. 1 Nr. 2 JuSchG (14 bis unter 18 Jahre) in der Regel kein Betreuungsbedarf",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28",
+    "hinweis": "Nur für die Folgen-Karten: Für Kinder unter 14 Jahren muss die Betreuung gesichert sein, damit das Jobcenter Arbeit verlangen kann."
   }
 }

@@ -73,8 +73,8 @@ export function berechne(haushalt: Haushalt, optionen: { stichtag: string }): Er
     sgb2.anspruch === "nein_vermoegen" && sgb2.vermoegen.ueberFreibetrag.von >= fehlbetrag;
   const nachEinsatzDesErsparten = sgb2.anspruch === "nein_vermoegen" && !wegAWegenVermoegenAusgeschlossen;
   const wegAHatAnspruch = sgb2.anspruch === "ja" || sgb2.anspruch === "unklar_vermoegen";
-  // Den Sofortzuschlag gibt es auch ohne Grundsicherung, wenn nur das Kindergeld den Anspruch verhindert (sgb2.ts).
-  // Auf Weg B kommt er nicht dazu: 2026 steckt er im KiZ (§ 6a Abs. 2 Satz 4 BKGG). Ob KiZ-Haushalte ihn 2027 nach
+  // Ob es den Sofortzuschlag auch ohne Grundsicherung gibt, wenn nur das Kindergeld den Anspruch verhindert, regelt
+  // der Parameter sofortzuschlagOhneAnspruch (sgb2.ts; seit 28.10.2026 nicht). Auf Weg B kommt er nicht dazu: 2026 steckt er im KiZ (§ 6a Abs. 2 Satz 4 BKGG). Ob KiZ-Haushalte ihn 2027 nach
   // dem Entwurf (Sofortzuschlag im KiZ gestrichen) nach § 72 SGB II bekommen, ist offen (docs/offene-rechtsfragen.md).
   const sofortzuschlag = wegAWegenVermoegenAusgeschlossen ? 0 : sgb2.sofortzuschlag.betrag;
   const wegA = {

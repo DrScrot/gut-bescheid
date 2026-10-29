@@ -268,7 +268,7 @@
     "fundstelle": "Schätzregel Gut Bescheid zu § 16 WoGG, freigegeben von Nico am 28.10.2026. Höchster Arbeitnehmeranteil 2026 rund 21,75 %: KV 14,6 % ÷ 2 (§ 241 SGB V) + Ø-Zusatzbeitrag 2,9 % ÷ 2 + PV 3,6 % ÷ 2 (§ 1 PBAV 2025) + Kinderlosenzuschlag 0,6 % (§ 55 Abs. 3 SGB XI) + RV 18,6 % ÷ 2 + AV 2,6 % ÷ 2 (§ 341 Abs. 2 SGB III); dazu Puffer für teurere Krankenkassen",
     "gueltigAb": "2026-07-01",
     "status": "pruefen",
-    "hinweis": "Schätzung, kein Gesetzeswert. Ø-Zusatzbeitrag 2026 (Bekanntmachung BMG vom 10.11.2025) und RV-Beitragssatz 18,6 % nur aus Sekundärquellen. Irrt in beide Richtungen: Bei Midijobs kann eine kleine Lohnsteuer übersehen werden (Wohngeld zu niedrig). Enthält das Netto andere Abzüge, etwa Entgeltumwandlung, vermögenswirksame Leistungen oder eine Pfändung, wird fälschlich Steuer angenommen (Wohngeld zu hoch)."
+    "hinweis": "Schätzung, kein Gesetzeswert. Ø-Zusatzbeitrag 2026 im Original gelesen (Bekanntmachung des BMG vom 07.11.2025, BAnz AT 10.11.2025 B7: 2,9 %); RV-Beitragssatz 18,6 % nur aus Sekundärquellen. Irrt in beide Richtungen: Bei Midijobs kann eine kleine Lohnsteuer übersehen werden (Wohngeld zu niedrig). Enthält das Netto andere Abzüge, etwa Entgeltumwandlung, vermögenswirksame Leistungen oder eine Pfändung, wird fälschlich Steuer angenommen (Wohngeld zu hoch)."
   },
   "obergrenzeMiete": {
     "wert": "hoechstens_miete",
@@ -285,5 +285,14 @@
     "gueltigAb": "2026-07-01",
     "status": "pruefen",
     "hinweis": "Version 0 zieht den Arbeitnehmer-Pauschbetrag ab. Ob die Wohngeldstellen das bei Minijobs so machen, ist nicht geprüft. Jedes Brutto bis zur Minijob-Grenze gilt als pauschal besteuerter Minijob."
+  },
+  "entwurfGeprueftAm": {
+    "wert": "2026-10-28",
+    "einheit": "Datum (JJJJ-MM-TT)",
+    "fundstelle": "Stand des Gesetzgebungsverfahrens zum Regierungsentwurf BT-Drs. 21/8284 vom 30.09.2026 (Wohngeld ab 1.1.2027): nicht beschlossen, Anhörung im Ausschuss am 4.11.2026 (Stand 28.10.2026)",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-28",
+    "hinweis": "Nur für die Folgen-Karten zu 2027 (Platzhalter {wohngeld.entwurfGeprueftAm}, „28. Oktober 2026“). Ändert sich der Stand des Verfahrens, Datum, Karten und Werte mit Status geplant zusammen nachziehen."
   }
 }

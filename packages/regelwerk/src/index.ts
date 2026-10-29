@@ -29,3 +29,28 @@ export {
 export { berechneKiz, type KizAnspruch, type KizErgebnis, type KizHinweis } from "./kiz";
 export { berechneBut, type ButErgebnis } from "./but";
 export { berechne, type Ergebnis, type Vergleichsergebnis } from "./vergleich";
+export { erfuellt, pruefeBedingung, type Bedingung, type FaktArt, type Wert } from "./bedingung";
+export { mindestbeitragFreiwillig, type Mindestbeitrag } from "./krankenversicherung";
+export {
+  FAKTEN,
+  FOLGEN,
+  PLATZHALTER,
+  ermittleFakten,
+  folgen,
+  ladeFolgen,
+  type Art,
+  type BerechnetesErgebnis,
+  type Dauer,
+  type FaktName,
+  type Fakten,
+  type Folgen,
+  type FolgenDaten,
+  type FolgenKarte,
+  type FolgenSchritt,
+  type FolgenText,
+  type FolgenUnterlage,
+  type Leistung,
+  type NaechsterSchritt,
+  type StatusHinweis,
+  type Weg,
+} from "./folgen";

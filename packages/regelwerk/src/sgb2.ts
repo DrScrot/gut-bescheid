@@ -226,21 +226,24 @@ export function berechneSgb2(haushalt: Haushalt, optionen: { stichtag: string })
   const anspruch = anspruchAus(lueckeA, vermoegensergebnis);
 
   // § 72 SGB II: 25 € je Kind mit Anspruch, auch für Kinder, die ihren Bedarf nur mit dem Kindergeld decken
-  // (Abs. 1 Satz 2 Nr. 2). Ebenso, wenn der ganze Haushalt nur wegen des angerechneten Kindergelds keinen Anspruch
-  // hat: Lücke A ohne Kindergeld wäre positiv. Ohne Kindergeld entfällt auch der Überhang samt der Pauschale, die
-  // nur seinetwegen abging, und Kinder außerhalb mit Einkommen unter ihrem Bedarf kämen in die Bedarfsgemeinschaft
-  // zurück. Gerechnet wird mit dem ganzen Kindergeld des Haushalts, nicht je Kind. Entscheidung von Nico am
-  // 28.10.2026, Status pruefen. Kinder mit nur einem Anspruch auf Bildung und Teilhabe (Nr. 1) rechnet Version 0
-  // nicht. Bei nein_vermoegen gilt der Sofortzuschlag für den Fall, dass nach Einsatz des Ersparten ein Anspruch
-  // besteht (vergleich.ts).
+  // (Abs. 1 Satz 2 Nr. 2). Hat der ganze Haushalt nur wegen des angerechneten Kindergelds keinen Anspruch (Lücke A
+  // ohne Kindergeld wäre positiv), entscheidet der Parameter sofortzuschlagOhneAnspruch: seit dem 28.10.2026 (M4)
+  // kein Sofortzuschlag nach den Fachlichen Weisungen (Rz. 72.7), Status pruefen. Er wird nur gemeldet, wenn die
+  // Regel greift. Ohne Kindergeld entfiele auch der Überhang samt der Pauschale, die nur seinetwegen abging, und
+  // Kinder außerhalb mit Einkommen unter ihrem Bedarf kämen in die Bedarfsgemeinschaft zurück. Gerechnet wird mit
+  // dem ganzen Kindergeld des Haushalts, nicht je Kind. Kinder mit nur einem Anspruch auf Bildung und Teilhabe
+  // (Nr. 1) rechnet Version 0 nicht. Bei nein_vermoegen gilt der Sofortzuschlag für den Fall, dass nach Einsatz des
+  // Ersparten ein Anspruch besteht (vergleich.ts).
   const zurueckOhneKindergeld = summe(
     kinderAusserhalb.map((k) => Math.max(k.regelbedarf + k.kopfteil - k.kind.einkommen, 0)),
   );
   const lueckeOhneKindergeld =
     lueckeA + kindergeld + kindergeldUeberhang - versicherungspauschaleAufUeberhang + zurueckOhneKindergeld;
   const nurWegenKindergeld =
-    anspruch === "nein_einkommen" && vermoegensergebnis !== "ueber_freibetrag" && lueckeOhneKindergeld > 0;
-  if (nurWegenKindergeld) p.merke("sofortzuschlagOhneAnspruch");
+    anspruch === "nein_einkommen" &&
+    vermoegensergebnis !== "ueber_freibetrag" &&
+    lueckeOhneKindergeld > 0 &&
+    p.nimm("sofortzuschlagOhneAnspruch") === "wenn_luecke_ohne_kindergeld_positiv";
   const kinderMitSofortzuschlag =
     anspruch !== "nein_einkommen" || nurWegenKindergeld
       ? kinderRechnung.filter((k) => k.inBg || k.kind.einkommen < k.regelbedarf + k.kopfteilWohnkosten).length
