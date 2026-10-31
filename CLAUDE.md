@@ -7,6 +7,8 @@ nach Betrag UND Folgen (Pflichten, Prüfungen, Fristen). Open Source, Lizenz EUP
 
 ## Quelle der Wahrheit
 - Fachlich: docs/fachkonzept-v0.md. Bei Widerspruch oder Lücke: nachfragen, nicht raten.
+  Beim Übernehmen eines Exports aus dem Claude-Doc Kopfzeile und Nutzerfluss-Diagramm aus dem alten Stand behalten,
+  alles andere per git diff prüfen und melden.
 - Jeder Parameter: { wert, fundstelle, gueltigAb, status } mit status "geprueft" | "aus_quelle" | "pruefen" | "geplant".
 
 ## Harte Regeln
