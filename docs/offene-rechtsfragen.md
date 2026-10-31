@@ -1,6 +1,6 @@
 # Offene Rechtsfragen
 
-Stand: 29.10.2026 (nach M4, zweite Runde) · Diese Liste ist für die Rechts- oder Sozialberatung gedacht. Sie sammelt alle Stellen, an denen das Regelwerk eine Annahme trifft, die ein Mensch mit Fachwissen prüfen sollte. Jeder Meilenstein ergänzt sie.
+Stand: 31.10.2026 (nach der Prüfung der Verhaltensdiagnose) · Diese Liste ist für die Rechts- oder Sozialberatung gedacht. Sie sammelt alle Stellen, an denen das Regelwerk eine Annahme trifft, die ein Mensch mit Fachwissen prüfen sollte. Jeder Meilenstein ergänzt sie.
 
 Je Punkt: die Frage, unsere Annahme, die Fundstellen und die Tests, die sich ändern, wenn die Antwort anders ausfällt. Im Regelwerk tragen die betroffenen Werte meist den Status `pruefen` und erscheinen im Ergebnis als Hinweis.
 
@@ -12,7 +12,9 @@ Je Punkt: die Frage, unsere Annahme, die Fundstellen und die Tests, die sich än
 - **Hintergrund:** Auf Weg A ist eine Person mit Grundsicherungsgeld in der Regel pflichtversichert (§ 5 Abs. 1 Nr. 2a SGB V, Ausnahmen nach § 5 Abs. 5a SGB V); einen Beitrag zahlt sie nicht selbst. Auf Weg B zahlen Kinderzuschlag und Wohngeld nichts für die Krankenkasse. Verheiratete können oft in die Familienversicherung (§ 10 Abs. 1 SGB V), unverheiratete Partner nicht. Sie müssen sich selbst versichern (§ 188 Abs. 4 SGB V oder freiwillig). Mindestbeitrag 2026 ohne eigenes Einkommen: beitragspflichtig mindestens 3.955 € ÷ 90 je Tag × 30 = 1.318,33 € (§ 240 Abs. 4 Satz 1, § 223 Abs. 2 SGB V), davon 14,0 % (§ 243 SGB V) + Ø-Zusatzbeitrag 2,9 % (BAnz AT 10.11.2025 B7) + Pflege 3,6 % für Eltern, vom zweiten bis zum fünften Kind unter 25 je 0,25 Punkte weniger (§ 55 Abs. 1 und Abs. 3 Satz 3 bis 5, § 57 Abs. 4 SGB XI; § 1 PBAV 2025). Das sind etwa 270 € (1 Kind), 267 € (2 Kinder), 264 € (3 Kinder). Werte in `parameter/<stand>/kv.json`, Rechnung in `src/krankenversicherung.ts`. Ab 2027 mit der geplanten Bezugsgröße von 4.130 € (Punkt 18): etwa 282 €, 279 € und 275 €.
 - **Unsere Annahme in Version 0 (M4):** Der Vergleich zieht den Beitrag noch nicht ab. Version 0 weiß nicht, ob ein Paar verheiratet ist und wie jede Person versichert ist. Die Karte `b_krankenversicherung` nennt den Beitrag: „Ohne Einkommen sind das nach den Regeln etwa {kv.mindestbeitrag} im Monat oder mehr.“
 - **Entscheidung von Nico am 29.10.2026, gehört zum Umfang von M5:** Sobald die Fragen „Seid ihr verheiratet?“ und „Wie ist jede erwachsene Person krankenversichert?“ da sind, zieht der Vergleich den Beitrag auf Weg B ab. Das ist eine Änderung an der Rechnung (vergleich.ts, Tests und Sollwerte), nicht „später“. Dabei mitprüfen: den Zuschuss nach § 26 Abs. 2 und 4 SGB II und seine Sperre für den erweiterten Zugang (§ 6a Abs. 1a Nr. 3 BKGG, siehe unten).
-- **Wechselwirkungen, ungeklärt:** Im SGB II mindern Beiträge zur Kranken- und Pflegeversicherung von Personen, die nicht versicherungspflichtig sind, das Einkommen (§ 11b Abs. 1 Satz 1 Nr. 3 Buchst. a SGB II); der Partner ohne Einkommen hat aber kein eigenes Einkommen, von dem sie abgehen könnten. Wer allein durch den Beitrag hilfebedürftig würde, bekommt vom Jobcenter einen Zuschuss in der nötigen Höhe (§ 26 Abs. 2 und 4 SGB II). Ob und wie das in die Prüfung des Kinderzuschlags einfließt, ob der Bedarf gedeckt ist (§ 6a Abs. 1 Nr. 3 BKGG), ist offen. Den erweiterten Zugang sperrt nach dem Wortlaut schon der Antrag auf einen solchen Zuschuss: Er ist eine Leistung nach dem Zweiten Buch (§ 6a Abs. 1a Nr. 3 BKGG: kein Mitglied der Bedarfsgemeinschaft „erhält oder beantragt“ Leistungen nach dem SGB II; Hinweis des rechts-pruefer vom 29.10.2026). Laut einem Jobcenter-Leitfaden gibt es keinen Sofortzuschlag, wenn nur dieser Zuschuss gezahlt wird (Sekundärquelle, nicht in den Weisungen gelesen); das passt zu Punkt 7.
+- **Entscheidung von Nico am 31.10.2026: echter Fehler, wird jetzt im Regelwerk behoben** (Ausnahme vom Freeze, weil das Ergebnis falsch ist). Grund ist DA-KiZ C.4.1 Abs. 5 (Stand 20.02.2026, vom rechts-pruefer am 31.10.2026 im Original gelesen): „Bei der Prüfung, ob die Hilfebedürftigkeit durch Kinderzuschlag beseitigt werden kann, müssen auch Beiträge zur Kranken- und Pflegeversicherung beachtet werden.“ Und: „Ein Anspruch auf Kinderzuschlag besteht nicht, sofern ergänzend ein Zuschuss nach § 26 SGB II notwendig wäre“. Damit ist die Wechselwirkung unten zum Zuschuss geklärt: Er rettet den Kinderzuschlag nicht. Eigener Schritt mit Plan vor der Umsetzung: Familienstand und Art der Krankenversicherung je Erwachsenem im Haushaltsmodell, Mindestbeitrag aus `kv.json`, DA-KiZ C.4.1 Abs. 5 als Fundstelle, T02, T06 und T07 neu mit Familienstand. Die Fragen dazu stellt erst die Oberfläche in M5.
+- **Korrektur zum Überschlag (rechts-pruefer, 31.10.2026):** T06 kippt in der Ergebnisart nicht. Weg A ist wegen des Ersparten ausgeschlossen, also bleibt `weg_b_deckt`; nur `restAusErspartem` wird wahr (`src/vergleich.ts`). Im Ergebnis ändern sich also T02 und T07; bei T06 ändern sich Fehlbetrag, Einordnung und Karten. Der Mindestbeitrag gilt auch mit Minijob, wenn weder Familien- noch Pflichtversicherung besteht (§ 240 Abs. 4 Satz 1 SGB V).
+- **Wechselwirkungen, bis 31.10.2026 ungeklärt (zum Zuschuss siehe die Entscheidung oben):** Im SGB II mindern Beiträge zur Kranken- und Pflegeversicherung von Personen, die nicht versicherungspflichtig sind, das Einkommen (§ 11b Abs. 1 Satz 1 Nr. 3 Buchst. a SGB II); der Partner ohne Einkommen hat aber kein eigenes Einkommen, von dem sie abgehen könnten. Wer allein durch den Beitrag hilfebedürftig würde, bekommt vom Jobcenter einen Zuschuss in der nötigen Höhe (§ 26 Abs. 2 und 4 SGB II). Ob und wie das in die Prüfung des Kinderzuschlags einfließt, ob der Bedarf gedeckt ist (§ 6a Abs. 1 Nr. 3 BKGG), ist offen. Den erweiterten Zugang sperrt nach dem Wortlaut schon der Antrag auf einen solchen Zuschuss: Er ist eine Leistung nach dem Zweiten Buch (§ 6a Abs. 1a Nr. 3 BKGG: kein Mitglied der Bedarfsgemeinschaft „erhält oder beantragt“ Leistungen nach dem SGB II; Hinweis des rechts-pruefer vom 29.10.2026). Laut einem Jobcenter-Leitfaden gibt es keinen Sofortzuschlag, wenn nur dieser Zuschuss gezahlt wird (Sekundärquelle, nicht in den Weisungen gelesen); das passt zu Punkt 7.
 - **Weitere Grenzen der Rechnung:**
   - Der Mindestbeitrag nimmt an, dass die Person Elternteil aller Kinder ist. Sind die Kinder nur vom anderen Partner, zahlt sie als Kinderlose den Zuschlag von 0,6 Punkten: 21,1 % × 1.318,33 € = etwa 278 €. Solche Patchwork-Familien sind nicht im Umfang von Version 0 (M5-Vormerkung „Patchwork-Frage“).
   - Bezugsgröße 2027: seit dem 29.10.2026 mit 4.130 €, Status `geplant` (Punkt 18).
@@ -32,9 +34,9 @@ Je Punkt: die Frage, unsere Annahme, die Fundstellen und die Tests, die sich än
   | T09 | Weg B deckt | −656 € | 267 € | −389 € | deckt weiter |
   | T10 | Weg B deckt | −489 € | 267 € | −222 € | deckt weiter |
 
-  Betroffen wären also alle Paare (T01, T02, T04 bis T10), im Ergebnis ändern würden sich T02, T06 und T07. Mit dem Zuschuss nach § 26 Abs. 2 und 4 SGB II könnte es anders aussehen.
+  Betroffen wären also alle Paare (T01, T02, T04 bis T10), im Ergebnis ändern würden sich T02, T06 und T07. Mit dem Zuschuss nach § 26 Abs. 2 und 4 SGB II könnte es anders aussehen. (Stand 29.10.2026; zu T06 und zum Zuschuss siehe die Korrektur und die Entscheidung vom 31.10.2026 oben.)
 - **Für M5 (im Umfang):** Fragen „Seid ihr verheiratet?“ und „Wie ist jede erwachsene Person krankenversichert?“ (etwa: über die Arbeit, über Arbeitslosengeld oder Krankengeld, über den Ehepartner oder die Ehepartnerin, selbst, privat, weiß nicht). Danach zieht der Vergleich den Beitrag auf Weg B ab und prüft den Zuschuss nach § 26 Abs. 2 und 4 SGB II mit.
-- **Fundstellen:** § 5 Abs. 1 Nr. 2a, § 10 Abs. 1, § 188 Abs. 4, § 223 Abs. 2, § 240 Abs. 4 Satz 1, § 242a, § 243 SGB V; §§ 55, 57 Abs. 4 SGB XI; § 1 PBAV 2025; § 1 SVBezGrV 2026; § 11b Abs. 1 Satz 1 Nr. 3, § 26 Abs. 2 und 4 SGB II; § 6a Abs. 1 Nr. 3 und Abs. 1a BKGG.
+- **Fundstellen:** § 5 Abs. 1 Nr. 2a, § 10 Abs. 1, § 188 Abs. 4, § 223 Abs. 2, § 240 Abs. 4 Satz 1, § 242a, § 243 SGB V; §§ 55, 57 Abs. 4 SGB XI; § 1 PBAV 2025; § 1 SVBezGrV 2026; § 11b Abs. 1 Satz 1 Nr. 3, § 26 Abs. 2 und 4 SGB II; § 6a Abs. 1 Nr. 3 und Abs. 1a BKGG; DA-KiZ C.4.1 Abs. 5.
 - **Betroffene Tests:** `krankenversicherung.test.ts`; `folgen.test.ts` „Krankenversicherung: Mindestbeitrag gerundet …“ und „ab 2027: Mindestbeitrag …“; `parameter.test.ts` „Krankenversicherung (M4) …“, „Krankenversicherung 2027 …“ und „Krankenversicherung 2028 …“. Zieht der Vergleich den Beitrag später ab: `vergleich.test.ts`, `haushalte.test.ts`, T01–T10 (soll.vergleich und soll.folgen).
 
 ## Kinderzuschlag
@@ -260,7 +262,8 @@ Die Karten stehen in `packages/regelwerk/folgen/*.json`, je Eintrag mit Fundstel
 
 - **Frage:** Werden Ansprüche übersehen, die es auch ohne Grundsicherung gibt?
 - **Unsere Annahme:** Version 0 bildet nicht ab: Bildung und Teilhabe für Haushalte, die nur deshalb hilfebedürftig wären (§ 7 Abs. 2 Satz 3, § 19 Abs. 3 SGB II), und den Sofortzuschlag nach § 72 Abs. 1 Satz 2 Nr. 1. Ergibt der Vergleich „kein Anspruch“, Weg A aber einen Sofortzuschlag (vergleich.ts), zeigt Gut Bescheid seit M4 den Schritt „Grundsicherung online beantragen“ statt „kein Antrag“. Seit Option B (Punkt 7) kommt das mit den heutigen Werten nicht mehr vor; die Bedingung bleibt für den Fall, dass sich das ändert.
-- **Fundstellen:** § 7 Abs. 2 Satz 3, § 19 Abs. 3, § 72 Abs. 1 Satz 2 Nr. 1 SGB II.
+- **Ergänzung (rechts-pruefer, 31.10.2026):** Auch ohne laufende Leistung gibt es Erstausstattung für die Wohnung, für Kleidung sowie bei Schwangerschaft und Geburt (§ 24 Abs. 3 Satz 3 und 4 SGB II). „Kein Anspruch“ heißt also „kein Geld jeden Monat“, nicht „auf keinem Weg Geld“. Der Schritt `kein_antrag` („auf keinem der beiden Wege Geld“) ist dadurch etwas zu absolut; die Einordnung `einordnung_kein_anspruch` ist richtig. Bis 30.11.2026 keine Textänderung (Freeze). Hebammen und „Geburt“ als Anlass stellt Nico zurück, bis Elterngeld gerechnet wird (31.10.2026).
+- **Fundstellen:** § 7 Abs. 2 Satz 3, § 19 Abs. 3, § 24 Abs. 3 Satz 3 und 4, § 72 Abs. 1 Satz 2 Nr. 1 SGB II.
 - **Betroffene Tests:** `folgen-bedingungen.test.ts` „grundsicherung_online“, „kein_antrag“ und „für jedes Ergebnis passt ein nächster Schritt“.
 
 ### 28. Nichterreichbarkeit eines Elternteils: Wirkung auf die Familie
@@ -286,20 +289,104 @@ Die Karten stehen in `packages/regelwerk/folgen/*.json`, je Eintrag mit Fundstel
 - **Fundstellen:** BGBl. 2026 I Nr. 228 (Verkündung auf recht.bund.de am 29.10.2026 gesehen, Wortlaut nicht gelesen); § 10 SGB V.
 - **Betroffene Tests:** keine (Text). Bei einer Änderung: `folgen.test.ts`, T09 (soll.folgen mit Stichtag 2028 gibt es noch nicht).
 
-### 32. Wohngeld in Großen Kreisstädten: eine andere Stelle als für Bildung und Teilhabe?
+### 32. Wohngeld in Großen Kreisstädten: eine andere Stelle als für Bildung und Teilhabe? – geklärt (31.10.2026)
 
 - **Frage:** Bearbeiten in Bayern auch Große Kreisstädte Wohngeld? Falls ja, sind Wohngeldstelle und Stelle für Bildung und Teilhabe verschieden. Für Bildung und Teilhabe neben Kinderzuschlag oder Wohngeld sind nur Landkreise und kreisfreie Städte zuständig (Art. 109a Abs. 1 AGSG).
-- **Unsere Annahme:** Nicht geprüft. Die Karten sagen vorsichtig „meist das Landratsamt, in manchen Städten die Stadt“ (`b_zustaendig`, Schritt `wohngeld_online`, `beide_bildung_teilhabe`). `b_zustaendig` sagt nach der Wohngeldstelle aber: „Dort beantragst du auch Bildung und Teilhabe.“ Das stimmt nicht, falls eine Große Kreisstadt Wohngeld bearbeitet. Wegen des Freeze bis 30.11.2026 keine Textänderung. Das Fachkonzept (Export vom 31.10.2026) nennt die Frage in der Zeile „Zuständig“.
+- **Ergebnis (rechts-pruefer, 31.10.2026, im Original gelesen):** Nein. Wohngeldbehörden „sind die Landkreise und die kreisfreien Gemeinden“ (§ 3 Abs. 1 Satz 1 ZustV). Große Kreisstädte haben nach § 2 GrKrV kein Wohngeld. Bildung und Teilhabe liegt bei derselben Körperschaft (Art. 109a Abs. 1 AGSG). Das Staatsministerium bestätigt: „Zuständige Wohngeldbehörde ist das Landratsamt oder die kreisfreie Stadt“ (Antwort vom 24.06.2026 auf Drs. 19/12543). `b_zustaendig` stimmt damit („Dort beantragst du auch Bildung und Teilhabe“). Nach dem Freeze präzisieren: „in manchen Städten“ wird „in kreisfreien Städten“ (`b_zustaendig`, `wohngeld_online`, `beide_bildung_teilhabe`). Ein Antrag bei jeder Gemeinde wahrt das Datum (§ 16 Abs. 1 Satz 2, Abs. 2 Satz 2 SGB I).
+- **Bisherige Annahme (bis 31.10.2026):** Nicht geprüft. Die Karten sagen vorsichtig „meist das Landratsamt, in manchen Städten die Stadt“ (`b_zustaendig`, Schritt `wohngeld_online`, `beide_bildung_teilhabe`). `b_zustaendig` sagt nach der Wohngeldstelle aber: „Dort beantragst du auch Bildung und Teilhabe.“ Das stimmt nicht, falls eine Große Kreisstadt Wohngeld bearbeitet. Wegen des Freeze bis 30.11.2026 keine Textänderung. Das Fachkonzept (Export vom 31.10.2026) nennt die Frage in der Zeile „Zuständig“.
 - **Für M5 (Gemeindeschlüssel, M5-Vormerkungen Punkt 2):** Mit dem amtlichen Gemeindeschlüssel die zuständige Wohngeldstelle je Gemeinde bestimmen und beide Stellen getrennt nennen.
-- **Fundstellen:** § 24 Abs. 1 WoGG; bayerische Zuständigkeitsregelung für das Wohngeld (noch nicht gelesen); Art. 109a Abs. 1 AGSG.
+- **Fundstellen:** § 24 Abs. 1 WoGG; § 3 Abs. 1 Satz 1 ZustV; § 2 GrKrV; Art. 109a Abs. 1 AGSG; § 16 SGB I; Bayerischer Landtag Drs. 19/12543.
 - **Betroffene Tests:** keine Rechnung. Texte: `folgen/katalog.json` (`b_zustaendig`, `beide_bildung_teilhabe`), `folgen/naechste-schritte.json` (`wohngeld_online`, Feld `stelle`); Parameter `but.zustaendigWegB`.
+
+## Aus der Prüfung der Verhaltensdiagnose (31.10.2026)
+
+Gefunden vom rechts-pruefer bei der Prüfung der Verhaltensdiagnose (`docs/forschung/verhaltensdiagnose-pruefung.md`, Abschnitt 7). Eingetragen nach Freigabe von Nico am 31.10.2026. Bis 30.11.2026 nur notiert (Freeze), außer Punkt 30.
+
+### 33. Einkommenszeitraum beim Kinderzuschlag
+
+- **Frage:** Welches Einkommen zählt? Beim Kinderzuschlag der Durchschnitt der sechs Monate vor dem Bewilligungszeitraum, für Mindesteinkommen, Höhe und Bedarfsprüfung. Beim Wohngeld das im Bewilligungszeitraum zu erwartende Einkommen. In der Grundsicherung der Monat.
+- **Unsere Annahme:** Version 0 nimmt einen einzigen Monatswert für alle drei Leistungen, also gleiches Einkommen 6 Monate zurück und 12 Monate voraus. Bei plötzlicher Krise (Jobverlust, Kurzarbeit, Geburt) und schwankendem Lohn kann das Ergebnis falsch sein. Die DA sagt selbst, das Ergebnis könne „nicht mehr den aktuellen Verhältnissen“ entsprechen (C.4 Satz 5).
+- **Fundstellen:** § 6a Abs. 8 Satz 1 und 5 BKGG; DA-KiZ C.1 Abs. 3, C.3.2.1.2, C.4 Satz 4 und 5; § 15 Abs. 1 WoGG.
+- **Betroffene Tests:** `kiz.test.ts` Block „Mindesteinkommen (§ 6a Abs. 1 Nr. 2 BKGG)“ und alle Fälle mit Bedarfsprüfung. Code: `src/kiz.ts`. Fragestrecke in M5.
+
+### 34. Kurzarbeitergeld, Entgeltfortzahlung und Insolvenzgeld beim Kinderzuschlag
+
+- **Frage:** Zählen diese Leistungen beim Kinderzuschlag als Erwerbseinkommen?
+- **Unsere Annahme:** Version 0 kennt die Art des weiteren Einkommens nicht. Als „weiteres Geld“ eingegeben, mindert es den Kinderzuschlag zu 100 % statt zu 45 %. Nach der DA zählen die drei Leistungen als Erwerbseinkünfte.
+- **Fundstellen:** DA-KiZ C.3.2.1.3 Abs. 2; § 6a Abs. 6 BKGG.
+- **Betroffene Tests:** `kiz.test.ts`. Fragestrecke in M5 (M5-Vormerkung „Einkommen nach Art“).
+
+### 35. Familien, die schon Grundsicherung bekommen
+
+- **Frage:** Was gilt für Familien, die schon Grundsicherung bekommen und Gut Bescheid nutzen?
+- **Unsere Annahme:** Version 0 kennt „schon im Bezug“ nicht. Bei `weg_b_deckt` müssen sie Kinderzuschlag und Wohngeld beantragen (§ 12a Satz 1 SGB II). Das Jobcenter kann selbst beantragen (§ 5 Abs. 3 Satz 1 SGB II), bei fehlender Mitwirkung die Grundsicherung entziehen (Satz 3 bis 5). „Bleiben“ ist dann keine gültige Wahl. Beim erweiterten Zugang sind Bleiben und Wechseln ein Recht. Der Wechsel geht, wenn „zu Beginn des BWZ“ kein Antrag läuft (DA-KiZ C.4.2 Abs. 4 und 5). Nach dem Ausstieg aus der Grundsicherung kommt Kinderzuschlag „ggf. erst nach einigen Monaten der Erwerbstätigkeit in Betracht“ (DA-KiZ C.1 Abs. 3 und 4).
+- **Fundstellen:** § 12a Satz 1, § 5 Abs. 3 SGB II; DA-KiZ C.1 Abs. 3 und 4, C.4.2 Abs. 4 und 5.
+- **Betroffene Tests:** keine heute. Code: `src/haushalt.ts`, `src/vergleich.ts`; Karte `beide_reihenfolge`.
+
+### 36. Wartezeit: Überbrückung mit Grundsicherung und Vorschuss
+
+- **Frage:** Was passiert, wenn eine Familie die Wartezeit auf Kinderzuschlag und Wohngeld mit Grundsicherung überbrückt? Und gibt es einen Vorschuss?
+- **Unsere Annahme (rechts-pruefer):** Es hängt von der Ergebnisart ab.
+  - **Bei `weg_b_deckt`:** Der Ausschluss vom Wohngeld entfällt, wenn das Jobcenter „als nachrangig verpflichteter Leistungsträger nach § 104“ SGB X zahlt (§ 7 Abs. 1 Satz 3 Nr. 2 WoGG). Der Anspruch bleibt. Die Nachzahlung geht als Erstattung ans Jobcenter, beim Kinderzuschlag ebenso (DA-KiZ F.6). Während der Überbrückung gelten die Pflichten von Weg A (Ableitung).
+  - **Bei `erweiterter_zugang`:** Mit Grundsicherung ist Wohngeld ausgeschlossen, der Bescheid wird unwirksam (§ 28 Abs. 3 WoGG). Ein Antrag zu Beginn des Zeitraums sperrt den erweiterten Zugang (DA-KiZ C.4.2 Abs. 4). Ein späterer lässt den laufenden Kinderzuschlag unberührt (C.4.3 Satz 3).
+  - **Vorschuss:** § 42 Abs. 1 SGB I gilt für Kinderzuschlag und Wohngeld (§ 68 Nr. 9 und 10 SGB I), wenn der Anspruch dem Grunde nach besteht. Auf Antrag ist er Pflicht und beginnt „spätestens nach Ablauf eines Kalendermonats nach Eingang des Antrags“.
+- **Widerspruch zu einer Quelle:** Die BAGFW-Umfrage 2022 zitiert eine beratende Person: „Durch die Bewilligung von ALG 2 endet aber automatisch per Gesetz der Wohngeldanspruch“. Das stimmt nach der Rechtslage oben nur beim erweiterten Zugang. Nicht angeglichen.
+- **Offen:** Zählt der Kinderzuschlag mit, wo es beim Wohngeld darauf ankommt, ob Hilfebedürftigkeit „durch Wohngeld“ vermieden wird (WoGVwV, nicht gelesen)?
+- **Fundstellen:** § 7 Abs. 1 Satz 3 Nr. 2, § 28 Abs. 3 und 4 WoGG; § 104 SGB X; §§ 42, 43, 68 SGB I; DA-KiZ C.4.2 Abs. 4, C.4.3, F.6.
+- **Betroffene Tests:** keine (Text). Neue Karte; Vergleichszeile „Wie lange bis zum ersten Geld“.
+
+### 37. Aufenthaltsrecht und Einbürgerung
+
+- **Frage:** Welche Leistungen können bei der Verlängerung einer Aufenthaltserlaubnis oder bei der Einbürgerung zählen?
+- **Unsere Annahme:** § 2 Abs. 3 Satz 2 AufenthG nimmt Kindergeld, Kinderzuschlag, Elterngeld, Unterhaltsvorschuss und beitragsbasierte Leistungen aus. Grundsicherung kann zählen. Beim Wohngeld ist es offen: Nach AVwV AufenthG Nr. 2.3.1.3 ist der Lebensunterhalt bei Wohngeldbezug nicht gesichert. Das kennt der rechts-pruefer nur als Zitat in BR-Drs. 97/1/13; die AVwV ist nicht im Original gelesen. Die Rechtsprechung ist laut Sekundärquellen uneinheitlich. Einbürgerung: § 10 Abs. 1 Satz 1 Nr. 3 StAG nennt nur SGB II und SGB XII.
+- **Stand:** Kandidat für eine Karte (Entscheidung von Nico am 31.10.2026), keine Rechnung. Vor der Karte: AVwV im Original lesen, danach rechts-pruefer. Entwurf des rechts-pruefer: „Hast du eine Aufenthaltserlaubnis? Grundsicherung kann bei Verlängerung oder Einbürgerung zählen. Kinderzuschlag nicht. Beim Wohngeld ist es nicht einheitlich. Frag vorher eine Migrationsberatung.“
+- **Fundstellen:** § 2 Abs. 3 AufenthG; AVwV AufenthG Nr. 2.3.1.3 (nicht gelesen); BR-Drs. 97/1/13; § 10 Abs. 1 Satz 1 Nr. 3 StAG.
+- **Betroffene Tests:** keine (neue Karte).
+
+### 38. Unterhalt auf beiden Wegen
+
+- **Frage:** Welche Folgen hat Unterhalt auf Weg A und Weg B?
+- **Unsere Annahme (rechts-pruefer):** Weg A: Unterhaltsansprüche gehen auf das Jobcenter über (§ 33 Abs. 1 Satz 1 SGB II), nicht soweit laufend gezahlt wird (Abs. 2 Satz 2). Beide Wege: Beim Unterhaltsvorschuss geht der Anspruch auf das Land über (§ 7 Abs. 1 UVG). Weg B: Unterhalt muss man selbst verfolgen. Wer sich weigert, bekommt für das Kind keinen Kinderzuschlag (§ 6a Abs. 3 Satz 4 BKGG; DA-KiZ C.2.2.1 Abs. 6 bis 8). Für Kinder von 12 bis 17 gibt es Unterhaltsvorschuss nur unter Bedingungen (§ 1 Abs. 1a UVG). Das Regelwerk rechnet den eingegebenen Vorschuss auf beiden Wegen gleich; der Betrag auf Weg A kann dadurch zu niedrig sein.
+- **Fundstellen:** § 33 SGB II; §§ 1, 7 UVG; § 6a Abs. 3 Satz 4 BKGG; DA-KiZ C.2.2.1 Abs. 6 bis 8.
+- **Betroffene Tests:** `sgb2.test.ts` „zählt Einkommen des Kindes voll (T03: Unterhaltsvorschuss 227 €)“; `kiz.test.ts` Fälle mit Unterhalt (K06, B.3 Beispiel 1, C.3.2.1.1 Beispiel 1). Erweitert den Kandidaten zu § 33 SGB II unten.
+
+### 39. Mindesteinkommen bei Unterhalt für Elternteil und Kind
+
+- **Frage:** Zählt Kindesunterhalt zum Mindesteinkommen des Kinderzuschlags?
+- **Unsere Annahme:** Nein, im Normalfall: „wird lediglich Kindesunterhalt bezogen, ist dieser nicht zu berücksichtigen“ (DA-KiZ C.1 Abs. 2). Bekommt der Elternteil aber Unterhalt für sich und das Kind, „wird … nicht nach den verschiedenen Unterhaltsarten unterschieden“; dann zählt der Kindesunterhalt mit. Dass der Unterhaltsvorschuss nicht zählt, ist abgeleitet (Einkommen des Kindes, DA-KiZ C.2.2.1). Der Code stimmt für den Normalfall. Der Hinweis am Parameter `mindesteinkommen` in `parameter/2026-07-01/kiz.json` sollte die Ausnahme nennen.
+- **Fundstellen:** § 6a Abs. 1 Nr. 2 BKGG; DA-KiZ C.1 Abs. 2, C.2.2.1.
+- **Betroffene Tests:** `kiz.test.ts` Block „Mindesteinkommen (§ 6a Abs. 1 Nr. 2 BKGG)“.
+
+### 40. Wohngeld: Rückforderung ohne Verschulden und Bußgeld
+
+- **Frage:** Kann die Wohngeldstelle Geld zurückfordern, auch wenn niemand etwas falsch gemacht hat? Und was droht, wenn man eine Änderung nicht meldet?
+- **Unsere Annahme (rechts-pruefer):** Es gibt eine Meldepflicht (§ 27 Abs. 3 WoGG). Die Stelle entscheidet von Amts wegen neu ab der Änderung, „unabhängig vom Bestehen einer Mitteilungspflicht“ (§ 27 Abs. 2 Satz 7 WoGG). Daraus abgeleitet: Rückforderung auch ohne Verschulden (§ 50 SGB X nicht gelesen). Wer eine Änderung nicht meldet, dem droht ein Bußgeld bis 2.000 € (§ 37 WoGG). Die Karte `b_wohngeld_aenderungen` nennt weder Rückforderung noch Bußgeld. Zum Vergleich: Beim Kinderzuschlag gibt es keine Rückforderung wegen geänderten Einkommens im Zeitraum (§ 6a Abs. 7 Satz 3 BKGG), aber bei falschen Angaben (§ 45 SGB X). In der Grundsicherung fordert das Jobcenter unter 50 € je Bedarfsgemeinschaft nichts zurück (§ 40 Abs. 1 Satz 3 SGB II).
+- **Fundstellen:** §§ 27, 37 WoGG; §§ 45, 48, 50 SGB X; § 6a Abs. 7 Satz 3, § 11 BKGG; DA-KiZ E.1 Abs. 2, E.2 Abs. 1, F.2; § 40 Abs. 1 Satz 3, § 41a Abs. 6 Satz 3 SGB II.
+- **Betroffene Tests:** keine Rechnung. Text: `folgen/katalog.json` (`b_wohngeld_aenderungen`).
+
+### 41. Reihenfolge der Anträge bei knapper Deckung
+
+- **Frage:** Kann ein früherer Antrag auf Grundsicherung schaden, wenn Weg B den Bedarf nur knapp deckt?
+- **Unsere Annahme:** Zwischen Kinderzuschlag und Wohngeld gibt es keine Reihenfolge. Es zählt das voraussichtliche Wohngeld, „ein tatsächlicher Wohngeldbezug ist nicht erforderlich“ (§ 6a Abs. 1 Nr. 3 Satz 3 BKGG; DA-KiZ C.4.1 Abs. 7 Satz 5). Beide Anträge sollten im selben Monat gestellt werden. Ein früherer Grundsicherungsantrag schadet dem normalen Kinderzuschlag nicht (§ 5 Abs. 3 Satz 2 BKGG i. V. m. § 28 SGB X; DA-KiZ E.1.3 Abs. 2, F.6). Ausnahme, abgeleitet: Deckt Weg B nur knapp (Überschuss bis etwa 100 €, wie T02), kann das tatsächliche Einkommen der sechs Monate in den erweiterten Zugang fallen. Dann würde ein früherer Grundsicherungsantrag sperren. Die Karte `beide_reihenfolge` erscheint heute nur beim erweiterten Zugang.
+- **Fundstellen:** § 6a Abs. 1 Nr. 3 Satz 3, Abs. 1a Nr. 3 BKGG; § 5 Abs. 3 Satz 2 BKGG; § 28 SGB X; DA-KiZ C.4.1 Abs. 7, E.1.3 Abs. 2, F.6.
+- **Betroffene Tests:** `folgen-bedingungen.test.ts` „beide_reihenfolge“; T02, T03, T07 (soll.folgen).
+
+### 42. Vorlesen und Kalenderdatei: was das Gerät verlässt
+
+- **Frage:** Bleiben Texte beim Vorlesen und in einer Kalendererinnerung auf dem Gerät? (Eher eine Frage für Fachkonzept und Datenschutz als für die Rechtsberatung.)
+- **Unsere Annahme:** Nicht immer. Stimmen mit `SpeechSynthesisVoice.localService === false` kommen von einem entfernten Dienst; Ergebnistexte mit Beträgen gingen an den Anbieter. Das Fachkonzept sagt „Sprachausgabe des Browsers, läuft lokal“. Eine .ics-Datei in einem Cloud-Kalender verlässt das Gerät mit ihrem Titel. Vorschlag: Vorlesen nur mit Stimmen, die auf dem Gerät laufen; sonst Knopf aus oder vorher Hinweis und Zustimmung wie bei der Spracheingabe. Titel der Kalenderdatei ohne Leistung und ohne Angaben.
+- **Fundstellen:** Fachkonzept (Sprache und Vorlesen, Datenschutz); MDN zu `SpeechSynthesisVoice.localService`.
+- **Betroffene Tests:** keine (M5, Oberfläche).
 
 ## Kandidaten für weitere Karten (nicht umgesetzt)
 
 Bis zur Bewerbung (30.11.2026) kommen neue Themen nur hierher. Alle stehen in einer der gelesenen Quellen, sind aber nicht im Folgen-Katalog des Fachkonzepts.
 
 - Ortsabwesenheit braucht die Zustimmung des Jobcenters, in der Regel höchstens 3 Wochen im Jahr (§ 7b Abs. 1 bis 3 SGB II; Merkblatt SGB II Kap. 3.2).
-- Unterhaltsansprüche gehen auf das Jobcenter über (§ 33 SGB II; Merkblatt SGB II Kap. 13).
+- Unterhaltsansprüche gehen auf das Jobcenter über (§ 33 SGB II; Merkblatt SGB II Kap. 13). Erweitert um die Folgen auf Weg B und beim Unterhaltsvorschuss: Punkt 38.
+- Aufenthaltsrecht und Einbürgerung: welche Leistung bei Verlängerung oder Einbürgerung zählen kann (Punkt 37). Kandidat nach Entscheidung von Nico am 31.10.2026. Vor der Karte die AVwV AufenthG im Original lesen, danach rechts-pruefer.
+- Vorschuss gegen die Wartezeit bei Kinderzuschlag und Wohngeld (§ 42 SGB I, Punkt 36).
+- Rückforderung und Bußgeld beim Wohngeld (Punkt 40), als Ergänzung der Karte `b_wohngeld_aenderungen`.
 - Mit Kinderzuschlag oder Grundsicherung können Kita-Gebühren erlassen werden (Merkblatt KiZ Kap. 8; § 90 Abs. 4 SGB VIII, nicht gelesen).
 - Vergünstigungen mit dem Bewilligungsbescheid, zum Beispiel Sozialticket, Tafel, Museen (BA, Antrag und Bescheid; Merkblatt SGB II Kap. 16).
 - Arbeitsunfähigkeit dem Jobcenter melden, Bescheinigung spätestens am 3. Tag (Merkblatt SGB II Kap. 3.3).
