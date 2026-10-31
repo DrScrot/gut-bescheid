@@ -286,6 +286,14 @@ Die Karten stehen in `packages/regelwerk/folgen/*.json`, je Eintrag mit Fundstel
 - **Fundstellen:** BGBl. 2026 I Nr. 228 (Verkündung auf recht.bund.de am 29.10.2026 gesehen, Wortlaut nicht gelesen); § 10 SGB V.
 - **Betroffene Tests:** keine (Text). Bei einer Änderung: `folgen.test.ts`, T09 (soll.folgen mit Stichtag 2028 gibt es noch nicht).
 
+### 32. Wohngeld in Großen Kreisstädten: eine andere Stelle als für Bildung und Teilhabe?
+
+- **Frage:** Bearbeiten in Bayern auch Große Kreisstädte Wohngeld? Falls ja, sind Wohngeldstelle und Stelle für Bildung und Teilhabe verschieden. Für Bildung und Teilhabe neben Kinderzuschlag oder Wohngeld sind nur Landkreise und kreisfreie Städte zuständig (Art. 109a Abs. 1 AGSG).
+- **Unsere Annahme:** Nicht geprüft. Die Karten sagen vorsichtig „meist das Landratsamt, in manchen Städten die Stadt“ (`b_zustaendig`, Schritt `wohngeld_online`, `beide_bildung_teilhabe`). `b_zustaendig` sagt nach der Wohngeldstelle aber: „Dort beantragst du auch Bildung und Teilhabe.“ Das stimmt nicht, falls eine Große Kreisstadt Wohngeld bearbeitet. Wegen des Freeze bis 30.11.2026 keine Textänderung. Das Fachkonzept (Export vom 31.10.2026) nennt die Frage in der Zeile „Zuständig“.
+- **Für M5 (Gemeindeschlüssel, M5-Vormerkungen Punkt 2):** Mit dem amtlichen Gemeindeschlüssel die zuständige Wohngeldstelle je Gemeinde bestimmen und beide Stellen getrennt nennen.
+- **Fundstellen:** § 24 Abs. 1 WoGG; bayerische Zuständigkeitsregelung für das Wohngeld (noch nicht gelesen); Art. 109a Abs. 1 AGSG.
+- **Betroffene Tests:** keine Rechnung. Texte: `folgen/katalog.json` (`b_zustaendig`, `beide_bildung_teilhabe`), `folgen/naechste-schritte.json` (`wohngeld_online`, Feld `stelle`); Parameter `but.zustaendigWegB`.
+
 ## Kandidaten für weitere Karten (nicht umgesetzt)
 
 Bis zur Bewerbung (30.11.2026) kommen neue Themen nur hierher. Alle stehen in einer der gelesenen Quellen, sind aber nicht im Folgen-Katalog des Fachkonzepts.

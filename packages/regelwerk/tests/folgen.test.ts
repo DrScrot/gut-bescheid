@@ -101,6 +101,12 @@ describe("Platzhalter mit Datum und Beitrag (Nico, 28.10.2026)", () => {
     expect(karte(rechne(testhaushalt("T08").eingabe).folgen, "b_krankenversicherung")?.text).toContain("etwa 270 €");
   });
 
+  it("Krankenversicherung: Familienversicherung auch in eingetragener Lebenspartnerschaft (§ 10 Abs. 1 SGB V, Nico 31.10.2026)", () => {
+    const k = karte(rechne(testhaushalt("T01").eingabe).folgen, "b_krankenversicherung");
+    expect(k?.text).toContain("eingetragenen Lebenspartnerschaft");
+    expect(k?.textLeicht).toContain("eingetragenen Lebens-Partnerschaft");
+  });
+
   it("ab 2027: Mindestbeitrag mit der geplanten Bezugsgröße 4.130 €, als Hinweis geplant an der Karte", () => {
     // 4.130 € ÷ 3 = 1.376,67 €; × 16,9 % = 232,66 €, × 3,35 % = 46,12 € → 278,78 € → etwa 279 €
     const { folgen: f } = rechne(testhaushalt("T01").eingabe, "2027-01-01");
