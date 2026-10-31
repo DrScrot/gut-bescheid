@@ -1,3 +1,5 @@
+Antworte immer auf Deutsch, auch nach einer Zusammenfassung des Verlaufs.
+
 # Gut Bescheid – Arbeitsregeln für Claude Code
 
 ## Projekt
