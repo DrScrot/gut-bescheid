@@ -25,8 +25,14 @@ nach Betrag UND Folgen (Pflichten, Prüfungen, Fristen). Open Source, Lizenz EUP
 - Regelwerk (packages/regelwerk) ohne UI- und Netzwerk-Abhängigkeiten. Rechtsstand per Stichtag wählbar.
 - Keine personenbezogenen Daten verlassen das Gerät. Keine Analytics, keine Tracker.
 - Texte: einfache Sprache, Du-Form, Sätze unter 15 Wörtern, keine Amtssprache ohne Erklärung.
-- Formulierungen sind allgemeine Information über Regeln, keine Einzelfallprognose (RDG):
-  "Nach den Regeln für 2026 ergibt sich für Haushalte mit euren Angaben etwa X €. Verbindlich entscheidet die Behörde."
+- Formulierungen sind allgemeine Information über Regeln, keine Einzelfallprognose (RDG). Ein Betrag besteht aus zwei
+  Bausteinen auf derselben Karte: dem Betragselement "etwa X € pro Monat" und direkt dabei dem Text
+  "So rechnet man nach den Regeln für 2026. Das gilt für Haushalte mit euren Angaben. Verbindlich ist nur der Bescheid.
+  Das ist meist ein Brief mit der Entscheidung."
+  Das Jahr kommt aus dem Rechtsstand des Stichtags. Rechnet das Ergebnis mit geplanten Werten, heißt der erste Satz:
+  "So rechnet man nach den Plänen für 2027. Beschlossen ist das noch nicht."
+  Betragselemente und Labels fallen aus der Amstad-Messung. Bedingungen für die Oberfläche (rechts-pruefer, 31.10.2026):
+  docs/forschung/verhaltensdiagnose-pruefung.md, Abschnitt 6.5, Nachtrag.
 
 ## Stack
 Node-LTS, pnpm-Workspaces, TypeScript strict, Vite + React (PWA), Vitest, Playwright, Dexie (IndexedDB), GitHub Pages.
