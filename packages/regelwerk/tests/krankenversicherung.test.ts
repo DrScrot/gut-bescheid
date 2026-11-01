@@ -3,8 +3,10 @@
 // beitragspflichtig mindestens 3.955 € ÷ 90 je Tag × 30 Tage = 1.318,33 € (§ 240 Abs. 4 Satz 1, § 223 Abs. 2 SGB V).
 // Kranken- und Pflegeversicherung je auf Cent gerundet; vom rechts-pruefer am 29.10.2026 nachgerechnet.
 import { describe, expect, it } from "vitest";
-import { mindestbeitragFreiwillig } from "../src/krankenversicherung";
+import type { Erwachsener, Haushalt } from "../src/haushalt";
+import { beitragWegB, mindestbeitragFreiwillig } from "../src/krankenversicherung";
 import { rechtsstandZumStichtag } from "../src/parameter";
+import { testhaushalt } from "./testhaushalte";
 
 const KV_2026 = rechtsstandZumStichtag("2026-07-01").kv;
 
@@ -38,5 +40,121 @@ describe("Mindestbeitrag freiwillige Versicherung (Überschlag mit Ø-Zusatzbeit
     expect(mindestbeitragFreiwillig(kv2027, [4]).cent).toBe(28222);
     expect(mindestbeitragFreiwillig(kv2027, [4, 8]).cent).toBe(27878);
     expect(mindestbeitragFreiwillig(kv2027, [4]).status).toBe("geplant");
+  });
+});
+
+// Beitrag auf Weg B (DA-KiZ C.4.1 Abs. 5, Stand 20.02.2026; Regeln für fehlende Angaben und „weiß nicht“ von Nico am
+// 31.10.2026). Grundlage: T01 (Paar, Kinder 4 und 8): Mindestbeitrag 266,96 €. Minijob-Grenze 2026: 603 €.
+describe("Beitrag zur Krankenversicherung auf Weg B", () => {
+  const STAND = rechtsstandZumStichtag("2026-07-01");
+  const t01 = testhaushalt("T01").eingabe;
+  const [verdiener, partner] = t01.erwachsene as [Erwachsener, Erwachsener];
+  const paar = (a: Partial<Erwachsener>, b: Partial<Erwachsener>, extra: Partial<Haushalt> = {}): Haushalt => ({
+    ...t01,
+    erwachsene: [{ ...verdiener, ...a }, { ...partner, ...b }],
+    ...extra,
+  });
+  const beitraege = (h: Haushalt, stichtag = "2026-07-01") =>
+    beitragWegB(h, rechtsstandZumStichtag(stichtag)).personen.map((p) => [p.gerechnetAls, p.beitrag]);
+
+  it("arbeit, leistung, familie: kein Beitrag; selbst: Mindestbeitrag", () => {
+    const h = paar({ krankenversicherung: "arbeit" }, { krankenversicherung: "selbst" }, { familienstand: "nicht_verheiratet" });
+    expect(beitraege(h)).toEqual([["arbeit", 0], ["selbst", 26696]]);
+    expect(beitragWegB(h, STAND)).toMatchObject({ beitrag: 26696, hinweise: [] });
+    const versichert = paar({ krankenversicherung: "leistung" }, { krankenversicherung: "familie" }, { familienstand: "verheiratet" });
+    expect(beitragWegB(versichert, STAND)).toMatchObject({ beitrag: 0, hinweise: [] });
+  });
+
+  it("privat mit Beitrag: genau dieser Betrag", () => {
+    const h = paar({ krankenversicherung: "arbeit" }, { krankenversicherung: "privat", privatBeitrag: 41250 });
+    expect(beitragWegB(h, STAND)).toMatchObject({ beitrag: 41250, hinweise: [] });
+  });
+
+  it("privat ohne Beitrag: kein Abzug, aber Hinweis, dass Weg B unsicher ist (Nico, 31.10.2026)", () => {
+    const h = paar({ krankenversicherung: "arbeit" }, { krankenversicherung: "privat" });
+    expect(beitragWegB(h, STAND)).toMatchObject({ beitrag: 0, hinweise: [{ code: "kv_privat_ohne_beitrag", person: 1 }] });
+  });
+
+  it("ohne Angaben: kein Beitrag, Hinweis nur, wenn jemand ohne Job über der Minijob-Grenze ist", () => {
+    expect(beitragWegB(t01, STAND)).toMatchObject({ beitrag: 0, hinweise: [{ code: "kv_unbekannt" }] });
+    const beideMitJob = paar({}, { brutto: 80000, netto: 64000 });
+    expect(beitragWegB(beideMitJob, STAND)).toMatchObject({ beitrag: 0, hinweise: [] });
+  });
+
+  it("nicht verheiratet und ohne Angabe: wie „weiß nicht“ (Nico, 31.10.2026)", () => {
+    const h = paar({}, {}, { familienstand: "nicht_verheiratet" });
+    expect(beitraege(h)).toEqual([["arbeit", 0], ["selbst", 26696]]);
+    expect(beitragWegB(h, STAND).hinweise).toEqual([
+      { code: "kv_angenommen", person: 0, angenommen: "arbeit", weiteresEinkommen: false },
+      { code: "kv_angenommen", person: 1, angenommen: "selbst", weiteresEinkommen: false },
+    ]);
+  });
+
+  it("weiß nicht, Minijob: selbst, ein Minijob ist kein versichertes Einkommen (§ 240 Abs. 4 Satz 1 SGB V)", () => {
+    const h = paar({ krankenversicherung: "arbeit" }, { brutto: 60300, netto: 60300, krankenversicherung: "weiss_nicht" });
+    expect(beitraege(h)).toEqual([["arbeit", 0], ["selbst", 26696]]);
+  });
+
+  it("weiß nicht, Job über der Minijob-Grenze: über die Arbeit versichert", () => {
+    const h = paar({ krankenversicherung: "weiss_nicht" }, { krankenversicherung: "selbst" });
+    expect(beitraege(h)).toEqual([["arbeit", 0], ["selbst", 26696]]);
+  });
+
+  it("weiß nicht, nur weiteres Einkommen (Art unbekannt): versichert angenommen, kein Beitrag (§ 192 Abs. 1 Nr. 2, § 224 SGB V; Nico, 31.10.2026)", () => {
+    const h = paar({ krankenversicherung: "arbeit" }, { sonstigesEinkommen: 90000, krankenversicherung: "weiss_nicht" });
+    expect(beitraege(h)).toEqual([["arbeit", 0], ["leistung", 0]]);
+    expect(beitragWegB(h, STAND).hinweise).toEqual([
+      { code: "kv_angenommen", person: 1, angenommen: "leistung", weiteresEinkommen: true },
+    ]);
+  });
+
+  it("weiß nicht, verheiratet, beide ohne Job, eine Person mit weiterem Einkommen: sie versichert, die andere über sie familienversichert", () => {
+    const h = paar(
+      { brutto: 0, netto: 0, sonstigesEinkommen: 90000, krankenversicherung: "weiss_nicht" },
+      { krankenversicherung: "weiss_nicht" },
+      { familienstand: "verheiratet" },
+    );
+    expect(beitraege(h)).toEqual([["leistung", 0], ["familie", 0]]);
+  });
+
+  it("weiß nicht, verheiratet, Partner mit Job: familienversichert", () => {
+    const h = paar({ krankenversicherung: "arbeit" }, { krankenversicherung: "weiss_nicht" }, { familienstand: "verheiratet" });
+    expect(beitraege(h)).toEqual([["arbeit", 0], ["familie", 0]]);
+  });
+
+  it("weiß nicht, Lebenspartnerschaft, beide ohne versicherten Job: die erste Person selbst, die zweite über sie familienversichert", () => {
+    const h = paar(
+      { brutto: 0, netto: 0, krankenversicherung: "weiss_nicht" },
+      { krankenversicherung: "weiss_nicht" },
+      { familienstand: "lebenspartnerschaft" },
+    );
+    expect(beitraege(h)).toEqual([["selbst", 26696], ["familie", 0]]);
+  });
+
+  it("weiß nicht, verheiratet, Partner privat versichert: selbst (Familienversicherung nur über ein Mitglied der gesetzlichen Kasse)", () => {
+    const h = paar(
+      { krankenversicherung: "privat", privatBeitrag: 30000 },
+      { krankenversicherung: "weiss_nicht" },
+      { familienstand: "verheiratet" },
+    );
+    expect(beitraege(h)).toEqual([["privat", 30000], ["selbst", 26696]]);
+  });
+
+  it("familie ohne Ehe: gerechnet wie angegeben, mit Hinweis", () => {
+    const h = paar({ krankenversicherung: "arbeit" }, { krankenversicherung: "familie" }, { familienstand: "nicht_verheiratet" });
+    expect(beitragWegB(h, STAND)).toMatchObject({ beitrag: 0, hinweise: [{ code: "kv_familie_ohne_ehe", person: 1 }] });
+  });
+
+  it("alleinerziehend mit Minijob und „weiß nicht“: selbst", () => {
+    const h: Haushalt = { ...t01, erwachsene: [{ ...partner, brutto: 60300, netto: 60300, krankenversicherung: "weiss_nicht" }] };
+    expect(beitraege(h)).toEqual([["selbst", 26696]]);
+  });
+
+  it("Werte 2027 geplant: als Hinweise, aber nur, wenn jemand selbst zahlt", () => {
+    const selbst = paar({ krankenversicherung: "arbeit" }, { krankenversicherung: "selbst" });
+    const namen = beitragWegB(selbst, rechtsstandZumStichtag("2027-01-01")).parameterHinweise.map((h) => h.name);
+    expect(namen).toContain("kv.bezugsgroesse");
+    const versichert = paar({ krankenversicherung: "arbeit" }, { krankenversicherung: "familie" }, { familienstand: "verheiratet" });
+    expect(beitragWegB(versichert, rechtsstandZumStichtag("2027-01-01")).parameterHinweise).toEqual([]);
   });
 });

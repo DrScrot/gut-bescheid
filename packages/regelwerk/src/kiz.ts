@@ -3,6 +3,7 @@
 // SGB-II-Rechnung auf (Einkommen nach §§ 11–11b SGB II, § 6a Abs. 8 BKGG).
 import { anteil, aufEuro, type Cent } from "./geld";
 import type { Haushalt, Spanne } from "./haushalt";
+import { beitragWegB, type KvWegB } from "./krankenversicherung";
 import { protokoll, rechtsstandZumStichtag, vereinige, type ParameterHinweis } from "./parameter";
 import { berechneSgb2, pauschaleAufUeberhang, type AusserhalbGrund } from "./sgb2";
 
@@ -65,10 +66,12 @@ export type KizErgebnis =
        * kinderzuschlagWirksam: der Teil des KiZ, der nach SGB II beim Haushalt ankommt (siehe unten).
        * erspartesDecktFehlbetrag: Der Teil des Ersparten über dem SGB-II-Freibetrag deckt den Fehlbetrag,
        * Hilfebedürftigkeit besteht nicht. fehlbetragNachErspartem: was nach diesem Teil noch fehlt, für den
-       * erweiterten Zugang (DA-KiZ C.4.2 Abs. 2).
+       * erweiterten Zugang (DA-KiZ C.4.2 Abs. 2). krankenversicherung: Beitrag, den der Haushalt auf Weg B selbst
+       * zahlt; er zählt zum Fehlbetrag (DA-KiZ C.4.1 Abs. 5).
        */
       bedarfspruefung: {
         bedarf: Cent;
+        krankenversicherung: Cent;
         einkommen: Cent;
         kinderzuschlag: Cent;
         kinderzuschlagWirksam: Cent;
@@ -82,6 +85,8 @@ export type KizErgebnis =
       /** Was ausgezahlt würde: betrag bei Anspruch oder erweitertem Zugang, sonst 0. */
       auszahlung: Cent;
       hinweise: KizHinweis[];
+      /** Beitrag zur Krankenversicherung auf Weg B je Person, mit Hinweisen zu fehlenden oder abgeleiteten Angaben. */
+      krankenversicherung: KvWegB;
       parameterHinweise: ParameterHinweis[];
     };
 
@@ -214,7 +219,15 @@ export function berechneKiz(haushalt: Haushalt, optionen: { stichtag: string; wo
   const kinderzuschlagWirksam = betrag - unwirksam;
   // Das Wohngeld zählt für den ganzen Haushalt. Dass ein Teil davon bei Kindern außerhalb der Bedarfsgemeinschaft
   // hängen bleiben kann, bildet Version 0 nicht ab (Vereinfachung, Entscheidung von Nico am 28.10.2026).
-  const fehlbetrag = sgb2.lueckeA - kinderzuschlagWirksam - optionen.wohngeld;
+  // Den Beitrag zur Krankenversicherung, den der Haushalt auf Weg B selbst zahlt, „müssen“ die Familienkassen beachten
+  // (DA-KiZ C.4.1 Abs. 5; Entscheidung von Nico am 31.10.2026). Auf Weg A ist man pflichtversichert, Lücke A bleibt.
+  // Vereinfachung: Er kommt ganz auf den Fehlbetrag, auch wenn die Person eigenes Erwerbseinkommen hat und der
+  // Grundabsetzbetrag (§ 11b Abs. 2 SGB II) einen Teil schon abdeckt; ein privater Beitrag wird nicht vom Einkommen
+  // abgesetzt (Parameter krankenversicherungPrivat).
+  const kv = beitragWegB(haushalt, stand);
+  if (kv.beitrag > 0) p.merke("krankenversicherungInBedarfspruefung");
+  if (kv.personen.some((k) => k.gerechnetAls === "privat" && k.beitrag > 0)) p.merke("krankenversicherungPrivat");
+  const fehlbetrag = sgb2.lueckeA + kv.beitrag - kinderzuschlagWirksam - optionen.wohngeld;
   // Erspartes über dem SGB-II-Freibetrag schließt Hilfebedürftigkeit aus, soweit es den Fehlbetrag deckt
   // (§ 9 Abs. 1 SGB II, DA-KiZ C.4.1 Abs. 2 und 7). Bei einer Spanne zählt die untere Grenze. Beim erweiterten
   // Zugang zählt es ebenfalls mit (DA-KiZ C.4.2 Abs. 2 Satz 2, über den Wortlaut von § 6a Abs. 1a Nr. 1 BKGG hinaus;
@@ -232,7 +245,9 @@ export function berechneKiz(haushalt: Haushalt, optionen: { stichtag: string; wo
   else if (vermoegen === "ueber_grenze") anspruch = "nein_vermoegen";
   else if (fehlbetrag <= 0 || erspartesDecktFehlbetrag) anspruch = "ja";
   else if (fehlbetragNachErspartem <= zugang.hoechstensFehlbetragCent && absetzbetraegeReichen) {
-    anspruch = "erweiterter_zugang";
+    // Zählt der Beitrag zu den höchstens 100 €? Ausdrücklich nicht geregelt (Parameter, Status pruefen).
+    const mitBeitrag = kv.beitrag > 0 ? p.nimm("krankenversicherungBeimErweitertenZugang") : "zaehlt_zum_fehlbetrag";
+    anspruch = mitBeitrag === "kein_erweiterter_zugang" ? "nein_bedarf_nicht_gedeckt" : "erweiterter_zugang";
   } else anspruch = "nein_bedarf_nicht_gedeckt";
 
   const zahlt = anspruch === "ja" || anspruch === "erweiterter_zugang";
@@ -276,6 +291,7 @@ export function berechneKiz(haushalt: Haushalt, optionen: { stichtag: string; wo
     vermoegen: { grenze: vermoegensgrenze, ergebnis: vermoegen },
     bedarfspruefung: {
       bedarf: sgb2.bedarf.summe,
+      krankenversicherung: kv.beitrag,
       einkommen: sgb2.einkommen.summe,
       kinderzuschlag: betrag,
       kinderzuschlagWirksam,
@@ -288,7 +304,8 @@ export function berechneKiz(haushalt: Haushalt, optionen: { stichtag: string; wo
     anspruch,
     auszahlung: zahlt ? betrag : 0,
     hinweise,
-    parameterHinweise: vereinige(sgb2.parameterHinweise, p.hinweise(), pSgb2.hinweise()),
+    krankenversicherung: kv,
+    parameterHinweise: vereinige(sgb2.parameterHinweise, p.hinweise(), pSgb2.hinweise(), kv.parameterHinweise),
   };
 }
 

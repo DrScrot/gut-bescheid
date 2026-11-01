@@ -57,6 +57,8 @@ export interface Testhaushalt {
     kiz: {
       /** Ergebnis des KiZ-Lotsen (nur ja/nein). null: nicht im Lotsen geprüft. */
       anspruchLotse: boolean | null;
+      /** Das Regelwerk weicht vom Lotsen ab, mit Rechenweg in abweichungen (T08, T02). */
+      lotseWeichtAb?: boolean;
       anspruch: KizAnspruch;
       /** Vom Regelwerk berechnet, gegengerechnet. null: nicht festgelegt. */
       betrag: Cent | null;
@@ -67,8 +69,10 @@ export interface Testhaushalt {
     } | null;
     vergleich: {
       ergebnis: Vergleichsergebnis;
-      /** Lücke A minus ausgezahlter KiZ und ausgezahltes Wohngeld. null: nicht festgelegt. */
+      /** Lücke A plus Beitrag zur Krankenversicherung minus ausgezahlter KiZ und ausgezahltes Wohngeld. null: nicht festgelegt. */
       fehlbetrag: Cent | null;
+      /** Beitrag zur Krankenversicherung auf Weg B (DA-KiZ C.4.1 Abs. 5). */
+      krankenversicherung?: Cent;
       quelle: string;
     } | null;
     folgen?: FolgenSoll[];
@@ -82,4 +86,16 @@ export function testhaushalt(id: string): Testhaushalt & { eingabe: Haushalt } {
   const gefunden = testhaushalte.find((t) => t.id === id);
   if (!gefunden?.eingabe) throw new Error(`Testhaushalt ${id} fehlt oder hat keine Eingaben.`);
   return gefunden as Testhaushalt & { eingabe: Haushalt };
+}
+
+/**
+ * Derselbe Haushalt als verheiratetes Paar: wer verdient, ist über die Arbeit versichert, die andere Person über die
+ * Familie. So rechnete das Regelwerk T02, T06 und T07 bis zum 31.10.2026 (ohne Beitrag auf Weg B).
+ */
+export function alsVerheiratet(h: Haushalt): Haushalt {
+  return {
+    ...h,
+    familienstand: "verheiratet",
+    erwachsene: h.erwachsene.map((e) => ({ ...e, krankenversicherung: e.brutto > 0 ? "arbeit" : "familie" })),
+  };
 }

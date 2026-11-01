@@ -54,6 +54,19 @@ describe("Parameterdateien", () => {
     expect(rundung.fundstelle).toContain("DA-KiZ E.5 Abs. 2");
   });
 
+  it("KiZ: Beitrag zur Krankenversicherung zählt in der Bedarfsprüfung (DA-KiZ C.4.1 Abs. 5), in jedem Stand", () => {
+    for (const stand of RECHTSSTAENDE) {
+      const p = stand.kiz.krankenversicherungInBedarfspruefung;
+      expect(p).toMatchObject({ wert: "beitrag_weg_b_zaehlt", status: "geprueft", geprueftAm: "2026-10-31" });
+      expect(p.fundstelle).toContain("DA-KiZ C.4.1 Abs. 5");
+      expect(stand.kiz.krankenversicherungBeimErweitertenZugang.wert).toBe("zaehlt_zum_fehlbetrag");
+      expect(stand.kiz.krankenversicherungBeimErweitertenZugang.fundstelle).toContain("§ 6a Abs. 1a");
+      // Ausdrücklich nicht geregelt (rechts-pruefer, 31.10.2026): Annahme mit Status pruefen.
+      expect(stand.kiz.krankenversicherungBeimErweitertenZugang.status).toBe("pruefen");
+      expect(stand.kiz.krankenversicherungPrivat).toMatchObject({ wert: "beitrag_zum_fehlbetrag", status: "pruefen" });
+    }
+  });
+
   it("Erweiterter Zugang folgt der DA-KiZ C.4.2 Abs. 2, mit Vermerk zum Wortlaut des Gesetzes", () => {
     const { erweiterterZugang } = rechtsstandZumStichtag("2026-07-01").kiz;
     expect(erweiterterZugang.fundstelle).toContain("DA-KiZ C.4.2 Abs. 2");

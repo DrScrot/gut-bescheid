@@ -1,15 +1,16 @@
 {
   "id": "T07",
-  "haushalt": "Paar, Kinder 4 und 8, Nürnberg",
-  "prueftVorAllem": "erweiterter Zugang KiZ",
-  "erwartung": "erweiterter Zugang: es fehlen 65 €, echte Wahl zwischen A und B",
+  "haushalt": "Paar, Kinder 4 und 8, Nürnberg, nicht verheiratet",
+  "prueftVorAllem": "erweiterter Zugang KiZ: geht durch den Beitrag zur Krankenversicherung verloren; verheiratet gilt er (vergleich.test.ts)",
+  "erwartung": "Nur Weg A: Mit dem Beitrag zur Krankenversicherung fehlen in der Bedarfsprüfung des KiZ 331,96 €, mehr als 100 €, darum kein KiZ. Mit Wohngeld allein fehlen auf Weg B 925,96 €. Verheiratet: erweiterter Zugang, es fehlen 65 €, echte Wahl zwischen A und B.",
   "stichtag": "2026-07-01",
   "eingabe": {
     "gemeinde": { "name": "Nürnberg, Stadt", "kreis": null },
     "erwachsene": [
-      { "alter": 35, "brutto": 130000, "netto": 104000, "sonstigesEinkommen": 0 },
-      { "alter": 35, "brutto": 0, "netto": 0, "sonstigesEinkommen": 0 }
+      { "alter": 35, "brutto": 130000, "netto": 104000, "sonstigesEinkommen": 0, "krankenversicherung": "arbeit" },
+      { "alter": 35, "brutto": 0, "netto": 0, "sonstigesEinkommen": 0, "krankenversicherung": "selbst" }
     ],
+    "familienstand": "nicht_verheiratet",
     "kinder": [
       { "alter": { "jahre": 4, "monate": 0 }, "einkommen": 0, "ausbildungsverguetung": 0 },
       { "alter": { "jahre": 8, "monate": 0 }, "einkommen": 0, "ausbildungsverguetung": 0 }
@@ -23,7 +24,8 @@
     "Festgelegt von Nico am 28.10.2026: wie T01, aber Brutto 1.300 €, Netto 1.040 € (keine Lohnsteuer).",
     "Alter der Erwachsenen (35 Jahre) und Erspartes (unter 10.000 €) wie bei T01.",
     "Gemeinde Nürnberg, Mietenstufe V. Vom Wohngeldrechner bestätigt (Nico, 28.10.2026).",
-    "Nur eine Person verdient. Wohngeldrechner: Werbungskosten 102,50 €/Monat, kein Häkchen bei Einkommensteuer, Häkchen bei KV/PV und RV. Bruttokaltmiete 930 €."
+    "Nur eine Person verdient. Wohngeldrechner: Werbungskosten 102,50 €/Monat, kein Häkchen bei Einkommensteuer, Häkchen bei KV/PV und RV. Bruttokaltmiete 930 €.",
+    "Seit 31.10.2026 (Nico): nicht verheiratet. Wer verdient, ist über die Arbeit versichert; die andere Person muss sich selbst versichern, Mindestbeitrag 266,96 € (kv.json, DA-KiZ C.4.1 Abs. 5). Die verheiratete Fassung rechnet wie bis zum 31.10.2026 (alsVerheiratet in testhaushalte.ts, vergleich.test.ts)."
   ],
   "soll": {
     "sgb2": {
@@ -38,29 +40,31 @@
     },
     "kiz": {
       "anspruchLotse": null,
-      "anspruch": "erweiterter_zugang",
+      "anspruch": "nein_bedarf_nicht_gedeckt",
       "betrag": 59400,
+      "fehlbetrag": 33196,
       "betragStatus": "berechnet",
       "quelle": "Nicht im KiZ-Lotsen geprüft. Betrag: vom Regelwerk berechnet, von Nico gegengerechnet."
     },
     "vergleich": {
-      "ergebnis": "erweiterter_zugang",
-      "fehlbetrag": 6500,
-      "quelle": "Nico, 28.10.2026: 682 + 518 + 940 + 594 = 2.734 € gegen Bedarf 2.799 €"
+      "ergebnis": "nur_weg_a",
+      "fehlbetrag": 92596,
+      "krankenversicherung": 26696,
+      "quelle": "Von Hand (Claude, 31.10.2026): Lücke A 1.599 € + Beitrag 266,96 € − Wohngeld 940 € = 925,96 €; ohne KiZ, weil er entfällt (mit KiZ fehlen 331,96 €). Verheiratet: 682 + 518 + 940 + 594 = 2.734 € gegen Bedarf 2.799 € (Nico, 28.10.2026)."
     },
     "folgen": [
       {
         "stichtag": "2026-07-01",
-        "einordnung": "einordnung_erweiterter_zugang",
+        "einordnung": "einordnung_nur_weg_a",
         "wegA": ["a_kinderbetreuung_ab_14_monate","a_partner","a_arbeit","a_erstgespraech","a_meldetermine","a_kuerzungen","a_arbeit_abgelehnt","a_wohnung","a_erspartes","a_kontoauszuege","a_krankenversicherung","a_ab_wann_geld","a_bewilligung","a_aenderungen","a_einkommen_zaehlt","a_zustaendig"],
-        "wegB": ["b_arbeit_und_betreuung","b_krankenversicherung","b_erweiterter_zugang_verguenstigungen","b_kiz_6_monate","b_kiz_ab_antragsmonat","b_wohngeld_12_monate","b_wohngeld_aenderungen","b_erspartes_kiz","b_erspartes_wohngeld","b_wohnung","b_kontoauszuege","b_wohngeld_2027","b_einkommen_zaehlt","b_zustaendig"],
-        "beide": ["beide_reihenfolge","beide_bildung_teilhabe"],
-        "naechsterSchritt": {"art":"wahl","ids":["grundsicherung_online","kiz_und_wohngeld_online"]},
+        "wegB": ["b_arbeit_und_betreuung","b_krankenversicherung","b_wohngeld_12_monate","b_wohngeld_aenderungen","b_erspartes_wohngeld","b_wohnung","b_kontoauszuege","b_wohngeld_2027","b_einkommen_zaehlt","b_zustaendig"],
+        "beide": ["beide_bildung_teilhabe"],
+        "naechsterSchritt": {"art":"einer","ids":["grundsicherung_online"]},
         "unterlagen": {
           "wegA": ["sgb2_ausweis","sgb2_kontoauszuege","sgb2_lohn","sgb2_mietvertrag","sgb2_nebenkosten","sgb2_mietquittungen","sgb2_ausgaben","sgb2_vermoegen"],
-          "wegB": ["kiz_lohn","kiz_wohnkosten","kiz_fahrtkosten","kiz_versicherungen","kiz_aufenthaltstitel","wohngeld_mietvertrag","wohngeld_mietbescheinigung","wohngeld_mietzahlung","wohngeld_verdienst","wohngeld_bescheide","wohngeld_versicherung","wohngeld_vermoegen","wohngeld_aufenthaltstitel"]
+          "wegB": ["wohngeld_mietvertrag","wohngeld_mietbescheinigung","wohngeld_mietzahlung","wohngeld_verdienst","wohngeld_versicherung","wohngeld_vermoegen","wohngeld_aufenthaltstitel"]
         },
-        "quelle": "Von Hand aus folgen/*.json und den Bedingungen abgeleitet (Claude, 28.10.2026). Reihenfolge und Auswahl von Nico noch freizugeben."
+        "quelle": "Bis 28.10.2026 von Hand abgeleitet (Claude). Seit 31.10.2026 (KV-Beitrag, unverheiratet): mit dem Regelwerk ermittelt, Änderungen einzeln gegen die Bedingungen und gegen T08 (nur Weg A, gleiche Listen) geprüft (Claude). Von Nico freizugeben."
       }
     ]
   }

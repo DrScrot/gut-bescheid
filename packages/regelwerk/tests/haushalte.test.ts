@@ -111,10 +111,10 @@ describe("Testhaushalte Weg B und Vergleich", () => {
         });
       }
 
-      // T08 ist die dokumentierte Ausnahme: Der Lotse sagt „ja“, das Regelwerk „nein“ (siehe T08.json).
+      // Dokumentierte Ausnahmen: Der Lotse sagt „ja“, das Regelwerk „nein“ (T08: Wohngeld, T02: Krankenversicherung).
       if (kiz.anspruchLotse !== null) {
         const lotse = kiz.anspruchLotse;
-        const ausnahme = t.id === "T08";
+        const ausnahme = kiz.lotseWeichtAb === true;
         it(ausnahme ? "KiZ-Anspruch weicht vom Lotsen ab (dokumentiert)" : `KiZ-Anspruch wie Lotse: ${lotse ? "ja" : "nein"}`, () => {
           const regelwerk = ["ja", "erweiterter_zugang"].includes(ergebnis().kiz.anspruch);
           expect(regelwerk).toBe(ausnahme ? !lotse : lotse);
@@ -132,6 +132,10 @@ describe("Testhaushalte Weg B und Vergleich", () => {
           expect(ergebnis().wegB.fehlbetrag).toBe(fehlbetrag);
         });
       }
+
+      it(`Beitrag zur Krankenversicherung auf Weg B: ${(vergleich.krankenversicherung ?? 0) / 100} €`, () => {
+        expect(ergebnis().wegB.krankenversicherung).toBe(vergleich.krankenversicherung ?? 0);
+      });
 
       it("ungeprüfte Werte: Vermögensgrenze Wohngeld, Abzüge-Schätzung, Zuständigkeit Weg A und was T*.json nennt", () => {
         expect(ergebnis().parameterHinweise.map((h) => h.name).sort()).toEqual(

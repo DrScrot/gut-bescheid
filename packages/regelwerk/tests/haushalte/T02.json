@@ -1,15 +1,16 @@
 {
   "id": "T02",
-  "haushalt": "wie T01 (Paar, Kinder 4 und 8, Nürnberg)",
-  "prueftVorAllem": "niedriges Einkommen",
-  "erwartung": "Weg B deckt knapp den Bedarf (5 € übrig)",
+  "haushalt": "wie T01 (Paar, Kinder 4 und 8, Nürnberg), nicht verheiratet",
+  "prueftVorAllem": "niedriges Einkommen; Beitrag zur Krankenversicherung auf Weg B (DA-KiZ C.4.1 Abs. 5)",
+  "erwartung": "Nur Weg A: Mit dem Beitrag zur Krankenversicherung fehlen in der Bedarfsprüfung des KiZ 261,96 €, darum kein KiZ. Mit Wohngeld allein fehlen auf Weg B 855,96 €. Verheiratet deckt Weg B knapp (5 € übrig).",
   "stichtag": "2026-07-01",
   "eingabe": {
     "gemeinde": { "name": "Nürnberg, Stadt", "kreis": null },
     "erwachsene": [
-      { "alter": 35, "brutto": 140000, "netto": 112000, "sonstigesEinkommen": 0 },
-      { "alter": 35, "brutto": 0, "netto": 0, "sonstigesEinkommen": 0 }
+      { "alter": 35, "brutto": 140000, "netto": 112000, "sonstigesEinkommen": 0, "krankenversicherung": "arbeit" },
+      { "alter": 35, "brutto": 0, "netto": 0, "sonstigesEinkommen": 0, "krankenversicherung": "selbst" }
     ],
+    "familienstand": "nicht_verheiratet",
     "kinder": [
       { "alter": { "jahre": 4, "monate": 0 }, "einkommen": 0, "ausbildungsverguetung": 0 },
       { "alter": { "jahre": 8, "monate": 0 }, "einkommen": 0, "ausbildungsverguetung": 0 }
@@ -24,7 +25,11 @@
     "Kindesalter in vollen Jahren, Monate 0.",
     "Gemeinde Nürnberg, Mietenstufe V. Vom Wohngeldrechner bestätigt (Nico, 28.10.2026).",
     "Nur eine Person verdient. Wohngeldrechner: Werbungskosten 102,50 €/Monat, kein Häkchen bei Einkommensteuer, Häkchen bei KV/PV und RV. Bruttokaltmiete 930 €.",
-    "Erwartung bis M2: „nur Weg A deckt den Bedarf“. Mit KiZ und Wohngeld deckt Weg B knapp (Nico, 28.10.2026)."
+    "Erwartung bis M2: „nur Weg A deckt den Bedarf“. Mit KiZ und Wohngeld deckt Weg B knapp (Nico, 28.10.2026).",
+    "Seit 31.10.2026 (Nico): nicht verheiratet. Wer verdient, ist über die Arbeit versichert; die andere Person muss sich selbst versichern, Mindestbeitrag 266,96 € (kv.json, DA-KiZ C.4.1 Abs. 5). Die verheiratete Fassung rechnet wie bis zum 31.10.2026 (alsVerheiratet in testhaushalte.ts, vergleich.test.ts)."
+  ],
+  "abweichungen": [
+    "KiZ-Lotse (28.10.2026): ja. Regelwerk seit 31.10.2026: nein. Der Lotse fragt nicht, ob das Paar verheiratet ist (Nico, 31.10.2026), und rechnet ohne Beitrag zur Krankenversicherung. Nach DA-KiZ C.4.1 Abs. 5 zählt der Beitrag: Bedarf 2.799 € + Beitrag 266,96 € gegen Einkommen und Kindergeld 1.270 € (752 + 518), KiZ 594 € und Wohngeld 940 €. Es fehlen 261,96 €, mehr als 100 €. Nicht angeglichen."
   ],
   "soll": {
     "sgb2": {
@@ -39,29 +44,32 @@
     },
     "kiz": {
       "anspruchLotse": true,
-      "anspruch": "ja",
+      "lotseWeichtAb": true,
+      "anspruch": "nein_bedarf_nicht_gedeckt",
       "betrag": 59400,
+      "fehlbetrag": 26196,
       "betragStatus": "berechnet",
       "quelle": "Anspruch: KiZ-Lotse der BA, abgerufen von Nico am 28.10.2026. Betrag: vom Regelwerk berechnet, von Nico gegengerechnet."
     },
     "vergleich": {
-      "ergebnis": "weg_b_deckt",
-      "fehlbetrag": -500,
-      "quelle": "Nico, 28.10.2026: 752 + 518 + 940 + 594 = 2.804 € gegen Bedarf 2.799 €"
+      "ergebnis": "nur_weg_a",
+      "fehlbetrag": 85596,
+      "krankenversicherung": 26696,
+      "quelle": "Von Hand (Claude, 31.10.2026): Lücke A 1.529 € + Beitrag 266,96 € − Wohngeld 940 € = 855,96 €; ohne KiZ, weil er entfällt. Verheiratet: 752 + 518 + 940 + 594 = 2.804 € gegen Bedarf 2.799 € (Nico, 28.10.2026)."
     },
     "folgen": [
       {
         "stichtag": "2026-07-01",
-        "einordnung": "einordnung_weg_b_deckt",
-        "wegA": ["a_kinderbetreuung_ab_14_monate","a_partner","a_vorrang_kiz_wohngeld","a_arbeit","a_erstgespraech","a_meldetermine","a_kuerzungen","a_arbeit_abgelehnt","a_wohnung","a_erspartes","a_kontoauszuege","a_krankenversicherung","a_ab_wann_geld","a_bewilligung","a_aenderungen","a_einkommen_zaehlt","a_zustaendig"],
-        "wegB": ["b_arbeit_und_betreuung","b_krankenversicherung","b_kiz_6_monate","b_kiz_ab_antragsmonat","b_wohngeld_12_monate","b_wohngeld_aenderungen","b_erspartes_kiz","b_erspartes_wohngeld","b_wohnung","b_kontoauszuege","b_wohngeld_2027","b_einkommen_zaehlt","b_zustaendig"],
+        "einordnung": "einordnung_nur_weg_a",
+        "wegA": ["a_kinderbetreuung_ab_14_monate","a_partner","a_arbeit","a_erstgespraech","a_meldetermine","a_kuerzungen","a_arbeit_abgelehnt","a_wohnung","a_erspartes","a_kontoauszuege","a_krankenversicherung","a_ab_wann_geld","a_bewilligung","a_aenderungen","a_einkommen_zaehlt","a_zustaendig"],
+        "wegB": ["b_arbeit_und_betreuung","b_krankenversicherung","b_wohngeld_12_monate","b_wohngeld_aenderungen","b_erspartes_wohngeld","b_wohnung","b_kontoauszuege","b_wohngeld_2027","b_einkommen_zaehlt","b_zustaendig"],
         "beide": ["beide_bildung_teilhabe"],
-        "naechsterSchritt": {"art":"einer","ids":["kiz_und_wohngeld_online"]},
+        "naechsterSchritt": {"art":"einer","ids":["grundsicherung_online"]},
         "unterlagen": {
           "wegA": ["sgb2_ausweis","sgb2_kontoauszuege","sgb2_lohn","sgb2_mietvertrag","sgb2_nebenkosten","sgb2_mietquittungen","sgb2_ausgaben","sgb2_vermoegen"],
-          "wegB": ["kiz_lohn","kiz_wohnkosten","kiz_fahrtkosten","kiz_versicherungen","kiz_aufenthaltstitel","wohngeld_mietvertrag","wohngeld_mietbescheinigung","wohngeld_mietzahlung","wohngeld_verdienst","wohngeld_bescheide","wohngeld_versicherung","wohngeld_vermoegen","wohngeld_aufenthaltstitel"]
+          "wegB": ["wohngeld_mietvertrag","wohngeld_mietbescheinigung","wohngeld_mietzahlung","wohngeld_verdienst","wohngeld_versicherung","wohngeld_vermoegen","wohngeld_aufenthaltstitel"]
         },
-        "quelle": "Von Hand aus folgen/*.json und den Bedingungen abgeleitet (Claude, 28.10.2026). Reihenfolge und Auswahl von Nico noch freizugeben."
+        "quelle": "Bis 28.10.2026 von Hand abgeleitet (Claude). Seit 31.10.2026 (KV-Beitrag, unverheiratet): mit dem Regelwerk ermittelt, Änderungen einzeln gegen die Bedingungen und gegen T08 (nur Weg A, gleiche Listen) geprüft (Claude). Von Nico freizugeben."
       }
     ]
   }

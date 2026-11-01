@@ -3,8 +3,9 @@
 // DA-KiZ, Stand 20.02.2026. Getestet wird ab dem dort angegebenen bereinigten Einkommen: Das Netto ist so
 // gewählt, dass Netto minus Freibetrag (§ 11b SGB II, aus dem Brutto) genau dieses Einkommen ergibt.
 import { describe, expect, it } from "vitest";
-import { aufEuro, berechneKiz } from "../src/index";
+import { aufEuro, berechne, berechneKiz } from "../src/index";
 import type { Erwachsener, Haushalt, Kind } from "../src/index";
+import { alsVerheiratet, testhaushalt } from "./testhaushalte";
 
 const STICHTAG = "2026-07-01";
 
@@ -360,5 +361,84 @@ describe("Parameter", () => {
     expect(e.kinder[0]?.hoechstbetrag).toBe(27200);
     expect(e.betrag).toBe(66100);
     expect(e.parameterHinweise).toContainEqual(expect.objectContaining({ name: "kiz.hoechstbetrag", status: "geplant" }));
+  });
+});
+
+// Krankenversicherung in der Bedarfsprüfung: DA-KiZ C.4.1 Abs. 5 (Stand 20.02.2026, im Original gelesen am 31.10.2026).
+// „Bei der Prüfung, ob die Hilfebedürftigkeit durch Kinderzuschlag beseitigt werden kann, müssen auch Beiträge zur Kranken-
+// und Pflegeversicherung beachtet werden.“ Sollwerte von Hand (Claude, 31.10.2026): Fehlbetrag ohne Beitrag (T*.json, Nico
+// 28.10.2026) plus Mindestbeitrag aus krankenversicherung.test.ts.
+describe("Krankenversicherung in der Bedarfsprüfung (DA-KiZ C.4.1 Abs. 5)", () => {
+  const kiz = (h: Haushalt) => {
+    const e = berechne(h, { stichtag: STICHTAG });
+    if (!e.imUmfang) throw new Error(`außerhalb des Umfangs: ${e.gruende.join(", ")}`);
+    return e.kiz;
+  };
+  const unverheiratet = (h: Haushalt): Haushalt => ({
+    ...h,
+    familienstand: "nicht_verheiratet",
+    erwachsene: h.erwachsene.map((e) => ({ ...e, krankenversicherung: e.brutto > 0 ? "arbeit" : "selbst" })),
+  });
+
+  it("T02, nicht verheiratet: Beitrag 266,96 €, es fehlen 261,96 €, kein KiZ", () => {
+    const e = kiz(testhaushalt("T02").eingabe);
+    expect(e.bedarfspruefung.krankenversicherung).toBe(26696);
+    expect(e.bedarfspruefung.fehlbetrag).toBe(26196);
+    expect(e.anspruch).toBe("nein_bedarf_nicht_gedeckt");
+    expect(e.betrag).toBe(59400);
+  });
+
+  it("T02, verheiratet: kein Beitrag, 5 € übrig, KiZ wie bisher", () => {
+    const e = kiz(alsVerheiratet(testhaushalt("T02").eingabe));
+    expect(e.bedarfspruefung.krankenversicherung).toBe(0);
+    expect(e.bedarfspruefung.fehlbetrag).toBe(-500);
+    expect(e.anspruch).toBe("ja");
+  });
+
+  it("T06: Das Ersparte über dem Freibetrag deckt auch den Beitrag, KiZ bleibt", () => {
+    const e = kiz(testhaushalt("T06").eingabe);
+    expect(e.bedarfspruefung.krankenversicherung).toBe(27026);
+    expect(e.bedarfspruefung.fehlbetrag).toBe(21326);
+    expect(e.bedarfspruefung.erspartesDecktFehlbetrag).toBe(true);
+    expect(e.anspruch).toBe("ja");
+  });
+
+  it("erweiterter Zugang mit Beitrag: T01 mit 1.700 € brutto, nicht verheiratet, es fehlen 80,96 € (Annahme, rechts-pruefer)", () => {
+    const t01 = testhaushalt("T01").eingabe;
+    const [verdiener, partner] = t01.erwachsene as [Erwachsener, Erwachsener];
+    const e = kiz(unverheiratet({ ...t01, erwachsene: [{ ...verdiener, brutto: 170000, netto: 136000 }, partner] }));
+    expect(e.bedarfspruefung.fehlbetrag).toBe(8096);
+    expect(e.anspruch).toBe("erweiterter_zugang");
+  });
+
+  it("Vereinfachung: Minijob und selbst versichert, der volle Beitrag kommt dazu (Grundabsetzbetrag deckt einen Teil, rechts-pruefer 31.10.2026)", () => {
+    const t02 = testhaushalt("T02").eingabe;
+    const [verdiener, partner] = t02.erwachsene as [Erwachsener, Erwachsener];
+    const e = kiz({ ...t02, erwachsene: [verdiener, { ...partner, brutto: 60300, netto: 60300 }] });
+    expect(e.bedarfspruefung.krankenversicherung).toBe(26696);
+  });
+
+  it("erweiterter Zugang mit Beitrag meldet die Annahme als ungeprüft", () => {
+    const t01 = testhaushalt("T01").eingabe;
+    const [verdiener, partner] = t01.erwachsene as [Erwachsener, Erwachsener];
+    const e = kiz(unverheiratet({ ...t01, erwachsene: [{ ...verdiener, brutto: 170000, netto: 136000 }, partner] }));
+    expect(e.parameterHinweise.map((h) => h.name)).toContain("kiz.krankenversicherungBeimErweitertenZugang");
+    expect(kiz(testhaushalt("T07").eingabe).parameterHinweise.map((h) => h.name)).not.toContain(
+      "kiz.krankenversicherungBeimErweitertenZugang",
+    );
+  });
+
+  it("privat mit Beitrag meldet die Vereinfachung als ungeprüft", () => {
+    const t02 = testhaushalt("T02").eingabe;
+    const [verdiener, partner] = t02.erwachsene as [Erwachsener, Erwachsener];
+    const e = kiz({ ...t02, erwachsene: [verdiener, { ...partner, krankenversicherung: "privat", privatBeitrag: 30000 }] });
+    expect(e.bedarfspruefung.krankenversicherung).toBe(30000);
+    expect(e.parameterHinweise.map((h) => h.name)).toContain("kiz.krankenversicherungPrivat");
+  });
+
+  it("ohne Angaben zur Versicherung: kein Beitrag, Hinweis (T01)", () => {
+    const e = kiz(testhaushalt("T01").eingabe);
+    expect(e.bedarfspruefung.krankenversicherung).toBe(0);
+    expect(e.krankenversicherung.hinweise).toEqual([{ code: "kv_unbekannt" }]);
   });
 });

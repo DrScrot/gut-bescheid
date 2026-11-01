@@ -10,7 +10,22 @@ export interface Erwachsener {
   netto: Cent;
   /** Weiteres Einkommen, z. B. Arbeitslosengeld, Krankengeld, Elterngeld. */
   sonstigesEinkommen: Cent;
+  /** Wie die Person ohne Grundsicherung krankenversichert ist (Weg B). Fehlt: unbekannt. */
+  krankenversicherung?: Krankenversicherung;
+  /** Nur bei krankenversicherung "privat": Monatsbeitrag zur privaten Kranken- und Pflegeversicherung. Fehlt: unbekannt. */
+  privatBeitrag?: Cent;
 }
+
+/**
+ * Krankenversicherung ohne Grundsicherung, für den Beitrag auf Weg B (DA-KiZ C.4.1 Abs. 5, src/krankenversicherung.ts).
+ * arbeit: pflichtversichert über einen Job über der Minijob-Grenze. leistung: über Arbeitslosengeld oder Krankengeld.
+ * familie: familienversichert, kein eigener Beitrag. selbst: muss sich selbst gesetzlich versichern (Mindestbeitrag).
+ * privat: privat versichert, Beitrag in privatBeitrag. weiss_nicht: wird aus den übrigen Angaben abgeleitet.
+ */
+export type Krankenversicherung = "arbeit" | "leistung" | "familie" | "selbst" | "privat" | "weiss_nicht";
+
+/** Familienstand eines Paares. Die Ehe und die eingetragene Lebenspartnerschaft öffnen die Familienversicherung (§ 10 SGB V). */
+export type Familienstand = "verheiratet" | "lebenspartnerschaft" | "nicht_verheiratet";
 
 export interface Kind {
   alter: { jahre: number; monate: number };
@@ -46,6 +61,8 @@ export interface Haushalt {
   gemeinde: Gemeinde;
   /** Ein oder zwei Erwachsene. */
   erwachsene: Erwachsener[];
+  /** Nur bei zwei Erwachsenen. Fehlt: unbekannt. */
+  familienstand?: Familienstand;
   kinder: Kind[];
   kaltmiete: Cent;
   /** Nebenkosten ohne Heizung. */

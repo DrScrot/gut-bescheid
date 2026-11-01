@@ -42,6 +42,7 @@
     },
     "kiz": {
       "anspruchLotse": true,
+      "lotseWeichtAb": true,
       "anspruch": "nein_bedarf_nicht_gedeckt",
       "betrag": 29700,
       "fehlbetrag": 34700,

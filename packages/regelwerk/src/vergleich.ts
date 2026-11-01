@@ -18,6 +18,26 @@ import { berechneWohngeld, type WohngeldErgebnis } from "./wohngeld";
  */
 export type Vergleichsergebnis = "weg_b_deckt" | "erweiterter_zugang" | "nur_weg_a" | "kein_anspruch";
 
+// Texte für die Oberfläche (M5, i18n) stehen am Code; Entwurf, vor M5 mit texte-schreiben und text-lektor.
+export type VergleichHinweis =
+  /**
+   * Lücke A ist 0 oder kleiner, erst der Beitrag zur Krankenversicherung lässt Geld fehlen (Randfall, Nico 31.10.2026).
+   * Fassung des rechts-pruefer (31.10.2026): „Wir haben den Beitrag zur Krankenversicherung mitgerechnet. Dann fehlen
+   * Haushalten mit euren Angaben nach den Regeln etwa {wegB.fehlbetrag} im Monat. Für solche Fälle kann das Jobcenter
+   * einen Zuschuss zahlen, auch neben Wohngeld. Gut Bescheid rechnet ihn noch nicht. Verbindlich ist nur der Bescheid.“
+   * (§ 26 Abs. 2 und 4 SGB II; FW § 26 Rz. 26.42 Abs. 2, Stand 01.07.2026). sperrtErweitertenZugang: Der Beitrag löst
+   * den erweiterten Zugang zum KiZ aus. Dann dazu: „Wer den Zuschuss beantragt, bekommt den Kinderzuschlag in diesem
+   * Fall nicht mehr.“ (§ 6a Abs. 1a Nr. 3 BKGG: „erhält oder beantragt hat“).
+   */
+  | { code: "kv_zuschuss_jobcenter"; sperrtErweitertenZugang: boolean }
+  /**
+   * Bei „weiß nicht“ ist die Person wegen ihres weiteren Einkommens als versichert angenommen (src/krankenversicherung.ts).
+   * Zahlt sie den Beitrag doch selbst, wäre die Ergebnisart eine andere (Nico, 31.10.2026). Entwurf: „Wir haben
+   * angenommen, dass das weitere Einkommen die Krankenversicherung mit abdeckt. Ist das nicht so, wird der Beitrag selbst
+   * gezahlt. Dann ergibt sich nach den Regeln ein anderes Ergebnis: {ergebnisMitBeitrag}.“
+   */
+  | { code: "kv_annahme_kippt"; person: number; ergebnisMitBeitrag: Vergleichsergebnis };
+
 type ImUmfang<T> = Extract<T, { imUmfang: true }>;
 
 export type Ergebnis =
@@ -35,16 +55,25 @@ export type Ergebnis =
        */
       wegA: { anspruch: Sgb2Anspruch; betrag: Cent; sofortzuschlag: Cent; nachEinsatzDesErsparten: boolean };
       /**
-       * Ausgezahlter KiZ und ausgezahltes Wohngeld. fehlbetrag: Lücke A minus wirksamer KiZ und Wohngeld,
-       * 0 oder kleiner: gedeckt. restAusErspartem: Es fehlt noch Geld, Weg A ist aber wegen Erspartem über dem
-       * Freibetrag ausgeschlossen; der Rest kommt aus dem Ersparten.
+       * Ausgezahlter KiZ und ausgezahltes Wohngeld. fehlbetrag: Lücke A plus Beitrag zur Krankenversicherung minus
+       * wirksamer KiZ und Wohngeld, 0 oder kleiner: gedeckt. krankenversicherung: Beitrag, den der Haushalt auf Weg B
+       * selbst zahlt (DA-KiZ C.4.1 Abs. 5). restAusErspartem: Es fehlt noch Geld, Weg A ist aber wegen Erspartem über
+       * dem Freibetrag ausgeschlossen; der Rest kommt aus dem Ersparten.
        */
-      wegB: { kinderzuschlag: Cent; wohngeld: Cent; summe: Cent; fehlbetrag: Cent; restAusErspartem: boolean };
+      wegB: {
+        kinderzuschlag: Cent;
+        wohngeld: Cent;
+        summe: Cent;
+        fehlbetrag: Cent;
+        krankenversicherung: Cent;
+        restAusErspartem: boolean;
+      };
       /** Kein Betrag, weil die Leistungen auf beiden Wegen gleich sind. */
       but: {
         wegA: { zustaendig: string; moeglich: boolean };
         wegB: { zustaendig: string; moeglich: boolean };
       };
+      hinweise: VergleichHinweis[];
       sgb2: ImUmfang<Sgb2Ergebnis>;
       kiz: ImUmfang<KizErgebnis>;
       wohngeld: ImUmfang<WohngeldErgebnis>;
@@ -53,7 +82,12 @@ export type Ergebnis =
     };
 
 export function berechne(haushalt: Haushalt, optionen: { stichtag: string }): Ergebnis {
-  const { stichtag } = optionen;
+  return vergleiche(haushalt, optionen.stichtag, true);
+}
+
+// kippPruefung: für jede Person, die wegen weiteren Einkommens als versichert angenommen ist, einmal mit Beitrag
+// nachrechnen. Die Nachrechnung prüft selbst nicht noch einmal.
+function vergleiche(haushalt: Haushalt, stichtag: string, kippPruefung: boolean): Ergebnis {
   const sgb2 = berechneSgb2(haushalt, { stichtag });
   if (!sgb2.imUmfang) return sgb2;
   const wohngeld = berechneWohngeld(haushalt, { stichtag });
@@ -65,12 +99,19 @@ export function berechne(haushalt: Haushalt, optionen: { stichtag: string }): Er
   const summe = kiz.auszahlung + wohngeld.auszahlung;
   // Für den Bedarf zählt vom KiZ nur, was nach SGB II beim Haushalt ankommt (siehe kiz.ts).
   const kizWirksam = kiz.auszahlung > 0 ? kiz.bedarfspruefung.kinderzuschlagWirksam : 0;
-  const fehlbetrag = sgb2.lueckeA - kizWirksam - wohngeld.auszahlung;
+  // Den Beitrag zur Krankenversicherung zahlt der Haushalt auf Weg B selbst (DA-KiZ C.4.1 Abs. 5, wie in kiz.ts).
+  const krankenversicherung = kiz.bedarfspruefung.krankenversicherung;
+  const fehlbetrag = sgb2.lueckeA + krankenversicherung - kizWirksam - wohngeld.auszahlung;
+  // Randfall (Nico, 31.10.2026): Ohne den Beitrag reicht das Einkommen (Lücke A ≤ 0), erst der Beitrag lässt Geld
+  // fehlen. Weg A wäre dann nur der Zuschuss nach § 26 Abs. 2 SGB II, den Version 0 nicht rechnet. Die Ergebnisart
+  // bleibt wie ohne Beitrag, dazu ein Hinweis (docs/offene-rechtsfragen.md).
+  const nurDurchBeitrag = sgb2.lueckeA <= 0 && fehlbetrag > 0;
+  const fehlbetragFuerErgebnis = nurDurchBeitrag ? fehlbetrag - krankenversicherung : fehlbetrag;
   // Erspartes über dem SGB-II-Freibetrag schließt Hilfebedürftigkeit aus, soweit es den Fehlbetrag deckt
   // (§ 9 Abs. 1 SGB II, wie in kiz.ts). Dann gibt es Weg A nicht, auch wenn mit Weg B noch Geld fehlt. Deckt es
   // ihn nicht, bleibt Weg A; das SGB-II-Ergebnis meldet, dass Erspartes zuerst eingesetzt wird.
-  const wegAWegenVermoegenAusgeschlossen =
-    sgb2.anspruch === "nein_vermoegen" && sgb2.vermoegen.ueberFreibetrag.von >= fehlbetrag;
+  const erspartesDeckt = sgb2.vermoegen.ueberFreibetrag.von >= fehlbetrag;
+  const wegAWegenVermoegenAusgeschlossen = sgb2.anspruch === "nein_vermoegen" && erspartesDeckt;
   const nachEinsatzDesErsparten = sgb2.anspruch === "nein_vermoegen" && !wegAWegenVermoegenAusgeschlossen;
   const wegAHatAnspruch = sgb2.anspruch === "ja" || sgb2.anspruch === "unklar_vermoegen";
   // Ob es den Sofortzuschlag auch ohne Grundsicherung gibt, wenn nur das Kindergeld den Anspruch verhindert, regelt
@@ -88,14 +129,38 @@ export function berechne(haushalt: Haushalt, optionen: { stichtag: string }): Er
     wohngeld: wohngeld.auszahlung,
     summe,
     fehlbetrag,
-    restAusErspartem: fehlbetrag > 0 && wegAWegenVermoegenAusgeschlossen,
+    krankenversicherung,
+    // Im Randfall ist sgb2.anspruch "nein_einkommen"; deckt das Ersparte über dem Freibetrag den Beitrag, kommt der
+    // Rest ebenfalls aus dem Ersparten (rechts-pruefer, 31.10.2026).
+    restAusErspartem: fehlbetrag > 0 && (wegAWegenVermoegenAusgeschlossen || (nurDurchBeitrag && erspartesDeckt)),
   };
 
   let ergebnis: Vergleichsergebnis;
-  if (wegB.fehlbetrag <= 0 || wegAWegenVermoegenAusgeschlossen) {
+  // Löst erst der Beitrag den erweiterten Zugang aus, gilt er auch im Randfall (sonst fehlte die Reihenfolge-Karte).
+  if (nurDurchBeitrag && kiz.anspruch === "erweiterter_zugang") ergebnis = "erweiterter_zugang";
+  else if (fehlbetragFuerErgebnis <= 0 || wegAWegenVermoegenAusgeschlossen) {
     ergebnis = summe === 0 && (sgb2.lueckeA <= 0 || wegAWegenVermoegenAusgeschlossen) ? "kein_anspruch" : "weg_b_deckt";
   } else if (kiz.anspruch === "erweiterter_zugang") ergebnis = "erweiterter_zugang";
   else ergebnis = "nur_weg_a";
+
+  // Deckt das Ersparte über dem Freibetrag den Beitrag, braucht es keinen Zuschuss.
+  const hinweise: VergleichHinweis[] =
+    nurDurchBeitrag && !erspartesDeckt
+      ? [{ code: "kv_zuschuss_jobcenter", sperrtErweitertenZugang: kiz.anspruch === "erweiterter_zugang" }]
+      : [];
+  if (kippPruefung) {
+    for (const h of kiz.krankenversicherung.hinweise) {
+      if (h.code !== "kv_angenommen" || !h.weiteresEinkommen) continue;
+      const mitBeitrag: Haushalt = {
+        ...haushalt,
+        erwachsene: haushalt.erwachsene.map((e, i) => (i === h.person ? { ...e, krankenversicherung: "selbst" } : e)),
+      };
+      const anders = vergleiche(mitBeitrag, stichtag, false);
+      if (anders.imUmfang && anders.ergebnis !== ergebnis) {
+        hinweise.push({ code: "kv_annahme_kippt", person: h.person, ergebnisMitBeitrag: anders.ergebnis });
+      }
+    }
+  }
 
   return {
     imUmfang: true,
@@ -109,6 +174,7 @@ export function berechne(haushalt: Haushalt, optionen: { stichtag: string }): Er
       wegA: { zustaendig: but.zustaendig.wegA, moeglich: wegAHatAnspruch || nachEinsatzDesErsparten },
       wegB: { zustaendig: but.zustaendig.wegB, moeglich: summe > 0 },
     },
+    hinweise,
     sgb2,
     kiz,
     wohngeld,

@@ -97,6 +97,31 @@
     "geprueftAm": "2026-10-28",
     "hinweis": "Mit Einkommen und Vermögen, Kinderzuschlag und Wohngeld fehlen höchstens 100 € (DA-KiZ C.4.2 Abs. 2 Satz 2: „unter Berücksichtigung des Einkommens und Vermögens“; das geht über den Wortlaut von § 6a Abs. 1a Nr. 1 BKGG hinaus, der nur Einkommen nennt). Gut Bescheid folgt der DA, weil die Familienkasse an sie gebunden ist (Entscheidung von Nico am 28.10.2026). Vermögen zählt mit dem Teil über dem SGB-II-Freibetrag. Dazu Absetzbeträge wegen Erwerbstätigkeit (§ 11b Abs. 2 und 3 SGB II) von mindestens 100 €. Nur ohne beantragte oder bezogene Grundsicherung (§ 6a Abs. 1a Nr. 3 BKGG)."
   },
+  "krankenversicherungInBedarfspruefung": {
+    "wert": "beitrag_weg_b_zaehlt",
+    "einheit": "Regel",
+    "fundstelle": "DA-KiZ C.4.1 Abs. 5 (Stand 20.02.2026); § 6a Abs. 1 Nr. 3 BKGG",
+    "gueltigAb": "2026-07-01",
+    "status": "geprueft",
+    "geprueftAm": "2026-10-31",
+    "hinweis": "„Bei der Prüfung, ob die Hilfebedürftigkeit durch Kinderzuschlag beseitigt werden kann, müssen auch Beiträge zur Kranken- und Pflegeversicherung beachtet werden.“ Kein Kinderzuschlag, wenn ergänzend ein Zuschuss nach § 26 SGB II nötig wäre (Satz 2). Gut Bescheid schlägt den Beitrag, den der Haushalt auf Weg B selbst zahlt, auf den Fehlbetrag (src/krankenversicherung.ts). Vereinfachung: Hat die Person eigenes Erwerbseinkommen, deckt der Grundabsetzbetrag (§ 11b Abs. 2 SGB II) einen Teil schon ab; der volle Beitrag kommt trotzdem dazu (rechts-pruefer, 31.10.2026; docs/offene-rechtsfragen.md Punkt 30). Echter Fehler nach Entscheidung von Nico am 31.10.2026, im Original gelesen am 31.10.2026."
+  },
+  "krankenversicherungBeimErweitertenZugang": {
+    "wert": "zaehlt_zum_fehlbetrag",
+    "einheit": "Regel",
+    "fundstelle": "§ 6a Abs. 1a BKGG („abweichend von Absatz 1 Nummer 3“); DA-KiZ C.4.2 Abs. 2 Satz 1 und 2, C.4.1 Abs. 5 (Stand 20.02.2026); FW § 26 SGB II Rz. 26.42 (Stand 01.07.2026)",
+    "gueltigAb": "2026-07-01",
+    "status": "pruefen",
+    "hinweis": "Annahme: Beim erweiterten Zugang zählt der Beitrag zu den höchstens 100 €, die fehlen dürfen. C.4.2 Abs. 2 verweist auf die Prüfung nach C.4.1; der Ausschluss in C.4.1 Abs. 5 Satz 2 stützt sich nur auf § 6a Abs. 1 Nr. 3 BKGG, von dem Abs. 1a abweicht. Ausdrücklich geregelt ist der Fall nicht (rechts-pruefer, 31.10.2026). Andere Lesart: kein_erweiterter_zugang (Satz 2 sperrt immer). Wer den Zuschuss nach § 26 SGB II beantragt, verliert den erweiterten Zugang (§ 6a Abs. 1a Nr. 3 BKGG). FW § 26 Rz. 26.42 Abs. 2 (im Original gelesen am 31.10.2026) nennt den Ausschluss ebenfalls nur mit § 6a Abs. 1 Nr. 3 BKGG und lässt Wohngeld neben dem Zuschuss zu."
+  },
+  "krankenversicherungPrivat": {
+    "wert": "beitrag_zum_fehlbetrag",
+    "einheit": "Regel",
+    "fundstelle": "DA-KiZ C.3.2.1.1 Abs. 11 Satz 4 und 5 (Stand 20.02.2026)",
+    "gueltigAb": "2026-07-01",
+    "status": "pruefen",
+    "hinweis": "Vereinfachung: Der angegebene Beitrag zur privaten Kranken- und Pflegeversicherung kommt auf den Fehlbetrag. Nach der DA wird er vom Einkommen abgesetzt, in nachgewiesener Höhe, ab dem folgenden Bewilligungsabschnitt höchstens bis zum Basistarif. Die Vereinfachung rechnet Weg B zu schlecht: Der Kinderzuschlag wäre um 45 % des Beitrags höher, und der Grundabsetzbetrag zählt doppelt. Den Arbeitgeberzuschuss (§ 257 SGB V) bildet Version 0 nicht ab (rechts-pruefer, 31.10.2026)."
+  },
   "rundung": {
     "wert": "kaufmaennisch_euro_gesamt",
     "einheit": "Regel",

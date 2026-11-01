@@ -85,6 +85,15 @@ export interface KizParameter {
   wohnkostenanteilEltern: Parameter<{ paar: number[]; alleinerziehend: number[] }>;
   vermoegensgrenze: Parameter<{ berechtigtCent: Cent; jeWeiterePersonCent: Cent }>;
   erweiterterZugang: Parameter<{ hoechstensFehlbetragCent: Cent; mindestensAbsetzbetraegeErwerbCent: Cent }>;
+  /** DA-KiZ C.4.1 Abs. 5: Der Beitrag zur Krankenversicherung auf Weg B zählt in der Bedarfsprüfung (src/krankenversicherung.ts). */
+  krankenversicherungInBedarfspruefung: Parameter<"beitrag_weg_b_zaehlt">;
+  /**
+   * zaehlt_zum_fehlbetrag: Beim erweiterten Zugang zählt der Beitrag zu den höchstens 100 € (Annahme, rechts-pruefer
+   * 31.10.2026). kein_erweiterter_zugang: andere Lesart, C.4.1 Abs. 5 Satz 2 sperrt auch den erweiterten Zugang.
+   */
+  krankenversicherungBeimErweitertenZugang: Parameter<"zaehlt_zum_fehlbetrag" | "kein_erweiterter_zugang">;
+  /** Privater Beitrag auf den Fehlbetrag statt vom Einkommen abgesetzt (Vereinfachung, DA-KiZ C.3.2.1.1 Abs. 11). */
+  krankenversicherungPrivat: Parameter<"beitrag_zum_fehlbetrag">;
   rundung: Parameter<"kaufmaennisch_euro_gesamt">;
   /** Nur für die Folgen-Karten zu 2027: an diesem Tag war der Entwurf BT-Drs. 21/7860 nicht beschlossen. */
   entwurfGeprueftAm: Parameter<string>;
@@ -203,7 +212,12 @@ const SGB2_TEXTWERTE = {
   rundung: ["kaufmaennisch_cent"],
   sofortzuschlagOhneAnspruch: ["nicht_ohne_leistungsbezug", "wenn_luecke_ohne_kindergeld_positiv"],
 } as const;
-const KIZ_TEXTWERTE = { rundung: ["kaufmaennisch_euro_gesamt"] } as const;
+const KIZ_TEXTWERTE = {
+  rundung: ["kaufmaennisch_euro_gesamt"],
+  krankenversicherungInBedarfspruefung: ["beitrag_weg_b_zaehlt"],
+  krankenversicherungBeimErweitertenZugang: ["zaehlt_zum_fehlbetrag", "kein_erweiterter_zugang"],
+  krankenversicherungPrivat: ["beitrag_zum_fehlbetrag"],
+} as const;
 const WOHNGELD_TEXTWERTE = {
   rundung: ["kaufmaennisch_euro"],
   obergrenzeMiete: ["hoechstens_miete"],

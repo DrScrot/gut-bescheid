@@ -1,15 +1,16 @@
 {
   "id": "T06",
-  "haushalt": "Paar (35 und 38), Kind 7, Würzburg, Erspartes 60.000 €",
+  "haushalt": "Paar (35 und 38), Kind 7, Würzburg, Erspartes 60.000 €, nicht verheiratet",
   "prueftVorAllem": "Vermögen: SGB II ausgeschlossen (Freibetrag 25.000 €), KiZ möglich (Grenze 70.000 €)",
-  "erwartung": "nur Weg B, Hinweis Vermögen",
+  "erwartung": "nur Weg B, Hinweis Vermögen. Mit dem Beitrag zur Krankenversicherung fehlen 213,26 €; der Rest kommt aus dem Ersparten.",
   "stichtag": "2026-07-01",
   "eingabe": {
     "gemeinde": { "name": "Würzburg, Stadt", "kreis": null },
     "erwachsene": [
-      { "alter": 35, "brutto": 220000, "netto": 165000, "sonstigesEinkommen": 0 },
-      { "alter": 38, "brutto": 0, "netto": 0, "sonstigesEinkommen": 0 }
+      { "alter": 35, "brutto": 220000, "netto": 165000, "sonstigesEinkommen": 0, "krankenversicherung": "arbeit" },
+      { "alter": 38, "brutto": 0, "netto": 0, "sonstigesEinkommen": 0, "krankenversicherung": "selbst" }
     ],
+    "familienstand": "nicht_verheiratet",
     "kinder": [
       { "alter": { "jahre": 7, "monate": 0 }, "einkommen": 0, "ausbildungsverguetung": 0 }
     ],
@@ -23,7 +24,8 @@
     "Erspartes als genauer Betrag (60.000 €), wie er in M3 auch in den KiZ-Lotsen geht.",
     "Gemeinde Würzburg, Mietenstufe IV. Vom Wohngeldrechner bestätigt (Nico, 28.10.2026).",
     "Nur eine Person verdient. Wohngeldrechner: Werbungskosten 102,50 €/Monat, Häkchen bei Einkommensteuer, KV/PV und RV. Bruttokaltmiete 800 €.",
-    "Der KiZ-Lotse fragt kein Vermögen ab (Nico, 28.10.2026). Die Vermögensgrenze für den KiZ (40.000 + 2 × 15.000 = 70.000 €) prüft nur das Regelwerk."
+    "Der KiZ-Lotse fragt kein Vermögen ab (Nico, 28.10.2026). Die Vermögensgrenze für den KiZ (40.000 + 2 × 15.000 = 70.000 €) prüft nur das Regelwerk.",
+    "Seit 31.10.2026 (Nico): nicht verheiratet. Wer verdient, ist über die Arbeit versichert; die andere Person muss sich selbst versichern, Mindestbeitrag 270,26 € (kv.json, DA-KiZ C.4.1 Abs. 5). Die verheiratete Fassung rechnet wie bis zum 31.10.2026 (alsVerheiratet in testhaushalte.ts, vergleich.test.ts)."
   ],
   "soll": {
     "sgb2": {
@@ -42,27 +44,29 @@
       "anspruchLotse": true,
       "anspruch": "ja",
       "betrag": 29700,
+      "fehlbetrag": 21326,
       "betragStatus": "berechnet",
       "quelle": "Anspruch: KiZ-Lotse der BA, abgerufen von Nico am 28.10.2026 (ohne Vermögen). Betrag: vom Regelwerk berechnet, von Nico gegengerechnet."
     },
     "vergleich": {
       "ergebnis": "weg_b_deckt",
-      "fehlbetrag": -5700,
-      "quelle": "Nico, 28.10.2026: Weg B deckt den Bedarf; Weg A wegen Vermögen ausgeschlossen"
+      "fehlbetrag": 21326,
+      "krankenversicherung": 27026,
+      "quelle": "Von Hand (Claude, 31.10.2026): −57 € + Beitrag 270,26 € = 213,26 €; das Ersparte über dem Freibetrag (35.000 €) deckt das, Weg A bleibt ausgeschlossen. Verheiratet: Weg B deckt den Bedarf, 57 € übrig (Nico, 28.10.2026)."
     },
     "folgen": [
       {
         "stichtag": "2026-07-01",
         "einordnung": "einordnung_erspartes",
         "wegA": ["a_erspartes_zuerst","a_zustaendig"],
-        "wegB": ["b_arbeit_und_betreuung","b_krankenversicherung","b_kiz_6_monate","b_kiz_ab_antragsmonat","b_wohngeld_12_monate","b_wohngeld_aenderungen","b_erspartes_kiz","b_erspartes_wohngeld","b_wohnung","b_kontoauszuege","b_wohngeld_2027","b_einkommen_zaehlt","b_zustaendig"],
+        "wegB": ["b_arbeit_und_betreuung","b_krankenversicherung","b_rest_aus_erspartem","b_kiz_6_monate","b_kiz_ab_antragsmonat","b_wohngeld_12_monate","b_wohngeld_aenderungen","b_erspartes_kiz","b_erspartes_wohngeld","b_wohnung","b_kontoauszuege","b_wohngeld_2027","b_einkommen_zaehlt","b_zustaendig"],
         "beide": ["beide_bildung_teilhabe"],
         "naechsterSchritt": {"art":"einer","ids":["kiz_und_wohngeld_online"]},
         "unterlagen": {
           "wegA": [],
           "wegB": ["kiz_lohn","kiz_wohnkosten","kiz_fahrtkosten","kiz_versicherungen","kiz_aufenthaltstitel","wohngeld_mietvertrag","wohngeld_mietbescheinigung","wohngeld_mietzahlung","wohngeld_verdienst","wohngeld_bescheide","wohngeld_versicherung","wohngeld_vermoegen","wohngeld_aufenthaltstitel"]
         },
-        "quelle": "Von Hand aus folgen/*.json und den Bedingungen abgeleitet (Claude, 28.10.2026). Reihenfolge und Auswahl von Nico noch freizugeben."
+        "quelle": "Bis 28.10.2026 von Hand abgeleitet (Claude). Seit 31.10.2026 (KV-Beitrag, unverheiratet): mit dem Regelwerk ermittelt, Änderungen einzeln gegen die Bedingungen und gegen die Karte b_rest_aus_erspartem (restAusErspartem) geprüft (Claude). Von Nico freizugeben."
       }
     ]
   }
