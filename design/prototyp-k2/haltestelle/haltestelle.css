@@ -134,7 +134,7 @@ button, input { font: inherit; color: inherit; }
 .was { font: 700 19px/25px var(--font-text); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
 .halt-text { font: 400 18px/26px var(--font-text); margin-top: 4px; }
 .hinweis-text { color: var(--text-leise); }
-.vorschuss { margin-top: 4px; display: flex; flex-direction: column; gap: 2px; }
+.vorschuss { margin-top: 4px; display: flex; flex-direction: column; gap: 8px; }
 .hier { display: inline-flex; align-items: center; min-height: 30px; padding: 2px 12px; border-radius: 999px; background: var(--honig); color: #2A1A2F; font: 700 16px/20px var(--font-text); white-space: nowrap; }
 .stimme { margin-top: 10px; padding: 14px 16px; border-radius: 18px; background: var(--tief); }
 .stimme p { font: italic 500 21px/29px var(--font-display); }

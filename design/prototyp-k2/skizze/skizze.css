@@ -109,7 +109,7 @@ button, input { font: inherit; color: inherit; }
 .halt-text { font: 400 16px/24px var(--font-text); margin-top: 4px; }
 .halt.hinweis { min-height: 0; }
 .hinweis-text { color: var(--text-leise); }
-.vorschuss { margin-top: 4px; display: flex; flex-direction: column; gap: 2px; }
+.vorschuss { margin-top: 4px; display: flex; flex-direction: column; gap: 8px; }
 
 /* Notiz des Gegenübers: Handschrift in Füllerblau, leicht schräg */
 .notiz { margin-top: -2px; display: inline-flex; align-items: center; gap: 4px; font: 500 19px/24px var(--font-hand); font-variation-settings: "INFM" 30, "BNCE" 0; color: var(--handschrift); transform: rotate(-1deg); transform-origin: left center; white-space: nowrap; }

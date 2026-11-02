@@ -53,11 +53,12 @@
     const wA = { key: 'A', weg: 'Weg A', name: 'Grundsicherung', geld: d.a > 0, betrag: euro(d.a || 0) };
     // Feste Reihenfolge (Entscheidung 02.11.2026): Der Weg, der nach dem Regelwerk zuerst dran ist, steht links, mit Grund.
     // Ohne solche Reihenfolge (erweiterter Zugang, kein Anspruch) immer A links, B rechts.
-    if (art === 'weg_b_deckt') wB.grund = 'zuerst beantragen';
-    if (art === 'nur_weg_a') wA.grund = 'deckt euren Bedarf';
+    // Wortlaut nach Rechtsprüfung 02.11.2026 (offene-rechtsfragen.md Punkt 46): Regel, nicht Rat; „nach den Regeln“.
+    if (art === 'weg_b_deckt') wB.grund = 'ist nach den Regeln zuerst dran';
+    if (art === 'nur_weg_a') wA.grund = 'reicht nach den Regeln';
     let wege = art === 'weg_b_deckt' ? [wB, wA] : [wA, wB];
     if (art === 'erweiterter_zugang') wege = wege.map((w) => ({ ...w, an: st.wahl === w.key ? 'true' : 'false' }));
-    const kopf = { weg_b_deckt: 'Kinderzuschlag und Wohngeld reichen für euch.', erweiterter_zugang: 'Ihr könnt zwischen zwei Wegen wählen.', nur_weg_a: 'Nur die Grundsicherung deckt euren Bedarf.', kein_anspruch: 'Gerade gibt es kein Geld jeden Monat.' }[art] || '';
+    const kopf = { weg_b_deckt: 'Kinderzuschlag und Wohngeld reichen für euch.', erweiterter_zugang: 'Ihr könnt zwischen zwei Wegen wählen.', nur_weg_a: 'Nach den Regeln reicht nur die Grundsicherung.', kein_anspruch: 'Gerade gibt es kein Geld jeden Monat.' }[art] || '';
     const k = d.karten || { beide: [], wegA: [], wegB: [] };
     const reihenfolge = (k.beide || []).find((x) => x.id === 'beide_reihenfolge') || { titel: '', text: '' };
     const kA = k.wegA || [];
@@ -289,13 +290,24 @@
       if (c.weg === 'A') halte.push({ art: 'pflicht', wann: 'Danach', was: `<span>Gespräch im Jobcenter</span> ${label('pflicht')}`, text: '<p class="halt-text">Danach lädt dich das Jobcenter zu einem Gespräch ein.</p>' });
       halte.push(
         { art: 'jetzt', wann: 'Jetzt', was: `<span>Warten</span> ${V.hier('Hier bist du')}`, text: `<div class="stimme">${V.deko('stimme')}<p${entwurf}>Wie lange, sagt euch vorher niemand. Das liegt nicht an euch.</p></div>` },
-        { art: 'hinweis', text: '<p class="halt-text hinweis-text">Fehlende Nachweise kannst du später schicken.</p>' },
-        { art: 'spaeter', wann: `Nach 4 Wochen ohne Bescheid ${ENTWURF}`, text: `<div class="vorschuss"${entwurf}><p class="t fett">Vorschuss beantragen</p><p class="t">Das ist Geld vorab, das später verrechnet wird.</p></div>` },
+        // Rechtsprüfung 02.11.2026 (offene-rechtsfragen.md Punkt 44): Weg A vorläufige Entscheidung nach § 41a SGB II,
+        // Weg B Vorschuss nach § 42 SGB I. „Nach 4 Wochen“ hatte keine Grundlage. Texte nach rechts-pruefer und text-lektor.
+        { art: 'hinweis', text: B
+          ? '<p class="halt-text hinweis-text">Fehlende Nachweise kannst du später schicken.</p>'
+          : '<p class="halt-text hinweis-text">Fehlende Nachweise kannst du später schicken. Schick sie aber möglichst bald.</p>' },
+        { art: 'spaeter', wann: `Wenn es dauert ${ENTWURF}`, text: B
+          ? `<div class="vorschuss"${entwurf}><p class="t fett">Vorschuss beantragen</p>
+              <p class="t">Steht fest, dass ihr Geld bekommt, aber nicht wie viel? Dann kannst du einen Vorschuss beantragen, also Geld vorab. Beantrage ihn bei jeder Stelle einzeln. Das geht schon mit dem Antrag.</p>
+              <p class="t">Die Zahlung muss spätestens im übernächsten Monat beginnen. Gezählt wird ab dem Monat, in dem dein Antrag auf Vorschuss ankommt. Später wird der Vorschuss vom Geld abgezogen, das euch zusteht. War er zu hoch, zahlst du zurück, was zu viel war.</p></div>`
+          : `<div class="vorschuss"${entwurf}><p class="t fett">Vorläufiges Geld vom Jobcenter</p>
+              <p class="t">Dauert die Prüfung länger, muss das Jobcenter vorläufig zahlen. Das gilt, wenn ihr wahrscheinlich Geld bekommt. Einen eigenen Antrag brauchst du dafür nicht.</p>
+              <p class="t">Liegt die lange Prüfung an Nachweisen, die ihr nicht geschickt habt? Dann gibt es kein vorläufiges Geld.</p>
+              <p class="t">Vorläufig heißt: Später rechnet das Jobcenter genau nach. Dafür musst du dann Nachweise schicken. Fehlen sie, kann das Jobcenter Geld zurückfordern. War es insgesamt zu viel, zahlt ihr den Teil zurück, der zu viel war. Das gilt, wenn es für euch alle zusammen 50 € oder mehr sind.</p></div>` },
         { art: 'normal', ziel: true, wann: 'Ziel', was: 'Bescheid und erstes Geld' },
       );
       return {
         inhalt: `<h1 class="titel">So geht euer Weg nach dem Antrag weiter</h1>` + strecke(halte),
-        fuss: st.erinnert ? `<p class="t erinnert"${entwurf}>${ERINNERT}</p>` : btn('Nach 4 Wochen erinnern', 'erinnern'),
+        fuss: st.erinnert ? `<p class="t erinnert"${entwurf}>${ERINNERT}</p>` : btn('In 4 Wochen erinnern', 'erinnern'),
       };
     },
   };

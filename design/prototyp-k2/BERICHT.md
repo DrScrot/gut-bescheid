@@ -223,3 +223,17 @@ Er bestätigt außerdem: gleiche Stärke der Wege, Petrol liest sich nicht als S
 4. **Screenshots** sind ab jetzt nicht mehr im Repo (`.gitignore`). Die bisherigen bleiben in der Historie (Commit 1f52006). Wie man sie neu erzeugt, steht in `LIESMICH.md`.
 
 Prüfung danach: axe in 48 Läufen ohne Verstoß, kein verdeckter Fokus, alle Token-Paare bestanden. Bei Textabstand kein Überlauf bei 320 bis 390 px.
+
+### Vierte Runde: Rechtsprüfung und Lektorat (02.11.2026)
+
+rechts-pruefer zu `docs/offene-rechtsfragen.md` Punkt 44 bis 46, mit § 41a SGB II und § 42 SGB I im Wortlaut. Claude hat die tragenden Zitate im Original nachgelesen: § 41a Abs. 1 und Abs. 6 Satz 3 SGB II, § 42 Abs. 1 und 2 SGB I, FW § 41a SGB II Rz. 41a.3 und 41a.14 (Stand 01.07.2026). Danach text-lektor in zwei Durchgängen. Strittige Fassungen gingen noch einmal an den rechts-pruefer.
+
+- **Punkt 44, Vorschuss:** Auf Weg A falsch, auf Weg B unvollständig. Neu: Station „Wenn es dauert“ mit je eigenem Text.
+  - Weg A: „Vorläufiges Geld vom Jobcenter“, ohne eigenen Antrag; nicht, wenn die Verzögerung an fehlenden Nachweisen liegt; Rückzahlung ab 50 € für alle zusammen.
+  - Weg B: „Vorschuss beantragen“, bei jeder Stelle einzeln, schon mit dem Antrag; Beginn „spätestens im übernächsten Monat“. Diese vorsichtige Fassung stimmt bei beiden möglichen Lesarten der Frist; die genaue Rechnung ist offen für eine Beratung.
+  - Knopf „In 4 Wochen erinnern“ statt „Nach 4 Wochen erinnern“, damit er nicht wie eine gesetzliche Frist wirkt.
+  - Mein Befund in der Gegenprüfung: Der erste Vorschlag „wenn ihr sehr wahrscheinlich Geld bekommt“ war strenger als das Gesetz („hinreichende Wahrscheinlichkeit“). Jetzt steht dort „wahrscheinlich“.
+- **Punkt 45, RDG-Satz:** stimmt. Keine Änderung.
+- **Punkt 46, Etiketten:** stimmen mit Einschränkung. Neu: „ist nach den Regeln zuerst dran“ und „reicht nach den Regeln“. Die Kopfzeile bei `nur_weg_a` lautet jetzt „Nach den Regeln reicht nur die Grundsicherung.“
+- **Amstad (text-lektor, geschätzt):** Station A etwa 80, Station B etwa 82. Kein Satz über 14 Wörter.
+- **Nicht im Prototyp, nur vorgeschlagen (Freeze):** Karten `a_vorlaeufig` und `b_vorschuss`; 3-Monats-Bedingung in `einordnung_weg_b_deckt`; Antragstext Weg A.

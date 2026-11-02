@@ -27,7 +27,8 @@ Abweichungen vom Export, alle auf Entscheidung vom 02.11.2026:
 - **Reihenfolge im Ergebnis:** Kopfzeile, dann Beträge mit RDG-Satz, dann Einordnung. Der Export zeigte die Einordnung zuerst.
   Damit steht der RDG-Satz bei 390 × 844 ohne Scrollen sichtbar unter den Beträgen, wie im Fachkonzept („erst Wie viel?“).
 - **Reihenfolge der Wegkarten und Reiter:** Der Weg, den das Regelwerk zuerst verlangt, steht links und trägt den Grund
-  („zuerst beantragen“ bei `weg_b_deckt`, „deckt euren Bedarf“ bei `nur_weg_a`). Sonst steht A links, B rechts. Die beiden Etiketten sind neuer Text.
+  („ist nach den Regeln zuerst dran“ bei `weg_b_deckt`, „reicht nach den Regeln“ bei `nur_weg_a`). Sonst steht A links, B rechts. Die beiden Etiketten sind neuer Text,
+  im Wortlaut nach rechts-pruefer und text-lektor (Punkt 46). Die Kopfzeile bei `nur_weg_a` lautet „Nach den Regeln reicht nur die Grundsicherung.“
 - **Erweiterter Zugang (T03):** Kopfzeile → Beträge mit RDG-Satz → Einordnung → Karte „Reihenfolge der Anträge“ → Wahl.
   Die Reihenfolge-Karte steht vor der Wahl, weil sie vor der Wahl gelesen werden muss. Die Wahlknöpfe tragen keine Beträge mehr;
   die Beträge stehen nur auf der Karte mit dem RDG-Satz. Einordnung vor der Reihenfolge-Karte und Wahlknöpfe ohne Beträge: bestätigt von Nico am 02.11.2026.
@@ -48,19 +49,25 @@ Abweichungen vom Export, alle auf Entscheidung vom 02.11.2026:
 
 | Art | Zeichen | Wo |
 |---|---|---|
-| **Regelwerk oder Rechtsprüfung trägt es noch nicht** | immer sichtbar: gestrichelte Marke „Entwurf“ | „Weiß ich nicht“ bei Beträgen (das Regelwerk rechnet es erst nach dem 30.11.2026); „Nach 4 Wochen ohne Bescheid: Vorschuss beantragen“ |
+| **Regelwerk oder Katalog trägt es noch nicht** | immer sichtbar: gestrichelte Marke „Entwurf“ | „Weiß ich nicht“ bei Beträgen (das Regelwerk rechnet es erst nach dem 30.11.2026); Station „Wenn es dauert“ auf „Warten“ (Weg A vorläufiges Geld, Weg B Vorschuss; rechtlich geprüft, aber noch keine Katalogkarte) |
 | **Wortlaut noch nicht geprüft** | unsichtbar, sichtbar mit `?entwurf=1` | alle Texte, die im Export als „Entwurf“ markiert waren, und die zwei neuen Etiketten an den Wegkarten |
 
 Die Wortlaut-Entwürfe bleiben unsichtbar, damit sie den Fünf-Sekunden-Test („Wer hat das gemacht? Eine Behörde?“) nicht beeinflussen.
 
-## Vorgemerkt für den rechts-pruefer
+## Rechtsprüfung und Lektorat (02.11.2026)
 
-**Vorschuss in der Wartezeit** („Nach 4 Wochen ohne Bescheid: Vorschuss beantragen …“), ausdrücklich auch für Weg A:
-eingetragen als `docs/offene-rechtsfragen.md` Punkt 44.
+rechts-pruefer (Gesetze im Original gelesen, Zitate von Claude nachgelesen) und danach text-lektor. Ergebnisse mit Fundstellen in `docs/offene-rechtsfragen.md`.
 
-**RDG-Satz auf kleinen Bildschirmen:** `docs/offene-rechtsfragen.md` Punkt 45.
+| Punkt | Ergebnis | Im Prototyp |
+|---|---|---|
+| 44 Vorschuss in der Wartezeit | Weg A falsch: dort entscheidet das Jobcenter von sich aus vorläufig (§ 41a SGB II geht § 42 SGB I vor). „Nach 4 Wochen“ ohne Grundlage. „später verrechnet“ unvollständig | Station „Wenn es dauert“ mit eigenem Text je Weg; Hinweis auf Weg A ergänzt; Knopf „In 4 Wochen erinnern“ |
+| 45 RDG-Satz auf kleinen Bildschirmen | stimmt: Gestaltungsfrage, keine Norm verlangt „ohne Scrollen“ | keine Änderung |
+| 46 Etiketten an den Wegkarten | stimmt mit Einschränkung | „ist nach den Regeln zuerst dran“, „reicht nach den Regeln“; Kopfzeile `nur_weg_a` angepasst |
 
-**Etiketten an den Wegkarten** („zuerst beantragen“, „deckt euren Bedarf“): `docs/offene-rechtsfragen.md` Punkt 46. Danach `text-lektor`.
+**Noch offen:**
+- Für eine Rechts- oder Sozialberatung: Wie rechnet man „nach Ablauf eines Kalendermonats nach Eingang“ (§ 42 Abs. 1 Satz 2 SGB I)? Der Prototyp sagt vorsichtig „spätestens im übernächsten Monat“. Dazu: Verhältnis von § 26a WoGG zu § 42 SGB I.
+- Für den a11y-pruefer: Der RDG-Satz folgt der Liste der Wegkarten. Wer per Screenreader von Liste zu Liste springt, könnte ihn überspringen (`aria-describedby`?). Die Aussage „reicht nur die Grundsicherung“ hört man bei `nur_weg_a` dreimal (Kopfzeile, Etikett, Einordnung).
+- Nach dem Freeze, nur Vorschläge: Karten `a_vorlaeufig` und `b_vorschuss`; in `einordnung_weg_b_deckt` die 3-Monats-Bedingung; Antragstext Weg A um „Schick sie aber möglichst bald.“ ergänzen.
 
 ## Öffnen
 

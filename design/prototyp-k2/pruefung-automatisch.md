@@ -50,7 +50,7 @@ Gleiche Stärke der Wege: Weg A 6.99 : 1, Weg B 7.00 : 1 auf der Seite. Farbton 
 |---|---|---|---|---|---|
 | start | keine | 15 px („Unabhängig, kein Amt“) | 48 px („Gut Bescheid“) | keins von 2 | – |
 | geldfrage | keine | 14 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 8 | – |
-| ergebnis T01 | keine | 14 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 4 | ja (Unterkante 612 px, sichtbar bis 748 px) |
+| ergebnis T01 | keine | 14 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 4 | ja (Unterkante 632 px, sichtbar bis 748 px) |
 | ergebnis T04 | keine | 14 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 7 | ja (Unterkante 577 px, sichtbar bis 734 px) |
 | ergebnis kein | keine | 14 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 4 | ja (Unterkante 478 px, sichtbar bis 748 px) |
 | ergebnis T03 Wahl | keine | 14 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 6 | ja (Unterkante 527 px, sichtbar bis 750 px) |
@@ -107,7 +107,7 @@ Gleiche Stärke der Wege: Weg A 9.21 : 1, Weg B 9.19 : 1 auf der Seite. Farbton 
 |---|---|---|---|---|---|
 | start | keine | 15 px („Unabhängig, kein Amt“) | 48 px („Gut Bescheid“) | keins von 2 | – |
 | geldfrage | keine | 14 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 8 | – |
-| ergebnis T01 | keine | 14 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 4 | ja (Unterkante 612 px, sichtbar bis 748 px) |
+| ergebnis T01 | keine | 14 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 4 | ja (Unterkante 632 px, sichtbar bis 748 px) |
 | ergebnis T04 | keine | 14 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 7 | ja (Unterkante 577 px, sichtbar bis 734 px) |
 | ergebnis kein | keine | 14 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 4 | ja (Unterkante 478 px, sichtbar bis 748 px) |
 | ergebnis T03 Wahl | keine | 14 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 6 | ja (Unterkante 527 px, sichtbar bis 750 px) |
@@ -179,7 +179,7 @@ Gleiche Stärke der Wege: Weg A 6.09 : 1, Weg B 6.08 : 1 auf der Seite. Farbton 
 |---|---|---|---|---|---|
 | start | keine | 16 px („Unabhängig, kein Amt“) | 48 px („Gut Bescheid“) | keins von 2 | – |
 | geldfrage | keine | 14 px („Entwurf“) | 48 px („Gut Bescheid“) | keins von 8 | – |
-| ergebnis T01 | keine | 15 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 4 | ja (Unterkante 681 px, sichtbar bis 752 px) |
+| ergebnis T01 | keine | 15 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 4 | ja (Unterkante 717 px, sichtbar bis 752 px) |
 | ergebnis T04 | keine | 15 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 7 | ja (Unterkante 662 px, sichtbar bis 738 px) |
 | ergebnis kein | keine | 15 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 4 | ja (Unterkante 562 px, sichtbar bis 752 px) |
 | ergebnis T03 Wahl | keine | 15 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 6 | ja (Unterkante 612 px, sichtbar bis 754 px) |
@@ -249,7 +249,7 @@ Gleiche Stärke der Wege: Weg A 6.98 : 1, Weg B 6.98 : 1 auf der Seite. Farbton 
 |---|---|---|---|---|---|
 | start | keine | 16 px („Unabhängig, kein Amt“) | 48 px („Gut Bescheid“) | keins von 2 | – |
 | geldfrage | keine | 14 px („Entwurf“) | 48 px („Gut Bescheid“) | keins von 8 | – |
-| ergebnis T01 | keine | 15 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 4 | ja (Unterkante 681 px, sichtbar bis 752 px) |
+| ergebnis T01 | keine | 15 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 4 | ja (Unterkante 717 px, sichtbar bis 752 px) |
 | ergebnis T04 | keine | 15 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 7 | ja (Unterkante 662 px, sichtbar bis 738 px) |
 | ergebnis kein | keine | 15 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 4 | ja (Unterkante 562 px, sichtbar bis 752 px) |
 | ergebnis T03 Wahl | keine | 15 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 6 | ja (Unterkante 612 px, sichtbar bis 754 px) |
