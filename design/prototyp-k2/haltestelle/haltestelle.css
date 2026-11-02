@@ -1,0 +1,259 @@
+/* Variante 2 „Haltestelle“ – Gut Bescheid K2
+   Idee: Abendlicht an der Haltestelle. Farbe ist Stimmung: ein tiefes Pflaume oben wie Abendhimmel,
+   Honiglicht an der Haltestelle, helle, weiche Flächen darunter. Ihr steht als Figuren auf eurer Linie.
+   Schrift: zwei Familien. Vollkorn (Titel, Fragen, Beträge, Trost-Satz kursiv; warm, kräftig, aus dem deutschen Buchsatz),
+            Alegreya Sans (Text, Knöpfe, Kennzeichen; humanistisch, ruhig; nur 400 und 700).
+            Beide OFL 1.1, selbst gehostet in ../schriften.
+   Nichts unter 14 px, Berührflächen ab 48 px. */
+
+@font-face { font-family: "Vollkorn"; src: url(../schriften/vollkorn-latin-wght-normal.woff2) format("woff2"); font-weight: 400 900; font-display: block; }
+@font-face { font-family: "Vollkorn"; src: url(../schriften/vollkorn-latin-wght-italic.woff2) format("woff2"); font-weight: 400 900; font-style: italic; font-display: block; }
+@font-face { font-family: "Alegreya Sans"; src: url(../schriften/alegreya-sans-latin-400-normal.woff2) format("woff2"); font-weight: 400; font-display: block; }
+@font-face { font-family: "Alegreya Sans"; src: url(../schriften/alegreya-sans-latin-700-normal.woff2) format("woff2"); font-weight: 700; font-display: block; }
+
+:root {
+  --seite: #F8F4F7;          /* helles Flieder-Weiß, kein Creme */
+  --flaeche: #FFFFFF;
+  --tief: #EFE6EE;
+  --band: #3B2142;           /* Abendhimmel, Pflaume */
+  --band-text: #F7ECF5;
+  --band-leise: #D5C0D9;
+  --band-linie: #D9BCE0;
+  --text: #2A1A2F;
+  --text-leise: #5E4A63;
+  --linie: #3B2142;          /* Strecke auf hellem Grund; dunkel genug, um sich auch bei Farbsehschwäche von Weg A abzuheben */
+  --linie-leise: #85718A;
+  --rand: #85718A;
+  --honig: #F2B84B;          /* Licht: Schild, Ziel, „Hier bist du“ – nie eine Wertung */
+  --licht: #4D2C57;          /* Lichtkreis: hellere Pflaume, damit Honig und Pflaume nicht zu Braun mischen */
+  --a: #0E6673;              /* Weg A, Petrol: kein Behördenblau, weit weg von Grün (LCh 217°) */
+  --b: #7D5500;              /* Weg B, Ocker; gleicher Kontrast wie Weg A */
+  --a-flaeche: #DDEEF0;
+  --b-flaeche: #F7EBD2;
+  --pflicht-flaeche: #ECDFEE;
+  --handlung: #3B2142;       /* dunkler als Weg A, auch bei Farbsehschwäche getrennt */
+  --auf-handlung: #FFFFFF;
+  --fokus: #3B2142;
+  --f1: #E3C4EB; --f2: #AFC8F2; --f3: #F3B9CB; --f4: #F7EEF5; --f5: #F2B84B;
+  --font-display: "Vollkorn", Georgia, serif;
+  --font-text: "Alegreya Sans", system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --seite: #17111B; --flaeche: #221A27; --tief: #2B2131; --band: #301B37; --band-text: #F7ECF5; --band-leise: #CDB7D2; --band-linie: #C9A6D2;
+    --text: #F4EAF3; --text-leise: #CDBBD0; --linie: #EBC7D9; --linie-leise: #93809A; --rand: #93809A;
+    --licht: #45284F; --honig: #F7D9C4;
+    --a: #3EACC4; --b: #CA9624; --a-flaeche: #16303A; --b-flaeche: #33281A; --pflicht-flaeche: #382741;
+    --handlung: #F6E2EE; --auf-handlung: #1E1323; --fokus: #F6E2EE;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --seite: #17111B; --flaeche: #221A27; --tief: #2B2131; --band: #301B37; --band-text: #F7ECF5; --band-leise: #CDB7D2; --band-linie: #C9A6D2;
+  --text: #F4EAF3; --text-leise: #CDBBD0; --linie: #EBC7D9; --linie-leise: #93809A; --rand: #93809A;
+  --licht: #45284F; --honig: #F7D9C4;
+  --a: #3EACC4; --b: #CA9624; --a-flaeche: #16303A; --b-flaeche: #33281A; --pflicht-flaeche: #382741;
+  --handlung: #F6E2EE; --auf-handlung: #1E1323; --fokus: #F6E2EE;
+  color-scheme: dark;
+}
+
+/* ---------- Grundgerüst ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--seite); }
+body { color: var(--text); font: 400 19px/28px var(--font-text); -webkit-font-smoothing: antialiased; font-variant-numeric: lining-nums; }
+p, h1, h2, ol, ul, dl, dd { margin: 0; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--fokus); outline-offset: 3px; border-radius: 10px; }
+.bar :focus-visible, .leiste :focus-visible, .start-kopf :focus-visible { outline-color: var(--band-text); }
+
+.app { max-width: 480px; margin: 0 auto; min-height: 100dvh; display: flex; flex-direction: column; position: relative; background: var(--seite); }
+.bar { flex: none; height: 58px; display: flex; align-items: center; justify-content: space-between; padding: 0 8px 0 20px; background: var(--band); color: var(--band-text); }
+.marke { font: 700 22px/1 var(--font-display); background: none; border: 0; padding: 0; min-height: 48px; cursor: pointer; color: var(--band-text); letter-spacing: -.005em; }
+.zurueck { min-height: 48px; padding: 0 12px; background: none; border: 0; font: 700 17px/20px var(--font-text); color: var(--band-text); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; cursor: pointer; }
+.unab { font: 400 16px/20px var(--font-text); color: var(--band-leise); padding-right: 12px; }
+.inhalt { flex: 1 0 auto; padding: 20px 20px 36px; display: flex; flex-direction: column; gap: 20px; }
+.fuss { flex: none; position: sticky; bottom: 0; z-index: 5; padding: 14px 20px 20px; display: flex; flex-direction: column; gap: 12px; background: var(--seite); box-shadow: 0 -1px 0 var(--tief); }
+.fuss:empty { display: none; }
+
+/* ---------- Schrift ---------- */
+.titel { font: 600 29px/35px var(--font-display); letter-spacing: -.005em; }
+.titel.gross { font-size: 31px; line-height: 36px; }
+.frage { display: block; font: 600 27px/34px var(--font-display); }
+.h2 { font: 600 23px/29px var(--font-display); }
+.frage-klein { font-size: 22px; line-height: 28px; margin-top: 10px; }
+.t { font: 400 19px/28px var(--font-text); }
+.tg { font: 400 20px/30px var(--font-text); }
+.fett { font-weight: 700; }
+.leise { color: var(--text-leise); }
+.mitte { text-align: center; }
+.wann { font: 400 16px/20px var(--font-text); color: var(--text-leise); letter-spacing: .02em; }
+.rdg { font: 400 17px/24px var(--font-text); color: var(--text-leise); }
+
+/* ---------- Abendband: Linie mit eurem Haushalt an der aktuellen Haltestelle ---------- */
+.leiste { flex: none; background: var(--band); color: var(--band-text); padding: 0 0 12px; border-radius: 0 0 28px 28px; }
+.hs-band { display: block; width: 100%; height: auto; }
+.leiste ol { list-style: none; padding: 0; margin-top: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.leiste.kurz ol { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 0 60px; }
+.lst { text-align: center; font: 400 15px/20px var(--font-text); color: var(--band-leise); }
+.lst.jetzt { color: var(--band-text); font-weight: 700; }
+.hs-band .linie, .hs-hero .linie { fill: none; stroke: var(--band-linie); stroke-width: 5; stroke-linecap: round; }
+.hs-band .linie.offen, .hs-hero .linie.offen { stroke: var(--band-leise); stroke-width: 4; stroke-dasharray: 0.1 9; opacity: .8; }
+.stop-ring { fill: var(--band); stroke: var(--band-linie); stroke-width: 3.5; }
+.stop-voll { fill: var(--band-linie); }
+.licht { fill: var(--licht); }
+.mast { stroke: var(--band-leise); stroke-width: 3; stroke-linecap: round; }
+.schild { fill: var(--honig); }
+.bank { fill: none; stroke: var(--band-leise); stroke-width: 3.5; stroke-linecap: round; }
+.fig.f1 { fill: var(--f1); } .fig.f2 { fill: var(--f2); } .fig.f3 { fill: var(--f3); } .fig.f4 { fill: var(--f4); } .fig.f5 { fill: var(--f5); }
+.m-licht { fill: var(--honig); }
+/* Ziel: erleuchtetes Fenster. Rahmen dunkel, damit das Licht auch im Dunkelmodus sichtbar ist (Honig auf Band 11,7 : 1) */
+.m-fenster { fill: var(--band); stroke: var(--linie); stroke-width: 3; }
+.fenster { fill: var(--band); stroke: var(--band-linie); stroke-width: 3; }
+
+/* ---------- Start: der Abendhimmel trägt die erste Aussage ---------- */
+.start-kopf { display: flex; flex-direction: column; gap: 12px; margin: -20px -20px 0; padding: 6px 24px 2px; background: var(--band); color: var(--band-text); border-radius: 0 0 32px 32px; }
+.start-kopf .tg { color: var(--band-leise); font-size: 19px; line-height: 27px; }
+.hs-hero { order: 3; display: block; width: calc(100% + 48px); margin: 0 -24px; height: auto; }
+
+/* ---------- Strecke auf hellem Grund ---------- */
+.strecke { list-style: none; padding: 0 0 0 46px; display: flex; flex-direction: column; gap: 16px; position: relative; }
+.halt { position: relative; display: flex; flex-direction: column; gap: 2px; min-height: 30px; }
+.halt-marke { position: absolute; left: -46px; top: -2px; width: 30px; height: 30px; display: grid; place-items: center; }
+.hs-m { width: 28px; height: 28px; overflow: visible; }
+.hs-m.jetzt { width: 36px; height: 36px; }
+.hs-m.ziel { width: 30px; height: 30px; }
+.m-ring { fill: var(--seite); stroke: var(--linie); stroke-width: 4; }
+.m-ring.dick { stroke-width: 4.5; }
+.m-ring.leise { stroke: var(--linie-leise); }
+.m-voll { fill: var(--linie); }
+.segment { position: absolute; left: -36px; top: 26px; bottom: -18px; width: 10px; }
+.hs-seg { display: block; width: 10px; height: 100%; overflow: visible; }
+.seg { stroke: var(--linie); stroke-width: 5; stroke-linecap: round; }
+.seg.offen { stroke: var(--linie-leise); stroke-dasharray: 0.1 10; }
+.was { font: 700 19px/25px var(--font-text); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
+.halt-text { font: 400 18px/26px var(--font-text); margin-top: 4px; }
+.hinweis-text { color: var(--text-leise); }
+.vorschuss { margin-top: 4px; display: flex; flex-direction: column; gap: 2px; }
+.hier { display: inline-flex; align-items: center; min-height: 30px; padding: 2px 12px; border-radius: 999px; background: var(--honig); color: #2A1A2F; font: 700 16px/20px var(--font-text); white-space: nowrap; }
+.stimme { margin-top: 10px; padding: 14px 16px; border-radius: 18px; background: var(--tief); }
+.stimme p { font: italic 500 21px/29px var(--font-display); }
+
+/* ---------- Ergebnis: zwei gleich gebaute, weiche Flächen ---------- */
+.ergebnis-karte { background: var(--flaeche); border-radius: 26px; padding: 12px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 1px 2px rgba(59, 33, 66, .08); }
+.ergebnis-karte .rdg { padding: 0 8px 6px; }
+.wege, .gleise { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.weg { display: flex; flex-direction: column; padding: 16px 14px 16px; border-radius: 20px; text-align: left; border: 0; }
+/* Wegkarten auf einem gemeinsamen Raster: gleiche Zeilen stehen auf gleicher Höhe, auch wenn ein Text umbricht */
+.weg { display: grid; grid-template-rows: subgrid; grid-template-columns: minmax(0, 1fr); grid-row: span var(--zeilen, 5); row-gap: 0; align-content: start; min-width: 0; }
+ul.wege { list-style: none; margin: 0; padding: 0; }
+.weg-name { hyphens: auto; overflow-wrap: anywhere; }
+h1.frage-kopf { margin: 0; font: inherit; }
+.weg > .betrag, .weg > .etwa { align-self: end; }
+.weg.a { background: var(--a-flaeche); } .weg.b { background: var(--b-flaeche); }
+.weg-grund { align-self: flex-start; display: inline-flex; align-items: center; min-height: 28px; margin: -4px 0 10px; padding: 2px 10px; border-radius: 999px; background: var(--flaeche); color: var(--text); font: 700 15px/20px var(--font-text); }
+.weg-grund.leer { visibility: hidden; }
+.entwurf-marke { display: inline-flex; align-items: center; min-height: 22px; padding: 0 7px; border: 1.5px dashed var(--linie-leise); border-radius: 6px; background: var(--seite); color: var(--text-leise); font: 700 14px/18px var(--font-text); white-space: nowrap; vertical-align: middle; }
+.wahl button { position: relative; }
+.wahl { margin-top: 10px; }
+.wahl button .entwurf-marke { position: absolute; top: -21px; right: 6px; }
+.wann .entwurf-marke { margin-left: 6px; }
+.weg-kopf { display: flex; align-items: center; gap: 8px; font: 700 17px/22px var(--font-text); }
+.weg.a .weg-kopf, .stelle.a .wann { color: var(--a); }
+.weg.b .weg-kopf, .stelle.b .wann { color: var(--b); }
+.hs-weg { width: 15px; height: 15px; flex: none; }
+.hs-weg.a { fill: var(--a); } .hs-weg.b { fill: var(--b); }
+.weg-name { font: 400 17px/23px var(--font-text); min-height: 46px; margin: 4px 0 10px; }
+.etwa { font: 400 17px/22px var(--font-text); }
+.betrag { font: 700 clamp(27px, 8.5vw, 35px)/1.2 var(--font-display); font-variant-numeric: lining-nums tabular-nums; white-space: normal; letter-spacing: -.01em; }
+.betrag.kein { font-size: 27px; line-height: 34px; }
+button.weg { cursor: pointer; font: inherit; color: inherit; min-height: 48px; border: 2px solid var(--rand); }
+button.weg.an { border: 3px solid var(--text); padding: 15px 13px; }
+.weiche { display: flex; flex-direction: column; gap: 12px; }
+.hs-weiche { display: block; width: 100%; height: 60px; overflow: visible; }
+.hs-weiche path { fill: none; stroke-width: 5; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.hs-weiche .stamm { stroke: var(--linie); } .hs-weiche .ast-a { stroke: var(--a); } .hs-weiche .ast-b { stroke: var(--b); }
+
+.monate-block { display: flex; flex-direction: column; gap: 6px; }
+.monate { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); font: 700 15px/20px var(--font-text); color: var(--text-leise); padding-left: 4px; }
+.spur-name { font: 700 17px/22px var(--font-text); margin-top: 6px; }
+.spur { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); }
+.balken { min-height: 38px; border-radius: 999px; display: flex; align-items: center; padding: 4px 14px; background: var(--b-flaeche); color: var(--text); font: 700 16px/20px var(--font-text); box-shadow: inset 0 0 0 2px var(--b); }
+
+/* ---------- Kennzeichen: Wort, Zeichen und Form; nie Rot, kein Warnsymbol ---------- */
+.label { display: inline-flex; align-items: center; gap: 6px; width: max-content; min-height: 28px; padding: 2px 12px 2px 9px; border-radius: 999px; font: 700 16px/20px var(--font-text); white-space: nowrap; }
+.hs-ico { width: 16px; height: 16px; flex: none; }
+.label.pflicht { background: var(--pflicht-flaeche); color: var(--text); }
+.label.pruefung { box-shadow: inset 0 0 0 1.5px var(--linie-leise); }
+.label.gut_zu_wissen { background: var(--tief); color: var(--text); }
+.was-knopf { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; min-height: 48px; background: none; border: 0; padding: 0; text-align: left; font: 700 20px/27px var(--font-text); cursor: pointer; }
+.was-knopf > span:first-child { text-decoration: underline; text-decoration-thickness: 1.5px; text-decoration-color: var(--linie-leise); text-underline-offset: 5px; }
+
+/* ---------- Fragen ---------- */
+.feld { width: 100%; height: 62px; border: 2px solid var(--rand); border-radius: 18px; background: var(--flaeche); font: 700 26px/1 var(--font-display); font-variant-numeric: lining-nums; padding: 0 18px; color: var(--text); }
+.feld-euro { display: flex; align-items: center; gap: 8px; }
+.feld-euro input { flex: 1; min-width: 0; height: 100%; border: 0; background: none; font: inherit; outline: none; }
+.feld-euro:focus-within { outline: 3px solid var(--fokus); outline-offset: 3px; }
+.zwei { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.wahl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.zwei button, .wahl button, .reiter button { min-height: 56px; padding: 6px 8px; border: 2px solid var(--rand); border-radius: 999px; background: var(--flaeche); font: 700 17px/20px var(--font-text); cursor: pointer; }
+.zwei button.an, .wahl button.an, .reiter button.an { border: 3px solid var(--text); font-weight: 700; }
+.hs-haken { display: none; width: 18px; height: 18px; margin-right: 6px; vertical-align: -3px; flex: none; }
+.an > .hs-haken { display: inline-block; }
+.chips { display: flex; gap: 10px; flex-wrap: wrap; }
+.chip { min-height: 54px; min-width: 76px; display: inline-flex; align-items: center; justify-content: center; padding: 0 18px; border-radius: 999px; background: var(--tief); font: 700 22px/1 var(--font-display); font-variant-numeric: lining-nums; }
+.hinweis-box { padding: 16px 18px; border-radius: 20px; background: var(--tief); }
+.tief { background: var(--tief); border-radius: 20px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.beleg { font-variant-numeric: lining-nums tabular-nums; background: var(--flaeche); border-radius: 14px; padding: 10px 14px; font: 400 16px/25px var(--font-text); display: flex; flex-direction: column; }
+.beleg div { display: flex; justify-content: space-between; gap: 12px; }
+.beleg-kopf { font-weight: 700; color: var(--text-leise); }
+.beleg .zeile { font-weight: 700; background: var(--b-flaeche); border-radius: 8px; margin: 0 -8px; padding: 0 8px; box-shadow: inset 0 0 0 2px var(--b); }
+
+/* ---------- Knöpfe: die eine Handlung als runde Pflaume ---------- */
+.btn { min-height: 58px; width: 100%; border: 0; border-radius: 999px; background: var(--handlung); color: var(--auf-handlung); font: 700 19px/22px var(--font-text); padding: 14px 20px; cursor: pointer; }
+.btn2 { min-height: 54px; width: 100%; border: 2px solid var(--linie); background: transparent; border-radius: 999px; font: 700 18px/22px var(--font-text); padding: 12px 20px; cursor: pointer; }
+.link { align-self: flex-start; min-height: 48px; background: none; border: 0; padding: 0; font: 700 19px/24px var(--font-text); text-decoration: underline; text-decoration-color: var(--linie); text-decoration-thickness: 2px; text-underline-offset: 6px; cursor: pointer; }
+.wahl-offen { min-height: 56px; display: flex; align-items: center; justify-content: center; }
+.erinnert { padding: 12px 16px; border-radius: 18px; background: var(--tief); }
+
+/* ---------- Folgen, Antrag, Angaben ---------- */
+.folgen-liste { display: flex; flex-direction: column; gap: 10px; }
+.folge { background: var(--flaeche); border-radius: 20px; }
+.folge > summary { list-style: none; display: flex; flex-direction: column; gap: 8px; padding: 16px 18px; min-height: 48px; cursor: pointer; }
+.folge > summary::-webkit-details-marker { display: none; }
+.folge-titel { font: 700 19px/26px var(--font-text); display: flex; justify-content: space-between; gap: 12px; }
+.folge-titel::after { content: "+"; font: 500 24px/24px var(--font-display); color: var(--linie); }
+.folge[open] .folge-titel::after { content: "–"; }
+.folge-text { font: 400 18px/27px var(--font-text); padding: 0 18px 18px; }
+.liste { margin: 0; padding: 0 18px 18px 38px; display: flex; flex-direction: column; gap: 8px; font: 400 18px/26px var(--font-text); }
+.reiter { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.reiter button { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.stellen { display: flex; flex-direction: column; gap: 12px; }
+.stelle { display: grid; grid-template-columns: 22px 1fr; column-gap: 10px; padding: 14px 16px; border-radius: 20px; }
+.stelle.a { background: var(--a-flaeche); } .stelle.b { background: var(--b-flaeche); }
+.stelle .hs-weg { grid-row: 1; margin-top: 3px; }
+.stelle > :not(svg) { grid-column: 2; }
+.stelle .was { font: 700 20px/26px var(--font-text); }
+.angaben { display: flex; flex-direction: column; background: var(--flaeche); border-radius: 20px; padding: 4px 16px; }
+.angaben div { display: flex; justify-content: space-between; gap: 12px; padding: 11px 0; font: 400 18px/24px var(--font-text); }
+.angaben div + div { box-shadow: 0 -1px 0 var(--tief); }
+.angaben dd { font-weight: 700; text-align: right; }
+.wahlliste { display: flex; flex-direction: column; gap: 8px; }
+.wahlliste button { min-height: 56px; text-align: left; padding: 8px 16px; border-radius: 18px; border: 2px solid var(--rand); background: var(--flaeche); display: flex; flex-direction: column; font: 400 17px/22px var(--font-text); cursor: pointer; }
+.wahlliste button.an { border: 3px solid var(--linie); }
+
+.zeige-entwurf [data-entwurf] { outline: 2px dashed var(--linie-leise); outline-offset: 4px; }
+/* Nach a11y-Prüfung: Fuß bei wenig Höhe nicht kleben lassen (200 % Zoom, 1.4.10); „kein Geld“ darf umbrechen (1.4.12) */
+@media (max-height: 480px) { .fuss { position: static; } }
+.betrag.kein { white-space: normal; }
+/* Niedrige Bildschirme (z. B. 360 × 740): kompakter, damit der RDG-Satz ohne Scrollen unter den Beträgen sichtbar bleibt */
+@media (max-height: 760px) {
+  .titel { font-size: 25px; line-height: 30px; }
+  .inhalt { gap: 14px; padding-top: 14px; }
+  .leiste { padding-bottom: 8px; }
+  .fuss { padding: 10px 20px 12px; }
+  .btn { min-height: 52px; padding: 12px 20px; }
+  .weiche { gap: 8px; }
+  .hs-weiche { height: 36px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
