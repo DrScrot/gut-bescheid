@@ -158,5 +158,27 @@ for (const variante of ['skizze', 'haltestelle']) {
     await ctx.close();
   }
 }
+// RDG-Satz ohne Scrollen auf mehreren Bildschirmgrößen (seit 02.11.2026 fester Teil der Prüfung)
+p(''); p('## RDG-Satz ohne Scrollen auf mehreren Größen'); p('');
+p('| Variante | Größe | T01 | T04 | kein Anspruch | T03 |'); p('|---|---|---|---|---|---|');
+for (const variante of ['skizze', 'haltestelle']) {
+  for (const [w, h] of [[390, 844], [360, 740], [375, 667], [320, 568]]) {
+    const ctx = await browser.newContext({ viewport: { width: w, height: h }, locale: 'de-DE' });
+    await ausliefern(ctx);
+    const page = await ctx.newPage(); const zellen = [];
+    for (const [fall, extra] of [['T01', ''], ['T04', ''], ['KEIN', ''], ['T03', '&wahl=B']]) {
+      await page.goto(`${basis}${variante}/index.html?fall=${fall}&screen=ergebnis${extra}`);
+      await page.waitForSelector('body[data-fertig]');
+      zellen.push(await page.evaluate(() => {
+        const r = document.querySelector('.ergebnis-karte .rdg').getBoundingClientRect().bottom; const f = document.querySelector('.fuss');
+        const grenze = getComputedStyle(f).position === 'sticky' ? f.getBoundingClientRect().top : innerHeight;
+        return r <= grenze ? 'ja' : `**nein** (fehlen ${Math.ceil(r - grenze)} px)`;
+      }));
+    }
+    p(`| ${variante} | ${w} × ${h} | ${zellen.join(' | ')} |`);
+    await ctx.close();
+  }
+}
+
 await browser.close();
 console.log(out.join('\n'));

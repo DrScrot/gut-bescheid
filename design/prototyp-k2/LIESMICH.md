@@ -28,7 +28,9 @@ Abweichungen vom Export, alle auf Entscheidung vom 02.11.2026:
   Damit steht der RDG-Satz bei 390 × 844 ohne Scrollen sichtbar unter den Beträgen, wie im Fachkonzept („erst Wie viel?“).
 - **Reihenfolge der Wegkarten und Reiter:** Der Weg, den das Regelwerk zuerst verlangt, steht links und trägt den Grund
   („ist nach den Regeln zuerst dran“ bei `weg_b_deckt`, „reicht nach den Regeln“ bei `nur_weg_a`). Sonst steht A links, B rechts. Die beiden Etiketten sind neuer Text,
-  im Wortlaut nach rechts-pruefer und text-lektor (Punkt 46). Die Kopfzeile bei `nur_weg_a` lautet „Nach den Regeln reicht nur die Grundsicherung.“
+  im Wortlaut nach rechts-pruefer und text-lektor (Punkt 46). Kopfzeilen: `nur_weg_a` „Nach den Regeln reicht nur Weg A.“, `weg_b_deckt`
+  „Nach den Regeln reichen Kinderzuschlag und Wohngeld.“ (beide 02.11.2026). Die Grundsicherung bleibt bei `nur_weg_a` ohne Scrollen benannt:
+  Karte „Weg A Grundsicherung“ mit Etikett direkt unter der Kopfzeile (gemessen bei 390 × 844, 360 × 740, 375 × 667, 320 × 568).
 - **Erweiterter Zugang (T03):** Kopfzeile → Beträge mit RDG-Satz → Einordnung → Karte „Reihenfolge der Anträge“ → Wahl.
   Die Reihenfolge-Karte steht vor der Wahl, weil sie vor der Wahl gelesen werden muss. Die Wahlknöpfe tragen keine Beträge mehr;
   die Beträge stehen nur auf der Karte mit dem RDG-Satz. Einordnung vor der Reihenfolge-Karte und Wahlknöpfe ohne Beträge: bestätigt von Nico am 02.11.2026.
@@ -46,11 +48,12 @@ Abweichungen vom Export, alle auf Entscheidung vom 02.11.2026:
 - Beträge und RDG-Satz stehen in einem benannten Bereich (`<section aria-label="Ergebnis">`), die Wegkarten als `<ul role="list">`.
   Kein `aria-describedby` (a11y-pruefer, 02.11.2026). Nichts mit `aria-hidden` verstecken, was sichtbar ist (z. B. die Etiketten).
 - Fokus darf nie hinter dem klebenden Fuß liegen (`scroll-padding-bottom` = Fußhöhe + 16 px, nur solange der Fuß klebt).
-- **Lange Erklärtexte** (z. B. „Vorläufiges Geld vom Jobcenter“, „Vorschuss beantragen“) zeigen die ersten zwei Sätze; der Rest ist aufklappbar
-  (Entscheidung von Nico, 02.11.2026, für M5; im Prototyp noch nicht umgesetzt). Ausgenommen ist der RDG-Satz am Betrag: Er bleibt immer
-  ganz sichtbar und ist nie einklappbar. Achtung beim Kürzen: Bei „Vorläufiges Geld vom Jobcenter“ stünde die Ausnahme
-  („Liegt die lange Prüfung an Nachweisen …? Dann gibt es kein vorläufiges Geld.“) im aufklappbaren Teil. Ob die ersten zwei Sätze
-  ohne Ausnahme stehen dürfen, vor M5 mit dem rechts-pruefer klären; sonst die Reihenfolge der Sätze anpassen.
+- **Aufklappbare Erklärtexte** (Regel von Nico, 02.11.2026, für M5): Lange Erklärtexte wie „Vorläufiges Geld vom Jobcenter“ oder
+  „Vorschuss beantragen“ dürfen einen aufklappbaren Teil haben. **Sichtbar sind immer die Kernaussage und die wichtigste Einschränkung.
+  Eine Ausnahme, die das Ergebnis umkehrt, liegt nie im aufklappbaren Teil.** Der RDG-Satz am Betrag ist nie einklappbar.
+  Im Prototyp ist das Aufklappen noch nicht gebaut; der aufklappbare Teil ist mit `class="aufklappbar"` markiert. Bei „Vorläufiges Geld vom Jobcenter“
+  sind auch die Rückforderung bei fehlenden Nachweisen (§ 41a Abs. 3 Satz 4 SGB II) und die Ausnahme vor der Zahlung (§ 41a Abs. 1 Satz 3) sichtbar
+  (Einordnung der Sätze: rechts-pruefer, 02.11.2026).
 
 ## Zwei Arten von „Entwurf“
 
@@ -73,9 +76,21 @@ rechts-pruefer (Gesetze im Original gelesen, Zitate von Claude nachgelesen) und 
 
 **Noch offen:**
 - Für eine Rechts- oder Sozialberatung: Wie rechnet man „nach Ablauf eines Kalendermonats nach Eingang“ (§ 42 Abs. 1 Satz 2 SGB I)? Der Prototyp sagt vorsichtig „spätestens im übernächsten Monat“. Dazu: Verhältnis von § 26a WoGG zu § 42 SGB I.
-- Vorschlag des a11y-pruefer, noch nicht umgesetzt: Kopfzeile bei `nur_weg_a` „Nach den Regeln reicht nur ein Weg.“, damit man „reicht … Grundsicherung“
-  nicht dreimal hört (Kopfzeile, Etikett, Einordnung). Kein WCAG-Verstoß, nur Hörbarkeit. Neuer Text: vorher text-lektor und rechts-pruefer.
+- Kopfzeile `weg_b_deckt`: Die eingefrorene Einordnung beginnt fast gleich („Nach den Regeln reichen Kinderzuschlag und Wohngeld bei euren Angaben …“).
+  Vorschlag des text-lektor „Nach den Regeln reicht Weg B.“ (parallel zu `nur_weg_a`), noch nicht beim rechts-pruefer.
+- Zur Entscheidung (Nico): Auf „Warten“ steht bei „Jetzt“ „Das liegt nicht an euch.“, auf Weg A kurz darauf sichtbar „Liegt die lange Prüfung an Nachweisen,
+  die ihr nicht geschickt habt?“. Der text-lektor liest das als Spannung und rät, „Das liegt nicht an euch.“ zu streichen (Satz ist noch Entwurf).
+- Bewusst nicht geändert: „die ihr nicht geschickt habt“ bleibt „ihr“, obwohl der Hinweis darüber „du“ sagt. Nach FW § 41a SGB II Rz. 41a.5 zählen
+  die Nachweise aller in der Bedarfsgemeinschaft; „du“ würde die Aussage verengen.
 - Nach dem Freeze, nur Vorschläge: Karten `a_vorlaeufig` und `b_vorschuss`; in `einordnung_weg_b_deckt` die 3-Monats-Bedingung; Antragstext Weg A um „Schick sie aber möglichst bald.“ ergänzen.
+
+## Offen für den Test
+
+- **Screenreader:** Das Verhalten ist nur im Barrierefreiheitsbaum geprüft (Edge mit Playwright, a11y-pruefer). Ein echter Test mit NVDA oder VoiceOver
+  steht aus: Bereich „Ergebnis“ mit Liste und RDG-Satz, Springen von Liste zu Liste, Etiketten an den Wegkarten, ausgeblendete Figuren im Band,
+  Ansage der Marke „Entwurf“ im Knopf „Weiß ich nicht“.
+- **Fünf-Sekunden-Test** (aus `BERICHT.md` Abschnitt 5): zusätzlich fragen „Wer, glaubst du, steht dahinter?“ (Pflaume könnte an Kirche oder Diakonie
+  denken lassen) und „Für wen ist das gemacht?“ (wirken die Figuren kindlich?).
 
 ## Öffnen
 

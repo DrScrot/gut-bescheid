@@ -214,7 +214,7 @@ Er bestätigt außerdem: gleiche Stärke der Wege, Petrol liest sich nicht als S
 ### Dritte Runde (02.11.2026, Antworten von Nico)
 
 1. **Fuß auf niedrigen Bildschirmen:** Bis 700 px Höhe klebt er nicht, er scrollt mit. Der Abstand für den Fokus (`scroll-padding-bottom`) gilt nur, solange der Fuß klebt.
-   Gemessen in allen vier Ergebnisarten: RDG-Satz ohne Scrollen sichtbar bei 390 × 844, 360 × 740 und 375 × 667. Bei 320 × 568 fehlen 34 bis 123 px. Offen für den rechts-pruefer als `docs/offene-rechtsfragen.md` Punkt 45.
+   Gemessen in allen vier Ergebnisarten: RDG-Satz ohne Scrollen sichtbar bei 390 × 844, 360 × 740 und 375 × 667. Bei 320 × 568 fehlen 34 bis 123 px (später 16 bis 125 px, siehe sechste Runde). Offen für den rechts-pruefer als `docs/offene-rechtsfragen.md` Punkt 45.
 2. **Erweiterter Zugang (T03):** Kopfzeile → Beträge mit RDG-Satz → Einordnung → Karte „Reihenfolge der Anträge“ → Wahl.
    - Die Reihenfolge-Karte steht vor der Wahl, weil sie vor der Wahl gelesen werden muss.
    - Die Einordnung („Beide Wege sind ein Recht …“) steht ebenfalls vor der Wahl, aus demselben Grund. Von Nico bestätigt (02.11.2026).
@@ -243,3 +243,11 @@ rechts-pruefer zu `docs/offene-rechtsfragen.md` Punkt 44 bis 46, mit § 41a SGB 
 a11y-pruefer, gemessen in Edge mit dem Barrierefreiheitsbaum; echte Screenreader nicht getestet.
 - **RDG-Satz mit den Beträgen:** Umgesetzt: `<section class="ergebnis-karte" aria-label="Ergebnis">` um Liste und Satz, Liste mit `role="list"` (Safari und VoiceOver sagen Listen ohne Aufzählungszeichen sonst nicht als Liste an). Gemessen: Bereich „Ergebnis“ enthält Liste und Satz; Bild unverändert (pixelgleich); axe weiter ohne Verstoß. `aria-describedby` verworfen, weil NVDA und JAWS es an dieser Stelle meist nicht lesen.
 - **Dreimal „reicht … Grundsicherung“ bei `nur_weg_a`:** kein WCAG-Verstoß. Vorschlag, noch nicht umgesetzt: Kopfzeile „Nach den Regeln reicht nur ein Weg.“ Das Fachkonzept nennt als Beispiel „Nur ein Weg deckt euren Bedarf.“ Neuer Text, darum vorher text-lektor und rechts-pruefer. Etikett verstecken (`aria-hidden`) wäre schlechter.
+
+### Sechste Runde: Kopfzeilen und aufklappbare Texte (02.11.2026)
+
+- **Kopfzeile `nur_weg_a`:** Der Vorschlag „Nach den Regeln reicht nur ein Weg.“ ist laut rechts-pruefer und text-lektor mehrdeutig („einer genügt, egal welcher“ klingt wie die Wahl beim erweiterten Zugang). Beide tragen „Nach den Regeln reicht nur Weg A.“ Umgesetzt. Bedingung erfüllt: Karte „Weg A Grundsicherung“ mit Etikett ohne Scrollen sichtbar, auch bei 320 × 568.
+- **Kopfzeile `weg_b_deckt`:** laut rechts-pruefer ein Fehler (ohne „nach den Regeln“, „für euch“). Neu: „Nach den Regeln reichen Kinderzuschlag und Wohngeld.“ Offen: „Nach den Regeln reicht Weg B.“ (text-lektor), weil die Einordnung fast gleich beginnt.
+- **Aufklappbare Texte:** Regel von Nico in der LIESMICH. Station A neu geordnet nach dem rechts-pruefer: Auch die Rückforderung bei fehlenden Nachweisen kehrt das Ergebnis um (§ 41a Abs. 3 Satz 4, Abs. 6 Satz 4 SGB II) und bleibt sichtbar. Aufklappbar: „Einen eigenen Antrag brauchst du für das vorläufige Geld nicht.“ (Bezug ergänzt), Erstattung und 50-€-Grenze. Station B: Frist und Anrechnung aufklappbar, nichts davon kehrt das Ergebnis um. Amstad sichtbarer Teil Station A etwa 75 (text-lektor).
+- **Zur Entscheidung:** „Das liegt nicht an euch.“ auf „Jetzt“ steht in Spannung zur sichtbaren Ausnahme bei Weg A (text-lektor rät zu streichen).
+- **Rückschritt gefunden und behoben:** Das längere Etikett „ist nach den Regeln zuerst dran“ (vierte Runde) bricht zweizeilig um. Dadurch fehlten bei T01 11 px (360 × 740) und 14 px (375 × 667) bis zum RDG-Satz. Die Mehrgrößen-Messung war nach der vierten Runde nicht wiederholt worden. Behoben im Kompaktmodus (engere Wegkarten, kein Text geändert); die Messung ist jetzt fester Teil von `werkzeuge/pruefen.mjs`. Stand: ohne Scrollen sichtbar bei 390 × 844, 360 × 740 und 375 × 667; bei 320 × 568 fehlen 16 bis 125 px.

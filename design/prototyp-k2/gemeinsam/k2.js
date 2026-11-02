@@ -58,7 +58,8 @@
     if (art === 'nur_weg_a') wA.grund = 'reicht nach den Regeln';
     let wege = art === 'weg_b_deckt' ? [wB, wA] : [wA, wB];
     if (art === 'erweiterter_zugang') wege = wege.map((w) => ({ ...w, an: st.wahl === w.key ? 'true' : 'false' }));
-    const kopf = { weg_b_deckt: 'Kinderzuschlag und Wohngeld reichen für euch.', erweiterter_zugang: 'Ihr könnt zwischen zwei Wegen wählen.', nur_weg_a: 'Nach den Regeln reicht nur die Grundsicherung.', kein_anspruch: 'Gerade gibt es kein Geld jeden Monat.' }[art] || '';
+    // Kopfzeilen weg_b_deckt und nur_weg_a nach rechts-pruefer und text-lektor (02.11.2026, offene-rechtsfragen.md Punkt 46).
+    const kopf = { weg_b_deckt: 'Nach den Regeln reichen Kinderzuschlag und Wohngeld.', erweiterter_zugang: 'Ihr könnt zwischen zwei Wegen wählen.', nur_weg_a: 'Nach den Regeln reicht nur Weg A.', kein_anspruch: 'Gerade gibt es kein Geld jeden Monat.' }[art] || '';
     const k = d.karten || { beide: [], wegA: [], wegB: [] };
     const reihenfolge = (k.beide || []).find((x) => x.id === 'beide_reihenfolge') || { titel: '', text: '' };
     const kA = k.wegA || [];
@@ -299,13 +300,16 @@
           ? '<p class="halt-text hinweis-text">Fehlende Nachweise kannst du später schicken.</p>'
           : '<p class="halt-text hinweis-text">Fehlende Nachweise kannst du später schicken. Schick sie aber möglichst bald.</p>' },
         { art: 'spaeter', wann: `Wenn es dauert ${ENTWURF}`, text: B
+          // Regel für M5 (02.11.2026): Kernaussage und wichtigste Einschränkung sichtbar; Ausnahmen, die das Ergebnis umkehren,
+          // nie im aufklappbaren Teil. Absätze mit class="aufklappbar" werden in M5 einklappbar (im Prototyp noch offen).
+          // Einordnung der Sätze: rechts-pruefer 02.11.2026 (Station A: § 41a Abs. 1 Satz 3, Abs. 3 Satz 4, Abs. 6 Satz 4 SGB II).
           ? `<div class="vorschuss"${entwurf}><p class="t fett">Vorschuss beantragen</p>
               <p class="t">Steht fest, dass ihr Geld bekommt, aber nicht wie viel? Dann kannst du einen Vorschuss beantragen, also Geld vorab. Beantrage ihn bei jeder Stelle einzeln. Das geht schon mit dem Antrag.</p>
-              <p class="t">Die Zahlung muss spätestens im übernächsten Monat beginnen. Gezählt wird ab dem Monat, in dem dein Antrag auf Vorschuss ankommt. Später wird der Vorschuss vom Geld abgezogen, das euch zusteht. War er zu hoch, zahlst du zurück, was zu viel war.</p></div>`
+              <p class="t aufklappbar">Die Zahlung muss spätestens im übernächsten Monat beginnen. Gezählt wird ab dem Monat, in dem dein Antrag auf Vorschuss ankommt. Später wird der Vorschuss vom Geld abgezogen, das euch zusteht. War er zu hoch, zahlst du zurück, was zu viel war.</p></div>`
           : `<div class="vorschuss"${entwurf}><p class="t fett">Vorläufiges Geld vom Jobcenter</p>
-              <p class="t">Dauert die Prüfung länger, muss das Jobcenter vorläufig zahlen. Das gilt, wenn ihr wahrscheinlich Geld bekommt. Einen eigenen Antrag brauchst du dafür nicht.</p>
-              <p class="t">Liegt die lange Prüfung an Nachweisen, die ihr nicht geschickt habt? Dann gibt es kein vorläufiges Geld.</p>
-              <p class="t">Vorläufig heißt: Später rechnet das Jobcenter genau nach. Dafür musst du dann Nachweise schicken. Fehlen sie, kann das Jobcenter Geld zurückfordern. War es insgesamt zu viel, zahlt ihr den Teil zurück, der zu viel war. Das gilt, wenn es für euch alle zusammen 50 € oder mehr sind.</p></div>` },
+              <p class="t">Dauert die Prüfung länger, muss das Jobcenter vorläufig zahlen. Das gilt, wenn ihr wahrscheinlich Geld bekommt. Liegt die lange Prüfung an Nachweisen, die ihr nicht geschickt habt? Dann gibt es kein vorläufiges Geld.</p>
+              <p class="t">Vorläufig heißt: Später rechnet das Jobcenter genau nach. Dafür musst du dann Nachweise schicken. Fehlen sie, kann das Jobcenter Geld zurückfordern.</p>
+              <p class="t aufklappbar">Einen eigenen Antrag brauchst du für das vorläufige Geld nicht. War es insgesamt zu viel, zahlt ihr den Teil zurück, der zu viel war. Das gilt, wenn es für euch alle zusammen 50 € oder mehr sind.</p></div>` },
         { art: 'normal', ziel: true, wann: 'Ziel', was: 'Bescheid und erstes Geld' },
       );
       return {

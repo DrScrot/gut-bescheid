@@ -259,3 +259,16 @@ Gleiche Stärke der Wege: Weg A 6.98 : 1, Weg B 6.98 : 1 auf der Seite. Farbton 
 | warten T04 | keine | 14 px („Entwurf“) | 48 px („Gut Bescheid“) | keins von 3 | – |
 | außerhalb | keine | 15 px („Fragen“) | 48 px („Gut Bescheid“) | keins von 4 | – |
 | leitung | keine | 16 px („Unabhängig, kein Amt“) | 48 px („Gut Bescheid“) | keins von 7 | – |
+
+## RDG-Satz ohne Scrollen auf mehreren Größen
+
+| Variante | Größe | T01 | T04 | kein Anspruch | T03 |
+|---|---|---|---|---|---|
+| skizze | 390 × 844 | ja | ja | ja | ja |
+| skizze | 360 × 740 | **nein** (fehlen 20 px) | ja | ja | ja |
+| skizze | 375 × 667 | **nein** (fehlen 60 px) | **nein** (fehlen 19 px) | ja | ja |
+| skizze | 320 × 568 | **nein** (fehlen 285 px) | **nein** (fehlen 154 px) | **nein** (fehlen 81 px) | **nein** (fehlen 140 px) |
+| haltestelle | 390 × 844 | ja | ja | ja | ja |
+| haltestelle | 360 × 740 | ja | ja | ja | ja |
+| haltestelle | 375 × 667 | ja | ja | ja | ja |
+| haltestelle | 320 × 568 | **nein** (fehlen 125 px) | **nein** (fehlen 52 px) | **nein** (fehlen 16 px) | **nein** (fehlen 25 px) |
