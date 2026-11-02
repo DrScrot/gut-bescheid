@@ -43,7 +43,14 @@ Abweichungen vom Export, alle auf Entscheidung vom 02.11.2026:
 - Der RDG-Satz steht auf derselben Karte direkt unter den Beträgen, auf allen Ergebnisarten gleich. Ohne Scrollen sichtbar bei 390 × 844, 360 × 740 und 375 × 667;
   bei 320 × 568 nicht. Ob „auf derselben Karte direkt darunter“ genügt, ist offen: `docs/offene-rechtsfragen.md` Punkt 45.
 - Wegkarten liegen auf einem gemeinsamen Raster (CSS subgrid) mit fester Spaltenbreite. Beträge dürfen vor „€“ umbrechen.
+- Beträge und RDG-Satz stehen in einem benannten Bereich (`<section aria-label="Ergebnis">`), die Wegkarten als `<ul role="list">`.
+  Kein `aria-describedby` (a11y-pruefer, 02.11.2026). Nichts mit `aria-hidden` verstecken, was sichtbar ist (z. B. die Etiketten).
 - Fokus darf nie hinter dem klebenden Fuß liegen (`scroll-padding-bottom` = Fußhöhe + 16 px, nur solange der Fuß klebt).
+- **Lange Erklärtexte** (z. B. „Vorläufiges Geld vom Jobcenter“, „Vorschuss beantragen“) zeigen die ersten zwei Sätze; der Rest ist aufklappbar
+  (Entscheidung von Nico, 02.11.2026, für M5; im Prototyp noch nicht umgesetzt). Ausgenommen ist der RDG-Satz am Betrag: Er bleibt immer
+  ganz sichtbar und ist nie einklappbar. Achtung beim Kürzen: Bei „Vorläufiges Geld vom Jobcenter“ stünde die Ausnahme
+  („Liegt die lange Prüfung an Nachweisen …? Dann gibt es kein vorläufiges Geld.“) im aufklappbaren Teil. Ob die ersten zwei Sätze
+  ohne Ausnahme stehen dürfen, vor M5 mit dem rechts-pruefer klären; sonst die Reihenfolge der Sätze anpassen.
 
 ## Zwei Arten von „Entwurf“
 
@@ -66,7 +73,8 @@ rechts-pruefer (Gesetze im Original gelesen, Zitate von Claude nachgelesen) und 
 
 **Noch offen:**
 - Für eine Rechts- oder Sozialberatung: Wie rechnet man „nach Ablauf eines Kalendermonats nach Eingang“ (§ 42 Abs. 1 Satz 2 SGB I)? Der Prototyp sagt vorsichtig „spätestens im übernächsten Monat“. Dazu: Verhältnis von § 26a WoGG zu § 42 SGB I.
-- Für den a11y-pruefer: Der RDG-Satz folgt der Liste der Wegkarten. Wer per Screenreader von Liste zu Liste springt, könnte ihn überspringen (`aria-describedby`?). Die Aussage „reicht nur die Grundsicherung“ hört man bei `nur_weg_a` dreimal (Kopfzeile, Etikett, Einordnung).
+- Vorschlag des a11y-pruefer, noch nicht umgesetzt: Kopfzeile bei `nur_weg_a` „Nach den Regeln reicht nur ein Weg.“, damit man „reicht … Grundsicherung“
+  nicht dreimal hört (Kopfzeile, Etikett, Einordnung). Kein WCAG-Verstoß, nur Hörbarkeit. Neuer Text: vorher text-lektor und rechts-pruefer.
 - Nach dem Freeze, nur Vorschläge: Karten `a_vorlaeufig` und `b_vorschuss`; in `einordnung_weg_b_deckt` die 3-Monats-Bedingung; Antragstext Weg A um „Schick sie aber möglichst bald.“ ergänzen.
 
 ## Öffnen

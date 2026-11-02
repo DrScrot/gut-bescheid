@@ -237,3 +237,9 @@ rechts-pruefer zu `docs/offene-rechtsfragen.md` Punkt 44 bis 46, mit § 41a SGB 
 - **Punkt 46, Etiketten:** stimmen mit Einschränkung. Neu: „ist nach den Regeln zuerst dran“ und „reicht nach den Regeln“. Die Kopfzeile bei `nur_weg_a` lautet jetzt „Nach den Regeln reicht nur die Grundsicherung.“
 - **Amstad (text-lektor, geschätzt):** Station A etwa 80, Station B etwa 82. Kein Satz über 14 Wörter.
 - **Nicht im Prototyp, nur vorgeschlagen (Freeze):** Karten `a_vorlaeufig` und `b_vorschuss`; 3-Monats-Bedingung in `einordnung_weg_b_deckt`; Antragstext Weg A.
+
+### Fünfte Runde: Screenreader (02.11.2026)
+
+a11y-pruefer, gemessen in Edge mit dem Barrierefreiheitsbaum; echte Screenreader nicht getestet.
+- **RDG-Satz mit den Beträgen:** Umgesetzt: `<section class="ergebnis-karte" aria-label="Ergebnis">` um Liste und Satz, Liste mit `role="list"` (Safari und VoiceOver sagen Listen ohne Aufzählungszeichen sonst nicht als Liste an). Gemessen: Bereich „Ergebnis“ enthält Liste und Satz; Bild unverändert (pixelgleich); axe weiter ohne Verstoß. `aria-describedby` verworfen, weil NVDA und JAWS es an dieser Stelle meist nicht lesen.
+- **Dreimal „reicht … Grundsicherung“ bei `nur_weg_a`:** kein WCAG-Verstoß. Vorschlag, noch nicht umgesetzt: Kopfzeile „Nach den Regeln reicht nur ein Weg.“ Das Fachkonzept nennt als Beispiel „Nur ein Weg deckt euren Bedarf.“ Neuer Text, darum vorher text-lektor und rechts-pruefer. Etikett verstecken (`aria-hidden`) wäre schlechter.

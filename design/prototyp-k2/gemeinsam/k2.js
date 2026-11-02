@@ -110,7 +110,10 @@
       + (alsKnopf ? '' : w.geld ? `<span class="etwa">etwa</span><span class="betrag">${w.betrag}</span><span class="etwa">pro Monat</span>` : `<span class="betrag kein">kein Geld</span>`)
       + `</${tag}>`;
   }
-  const ergebnisKarte = (c) => { const g = c.wege.some((w) => w.grund); return `<div class="ergebnis-karte">${V.deko('karte')}<ul class="wege">${c.wege.map((w) => wegKarte(w, false, g)).join('')}</ul><p class="rdg">${RDG}</p></div>`; };
+  // Beträge und RDG-Satz in einem benannten Bereich (a11y-pruefer, 02.11.2026): Der Bereich endet erst nach dem RDG-Satz,
+  // so wird er mit den Beträgen gelesen. role="list", weil Safari/VoiceOver Listen ohne Aufzählungszeichen sonst nicht als Liste ansagt.
+  // „Ergebnis“ ist unsichtbarer Text (steht sichtbar in der Leiste „Wo du stehst“).
+  const ergebnisKarte = (c) => { const g = c.wege.some((w) => w.grund); return `<section class="ergebnis-karte" aria-label="Ergebnis">${V.deko('karte')}<ul class="wege" role="list">${c.wege.map((w) => wegKarte(w, false, g)).join('')}</ul><p class="rdg">${RDG}</p></section>`; };
 
   const btn = (text, aktion, extra = '') => `<button class="btn" type="button" data-aktion="${aktion}"${extra}>${text}</button>`;
   const btn2 = (text, aktion, extra = '') => `<button class="btn2" type="button" data-aktion="${aktion}"${extra}>${text}</button>`;
