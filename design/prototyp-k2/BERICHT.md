@@ -217,9 +217,9 @@ Er bestätigt außerdem: gleiche Stärke der Wege, Petrol liest sich nicht als S
    Gemessen in allen vier Ergebnisarten: RDG-Satz ohne Scrollen sichtbar bei 390 × 844, 360 × 740 und 375 × 667. Bei 320 × 568 fehlen 34 bis 123 px. Offen für den rechts-pruefer als `docs/offene-rechtsfragen.md` Punkt 45.
 2. **Erweiterter Zugang (T03):** Kopfzeile → Beträge mit RDG-Satz → Einordnung → Karte „Reihenfolge der Anträge“ → Wahl.
    - Die Reihenfolge-Karte steht vor der Wahl, weil sie vor der Wahl gelesen werden muss.
-   - Die Einordnung („Beide Wege sind ein Recht …“) habe ich ebenfalls vor die Wahl gesetzt, aus demselben Grund. Das war nicht ausdrücklich vorgegeben, bitte bestätigen.
-   - Die Wahlknöpfe tragen keine Beträge mehr. Sonst stünden die Beträge zweimal da und bräuchten unter den Knöpfen einen zweiten RDG-Satz.
-3. **Vorschuss:** neuer Punkt 44 in `docs/offene-rechtsfragen.md`, ausdrücklich auch für Weg A.
+   - Die Einordnung („Beide Wege sind ein Recht …“) steht ebenfalls vor der Wahl, aus demselben Grund. Von Nico bestätigt (02.11.2026).
+   - Die Wahlknöpfe tragen keine Beträge mehr. Sonst stünden die Beträge zweimal da und bräuchten unter den Knöpfen einen zweiten RDG-Satz. Von Nico bestätigt (02.11.2026), mit der Vorgabe, dass die Knöpfe den Weg eindeutig benennen (Name und Wegfarbe). Geprüft: Wort, Punkt, Beschriftung und Fläche in der Wegfarbe; Name für den Screenreader „Weg A Grundsicherung“ und „Weg B Kinderzuschlag und Wohngeld“.
+3. **Vorschuss:** neuer Punkt 44 in `docs/offene-rechtsfragen.md`, ausdrücklich auch für Weg A. Die Etiketten an den Wegkarten stehen dort als Punkt 46.
 4. **Screenshots** sind ab jetzt nicht mehr im Repo (`.gitignore`). Die bisherigen bleiben in der Historie (Commit 1f52006). Wie man sie neu erzeugt, steht in `LIESMICH.md`.
 
 Prüfung danach: axe in 48 Läufen ohne Verstoß, kein verdeckter Fokus, alle Token-Paare bestanden. Bei Textabstand kein Überlauf bei 320 bis 390 px.

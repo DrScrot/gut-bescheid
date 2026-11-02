@@ -30,13 +30,15 @@ Abweichungen vom Export, alle auf Entscheidung vom 02.11.2026:
   („zuerst beantragen“ bei `weg_b_deckt`, „deckt euren Bedarf“ bei `nur_weg_a`). Sonst steht A links, B rechts. Die beiden Etiketten sind neuer Text.
 - **Erweiterter Zugang (T03):** Kopfzeile → Beträge mit RDG-Satz → Einordnung → Karte „Reihenfolge der Anträge“ → Wahl.
   Die Reihenfolge-Karte steht vor der Wahl, weil sie vor der Wahl gelesen werden muss. Die Wahlknöpfe tragen keine Beträge mehr;
-  die Beträge stehen nur auf der Karte mit dem RDG-Satz. Die Einordnung vor der Reihenfolge-Karte ist ein Vorschlag von Claude.
+  die Beträge stehen nur auf der Karte mit dem RDG-Satz. Einordnung vor der Reihenfolge-Karte und Wahlknöpfe ohne Beträge: bestätigt von Nico am 02.11.2026.
 - **Fuß auf niedrigen Bildschirmen:** Bis 700 px Höhe klebt der Fuß nicht, er scrollt mit.
 - Startbildschirm K1 „Brief“ nicht übernommen.
 
 ## Regeln aus den Prüfungen, für M5 übernehmen
 
 - Pflicht nie auf `--a-flaeche` setzen. Die beiden Flächen sind bei Deuteranopie kaum zu unterscheiden.
+- Wahlknöpfe benennen den Weg eindeutig, mit Name und Wegfarbe: Wort („Weg A“ und „Grundsicherung“), dazu Punkt, Beschriftung und Fläche in der Wegfarbe.
+  Name für den Screenreader: „Weg A Grundsicherung“, „Weg B Kinderzuschlag und Wohngeld“ (geprüft am 02.11.2026, hell und dunkel).
 - Der RDG-Satz steht auf derselben Karte direkt unter den Beträgen, auf allen Ergebnisarten gleich. Ohne Scrollen sichtbar bei 390 × 844, 360 × 740 und 375 × 667;
   bei 320 × 568 nicht. Ob „auf derselben Karte direkt darunter“ genügt, ist offen: `docs/offene-rechtsfragen.md` Punkt 45.
 - Wegkarten liegen auf einem gemeinsamen Raster (CSS subgrid) mit fester Spaltenbreite. Beträge dürfen vor „€“ umbrechen.
@@ -58,8 +60,7 @@ eingetragen als `docs/offene-rechtsfragen.md` Punkt 44.
 
 **RDG-Satz auf kleinen Bildschirmen:** `docs/offene-rechtsfragen.md` Punkt 45.
 
-**Etiketten an den Wegkarten:** „zuerst beantragen“ und „deckt euren Bedarf“ sind kurze Fassungen von Sätzen aus der Einordnung.
-Bitte auf RDG prüfen (allgemeine Regel, keine Empfehlung im Einzelfall). Danach `text-lektor`.
+**Etiketten an den Wegkarten** („zuerst beantragen“, „deckt euren Bedarf“): `docs/offene-rechtsfragen.md` Punkt 46. Danach `text-lektor`.
 
 ## Öffnen
 
