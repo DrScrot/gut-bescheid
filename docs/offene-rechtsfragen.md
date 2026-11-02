@@ -434,7 +434,7 @@ Alle Punkte betreffen die Oberfläche, nicht die Rechnung. Der Prototyp liegt in
 - **Stand im Prototyp (Entscheidung von Nico am 02.11.2026):** Kopfzeile, gleich danach die Karte mit Beträgen und RDG-Satz. Auf niedrigen Bildschirmen (bis 700 px Höhe) klebt der Fuß nicht, er scrollt mit. Gemessen in allen vier Ergebnisarten: Bei 390 × 844, 360 × 740 und 375 × 667 ist der Satz ohne Scrollen sichtbar. Bei 320 × 568 fehlen 34 bis 123 px.
 - **Ergebnis (rechts-pruefer, 02.11.2026): stimmt.** Das ist eine Gestaltungsfrage. Ob eine Rechtsdienstleistung vorliegt, hängt an der Tätigkeit, nicht an der Sichtbarkeit eines Hinweises. Eine Norm, die „ohne Scrollen sichtbar“ verlangt, gibt es nicht. § 2 Abs. 1 RDG: „Rechtsdienstleistung ist jede Tätigkeit in konkreten fremden Angelegenheiten, sobald sie eine rechtliche Prüfung des Einzelfalls erfordert.“ § 3 RDG regelt nur, wer darf.
 - **Bedingungen, die bleiben:** Zwischen Betrag und Satz steht kein anderes Element. Der Satz wird nicht abgeschnitten oder verdeckt. Der Betrag steht nirgends allein (keine Kopfzeile, kein Vorschaubild mit Betrag).
-- **Im Prototyp:** keine Änderung. **Für den a11y-pruefer:** Die Wegkarten sind eine Liste (`<ul>`), der Satz folgt danach. Wer mit dem Screenreader von Liste zu Liste springt, könnte ihn überspringen. Prüfen, ob `aria-describedby` nötig ist.
+- **Im Prototyp:** keine Änderung des Textes. **a11y-pruefer (02.11.2026):** `aria-describedby` hilft nicht; NVDA im Lesemodus und JAWS lesen es an nicht fokussierbaren Elementen meist nicht. Umgesetzt: Beträge und RDG-Satz stehen in einem benannten Bereich (`<section aria-label="Ergebnis">`), die Liste hat `role="list"`. Der Bereich endet erst nach dem Satz. Erzwingen lässt sich das Vorlesen nicht: Wer mit der Listentaste weiterspringt, überspringt auch die Einordnung.
 - **Offen:** Ob ein Anwalt Sichtbarkeit ohne Scrollen empfiehlt, gehört in die rechtliche Ersteinschätzung.
 - **Fundstellen:** §§ 2, 3 RDG; CLAUDE.md (Regel zum Betrag); `docs/forschung/verhaltensdiagnose-pruefung.md` Abschnitt 6.5; `design/prototyp-k2/BERICHT.md` Abschnitt 8.
 - **Betroffene Tests:** keine (Oberfläche, M5).
@@ -456,6 +456,23 @@ Alle Punkte betreffen die Oberfläche, nicht die Rechnung. Der Prototyp liegt in
 - **Vorschlag nach dem Freeze:** In `einordnung_weg_b_deckt` den Satz aus `a_vorrang_kiz_wohngeld` ergänzen: „Das gilt, wenn es für alle mindestens 3 Monate am Stück reicht.“
 - **Offen:** Kinder außerhalb der Bedarfsgemeinschaft könnten Wohngeld bekommen (Punkt 11; § 7 Abs. 2 WoGG nicht gelesen). Ob die Wohngeldstelle prüft, wie der Lebensunterhalt gesichert ist (WoGVwV, nicht gelesen).
 - **Betroffene Tests:** keine (Oberfläche, M5).
+
+## Vormerkungen für nach dem Freeze (ab 01.12.2026)
+
+Vorgemerkt am 02.11.2026 (Nico), aus den Punkten 44 und 46. Änderungen am Katalog laufen über den Skill `regel-pflegen`; neue Karten bekommen den Status `pruefen`.
+
+**Vorher im Original prüfen.** Diese Zitate hat der rechts-pruefer am 02.11.2026 verwendet. Claude hat sie nicht selbst nachgelesen:
+- § 26a WoGG (vorläufige Zahlung, Abs. 1 Satz 1 und Abs. 4 Satz 2)
+- § 7 WoGG (Abs. 1 Satz 1 Nr. 1, Satz 3 Nr. 2 Buchst. b)
+- § 12a SGB II (Satz 2 Nr. 2, „mindestens drei Monaten“)
+- FW § 41a SGB II, Rz. 41a.5 (wer „zu vertreten“ hat) und Rz. 41a.12 (hinreichende Wahrscheinlichkeit)
+
+Selbst nachgelesen am 02.11.2026: § 41a Abs. 1 und Abs. 6 Satz 3 SGB II, § 42 Abs. 1 und 2 SGB I, FW § 41a SGB II Rz. 41a.3 und 41a.14.
+
+1. **Neue Karte `a_vorlaeufig`** (Weg A, vorläufige Entscheidung): § 41a Abs. 1, 2 und 6 SGB II; FW Rz. 41a.3, 41a.5, 41a.12, 41a.14. Text als Ausgangspunkt: die Station „Vorläufiges Geld vom Jobcenter“ im Prototyp (`design/prototyp-k2/gemeinsam/k2.js`, Funktion `warten`). Punkt 44.
+2. **Neue Karte `b_vorschuss`** (Weg B, Vorschuss): § 42 Abs. 1 und 2, § 68 Nr. 9 und 10 SGB I; § 26a WoGG. Text als Ausgangspunkt: die Station „Vorschuss beantragen“ im Prototyp. Vorher klären lassen: Lesart der Frist in § 42 Abs. 1 Satz 2 SGB I und Verhältnis von § 26a WoGG zu § 42 SGB I (Punkt 44, offen). Punkt 44.
+3. **3-Monats-Bedingung in `einordnung_weg_b_deckt`:** den Satz aus `a_vorrang_kiz_wohngeld` ergänzen: „Das gilt, wenn es für alle mindestens 3 Monate am Stück reicht.“ (§ 12a Satz 2 Nr. 2 SGB II). Danach Amstad-Test der Einordnung. Punkt 46.
+4. **Antragstext Weg A** (`folgen/naechste-schritte.json`, Schritt `grundsicherung_online`, heute „Nachweise kannst du später schicken.“): „Schick sie aber möglichst bald.“ ergänzen, damit er zur vorläufigen Entscheidung passt (§ 41a Abs. 1 Satz 3 SGB II). Punkt 44.
 
 ## Kandidaten für weitere Karten (nicht umgesetzt)
 
