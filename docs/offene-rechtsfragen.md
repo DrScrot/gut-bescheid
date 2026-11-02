@@ -1,6 +1,6 @@
 # Offene Rechtsfragen
 
-Stand: 02.11.2026 (Punkte 44 und 45 aus der Gestaltung K2) · Diese Liste ist für die Rechts- oder Sozialberatung gedacht. Sie sammelt alle Stellen, an denen das Regelwerk eine Annahme trifft, die ein Mensch mit Fachwissen prüfen sollte. Jeder Meilenstein ergänzt sie.
+Stand: 02.11.2026 (Punkte 44 bis 46 aus der Gestaltung K2) · Diese Liste ist für die Rechts- oder Sozialberatung gedacht. Sie sammelt alle Stellen, an denen das Regelwerk eine Annahme trifft, die ein Mensch mit Fachwissen prüfen sollte. Jeder Meilenstein ergänzt sie.
 
 Je Punkt: die Frage, unsere Annahme, die Fundstellen und die Tests, die sich ändern, wenn die Antwort anders ausfällt. Im Regelwerk tragen die betroffenen Werte meist den Status `pruefen` und erscheinen im Ergebnis als Hinweis.
 
@@ -397,7 +397,7 @@ Gefunden vom rechts-pruefer bei der Prüfung der Verhaltensdiagnose (`docs/forsc
 
 ## Aus der Gestaltung K2 „Haltestelle“ (02.11.2026)
 
-Beide Punkte betreffen die Oberfläche, nicht die Rechnung. Der Prototyp liegt in `design/prototyp-k2/` (Grundlage für M5).
+Alle Punkte betreffen die Oberfläche, nicht die Rechnung. Der Prototyp liegt in `design/prototyp-k2/` (Grundlage für M5).
 
 ### 44. Vorschuss in der Wartezeit, auf beiden Wegen
 
@@ -419,6 +419,17 @@ Beide Punkte betreffen die Oberfläche, nicht die Rechnung. Der Prototyp liegt i
 - **Unsere Annahme:** offen.
 - **Fundstellen:** CLAUDE.md (Regel zum Betrag); `docs/forschung/verhaltensdiagnose-pruefung.md` Abschnitt 6.5; `design/prototyp-k2/BERICHT.md` Abschnitt 8.
 - **Betroffene Tests:** keine (Oberfläche, M5).
+
+### 46. Etiketten an den Wegkarten: „zuerst beantragen“ und „deckt euren Bedarf“
+
+- **Frage:** Sind die beiden Etiketten allgemeine Information über Regeln, oder wirken sie wie eine Empfehlung im Einzelfall (RDG)? Und stimmen sie in dieser Kürze noch?
+- **Wo:** Ergebnis, an der linken der beiden Wegkarten. Entscheidung von Nico am 02.11.2026: Der Weg, den das Regelwerk zuerst verlangt, steht links und nennt den Grund. Bei `weg_b_deckt` steht an Weg B „zuerst beantragen“, bei `nur_weg_a` an Weg A „deckt euren Bedarf“. Beim erweiterten Zugang und ohne Anspruch gibt es kein Etikett. Die Etiketten sind neuer Text und im Prototyp als Wortlaut-Entwurf markiert.
+- **Unsere Annahme:** Beide kürzen Sätze, die es schon gibt.
+  - „zuerst beantragen“ kürzt die Einordnung `weg_b_deckt`: „Dann müsst ihr diese beiden zuerst beantragen.“ Rechtsgrundlage laut Karte `a_vorrang_kiz_wohngeld`: § 12a Satz 1 und Satz 2 Nr. 2 SGB II. Die Karte nennt eine Bedingung, die das Etikett weglässt: „Das gilt, wenn es für alle mindestens 3 Monate am Stück reicht.“ Ist das Etikett ohne diese Bedingung noch richtig?
+  - „deckt euren Bedarf“ kürzt die Kopfzeile „Nur die Grundsicherung deckt euren Bedarf.“ (aus der Design-Fläche) und die Einordnung `nur_weg_a`: „Nach den Regeln reicht nur die Grundsicherung.“ Bewusst nicht „zuerst beantragen“: Wer Grundsicherung bekommt, bekommt in der Regel kein Wohngeld (§ 7 Abs. 1 WoGG, vgl. Punkt 36). Ein „danach“ für Weg B gibt es also nicht. Stimmt das so?
+  - Beide Etiketten stehen auf derselben Karte wie der RDG-Satz („Das gilt für Haushalte mit euren Angaben …“).
+- **Fundstellen:** `packages/regelwerk/folgen/einordnung.json` (`weg_b_deckt`, `nur_weg_a`); Karte `a_vorrang_kiz_wohngeld` (§ 12a Satz 1 und Satz 2 Nr. 2, § 5 Abs. 3 SGB II); § 7 Abs. 1 WoGG; CLAUDE.md (RDG-Formel); `docs/forschung/verhaltensdiagnose-pruefung.md` Abschnitt 6.1, D1.
+- **Betroffene Tests:** keine (Oberfläche, M5). Nach dem rechts-pruefer der `text-lektor`.
 
 ## Kandidaten für weitere Karten (nicht umgesetzt)
 
