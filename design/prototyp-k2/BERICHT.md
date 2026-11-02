@@ -177,9 +177,8 @@ Begründung:
 **3. RDG-Satz ohne Scrollen.** Neue Reihenfolge im Ergebnis: Kopfzeile, dann die Karte mit Beträgen und RDG-Satz, dann die Einordnung.
 Anders ging es nicht: Bei T04 standen 7 Zeilen Einordnung vor den Beträgen, damit lag der RDG-Satz unter dem Fuß.
 Gemessen: Bei 390 × 844 und 360 × 740 steht der RDG-Satz in allen vier Ergebnisarten über dem Fuß. Für Bildschirme bis 760 px Höhe gibt es dafür eine kompaktere Darstellung (kleinerer Titel, engere Abstände, flachere Weiche).
-**Offen, deine Entscheidung:** Bei 375 × 667 fehlen 38 bis 54 px (T01, T04, T03), bei 320 × 568 108 bis 197 px. Dort reicht Verdichten nicht.
-Möglich wären: (a) unter 700 px Höhe die Figuren im Band ausblenden, (b) unter 700 px Höhe den Fuß nicht kleben lassen, dann rutscht der Knopf ans Ende,
-(c) den rechts-pruefer fragen, ob „auf derselben Karte, direkt unter dem Betrag“ genügt, auch wenn man auf kleinen Handys etwas scrollen muss. Ich würde (c) zuerst klären.
+**Entschieden (Nico, 02.11.2026): (b) und (c).** Bis 700 px Höhe klebt der Fuß nicht, er scrollt mit. Die Figuren bleiben.
+Ob „auf derselben Karte direkt darunter“ genügt, fragt `docs/offene-rechtsfragen.md` Punkt 45. Stand siehe Abschnitt „Dritte Runde“ unten.
 Damit ist auch Widerspruch 1 aus Abschnitt 1 im Sinne des Fachkonzepts gelöst („erst Wie viel?“).
 
 **4. und 5. Entwurf sichtbar.** „Weiß ich nicht“ und „Nach 4 Wochen ohne Bescheid“ tragen eine sichtbare, gestrichelte Marke „Entwurf“.
@@ -200,7 +199,7 @@ Sein Fazit: ein AA-Blocker, sonst „sollte“ und Hinweise. Alle Messungen dana
 | Befund | Schwere | Umgesetzt |
 |---|---|---|
 | Bei Textabstand (1.4.12) und schmalen Bildschirmen wuchs die linke Wegkarte über ihre Spalte, die rechte verdeckte den Betrag | blockiert AA | Spalte fest (`minmax(0, 1fr)`), Betrag darf vor „€“ umbrechen, Größe 27–35 px je nach Breite, Wegname mit Silbentrennung. Nachgemessen bei 320, 360, 375, 390 px, hell und dunkel: kein Überlauf, keine Überdeckung. „Skizze“ läuft bei 320 px noch über; sie wird nicht weiter gepflegt |
-| RDG-Satz auf kleineren Bildschirmen unter dem Fuß | eure Vorgabe, kein WCAG-Kriterium | 360 × 740 jetzt erfüllt; 375 × 667 und 320 × 568 offen, siehe Punkt 3 oben |
+| RDG-Satz auf kleineren Bildschirmen unter dem Fuß | eure Vorgabe, kein WCAG-Kriterium | 360 × 740 erfüllt; 375 × 667 erfüllt, seit der Fuß dort mitscrollt; 320 × 568 offen (`docs/offene-rechtsfragen.md` Punkt 45) |
 | Dunkles Petrol wirkt türkis | Hinweis | `#3EACC4` (223°) |
 | Fläche Weg A ↔ Pflicht-Fläche bei Deuteranopie gleich | Hinweis | Regel „Pflicht nie auf `--a-flaeche`“ |
 | Wegkarten nicht als Liste ausgezeichnet (1.3.1) | sollte | `<ul class="wege">` mit `<li>` |
@@ -211,3 +210,16 @@ Sein Fazit: ein AA-Blocker, sonst „sollte“ und Hinweise. Alle Messungen dana
 | Marke „Entwurf“ verdeckt etwa 60 px des Fokusrings von „Weiß ich nicht“ | Hinweis | nicht geändert, der Rest des Rings bleibt sichtbar |
 
 Er bestätigt außerdem: gleiche Stärke der Wege, Petrol liest sich nicht als Signalgrün, das Etikett hebt aus Sicht der Barrierefreiheit keine Karte unzulässig hervor, Kontrast und Knopfname der Marke „Entwurf“ sind in Ordnung, zwei Schriftfamilien sind lesbar.
+
+### Dritte Runde (02.11.2026, Antworten von Nico)
+
+1. **Fuß auf niedrigen Bildschirmen:** Bis 700 px Höhe klebt er nicht, er scrollt mit. Der Abstand für den Fokus (`scroll-padding-bottom`) gilt nur, solange der Fuß klebt.
+   Gemessen in allen vier Ergebnisarten: RDG-Satz ohne Scrollen sichtbar bei 390 × 844, 360 × 740 und 375 × 667. Bei 320 × 568 fehlen 34 bis 123 px. Offen für den rechts-pruefer als `docs/offene-rechtsfragen.md` Punkt 45.
+2. **Erweiterter Zugang (T03):** Kopfzeile → Beträge mit RDG-Satz → Einordnung → Karte „Reihenfolge der Anträge“ → Wahl.
+   - Die Reihenfolge-Karte steht vor der Wahl, weil sie vor der Wahl gelesen werden muss.
+   - Die Einordnung („Beide Wege sind ein Recht …“) habe ich ebenfalls vor die Wahl gesetzt, aus demselben Grund. Das war nicht ausdrücklich vorgegeben, bitte bestätigen.
+   - Die Wahlknöpfe tragen keine Beträge mehr. Sonst stünden die Beträge zweimal da und bräuchten unter den Knöpfen einen zweiten RDG-Satz.
+3. **Vorschuss:** neuer Punkt 44 in `docs/offene-rechtsfragen.md`, ausdrücklich auch für Weg A.
+4. **Screenshots** sind ab jetzt nicht mehr im Repo (`.gitignore`). Die bisherigen bleiben in der Historie (Commit 1f52006). Wie man sie neu erzeugt, steht in `LIESMICH.md`.
+
+Prüfung danach: axe in 48 Läufen ohne Verstoß, kein verdeckter Fokus, alle Token-Paare bestanden. Bei Textabstand kein Überlauf bei 320 bis 390 px.

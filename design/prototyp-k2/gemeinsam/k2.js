@@ -102,11 +102,11 @@
     const attr = alsKnopf ? ` type="button" data-aktion="wahl" data-weg="${w.key}" aria-pressed="${w.an}"` : '';
     const grund = w.grund ? `<span class="weg-grund"${entwurf}>${w.grund}</span>` : mitGrund ? '<span class="weg-grund leer" aria-hidden="true"></span>' : '';
     // Beide Karten teilen ein Raster (CSS subgrid), damit Name, Betrag und „pro Monat“ auf einer Höhe stehen.
-    const zeilen = (grund ? 1 : 0) + 2 + (w.geld || alsKnopf ? 3 : 1);
-    return `<${tag} class="weg ${k}${w.an === 'true' ? ' an' : ''}" style="--zeilen: ${zeilen}"${attr}>${V.deko('weg-' + k)}${grund}`
+    const zeilen = (grund ? 1 : 0) + 2 + (alsKnopf ? 0 : w.geld ? 3 : 1);
+    return `<${tag} class="weg ${k}${alsKnopf && w.an === 'true' ? ' an' : ''}" style="--zeilen: ${zeilen}"${attr}>${V.deko('weg-' + k)}${grund}`
       + `<span class="weg-kopf">${alsKnopf ? V.deko('gewaehlt') : ''}${V.wegZeichen(k)}<span>${w.weg}</span></span>`
       + `<span class="weg-name">${w.name}</span>`
-      + (w.geld || alsKnopf ? `<span class="etwa">etwa</span><span class="betrag">${w.betrag}</span><span class="etwa">pro Monat</span>` : `<span class="betrag kein">kein Geld</span>`)
+      + (alsKnopf ? '' : w.geld ? `<span class="etwa">etwa</span><span class="betrag">${w.betrag}</span><span class="etwa">pro Monat</span>` : `<span class="betrag kein">kein Geld</span>`)
       + `</${tag}>`;
   }
   const ergebnisKarte = (c) => { const g = c.wege.some((w) => w.grund); return `<div class="ergebnis-karte">${V.deko('karte')}<ul class="wege">${c.wege.map((w) => wegKarte(w, false, g)).join('')}</ul><p class="rdg">${RDG}</p></div>`; };
@@ -229,10 +229,12 @@
         </div>`;
       }
       if (art === 'erweiterter_zugang') {
-        h += `<div class="weiche"><p class="h2">Welchen Weg willst du gehen?</p>${V.weiche()}
-          <div class="gleise">${c.wege.map((w) => wegKarte(w, true)).join('')}</div><p class="rdg">${RDG}</p></div>`
-          + einordnung
-          + `<details class="folge" open><summary>${label('gut_zu_wissen')}<span class="folge-titel">${c.reihenfolge.titel}</span></summary><p class="folge-text">${c.reihenfolge.text}</p></details>`;
+        // Entscheidung 02.11.2026: Die Reihenfolge-Karte steht VOR der Wahl, weil sie vor der Wahl gelesen werden muss.
+        // Die Wahlknöpfe tragen keine Beträge; die stehen mit dem RDG-Satz auf der Karte oben.
+        h += ergebnisKarte(c) + einordnung
+          + `<details class="folge" open><summary>${label('gut_zu_wissen')}<span class="folge-titel">${c.reihenfolge.titel}</span></summary><p class="folge-text">${c.reihenfolge.text}</p></details>`
+          + `<div class="weiche"><h2 class="h2">Welchen Weg willst du gehen?</h2>${V.weiche()}
+          <div class="gleise">${c.wege.map((w) => wegKarte(w, true)).join('')}</div></div>`;
       }
       if (art === 'nur_weg_a') {
         h += ergebnisKarte(c) + einordnung + `<h2 class="h2">Was auf diesem Weg dazugehört</h2>
@@ -342,7 +344,12 @@
   }
 
   // Fokus nie hinter dem klebenden Fuß (WCAG 2.4.11): Abstand beim Scrollen = Fußhöhe + 16 px
-  const fussBeobachter = new ResizeObserver(([e]) => { root.style.scrollPaddingBottom = (e.target.offsetHeight + 16) + 'px'; });
+  function fussAbstand() {
+    const f = app.querySelector('.fuss'); if (!f) return;
+    root.style.scrollPaddingBottom = getComputedStyle(f).position === 'sticky' ? (f.offsetHeight + 16) + 'px' : '0px';
+  }
+  const fussBeobachter = new ResizeObserver(fussAbstand);
+  window.addEventListener('resize', fussAbstand);
 
   render(true);
   (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { document.body.dataset.fertig = '1'; });

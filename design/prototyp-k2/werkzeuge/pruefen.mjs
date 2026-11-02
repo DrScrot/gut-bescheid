@@ -113,8 +113,9 @@ for (const variante of ['skizze', 'haltestelle']) {
       const rdg = screen !== 'ergebnis' ? '–' : await page.evaluate(() => {
         const r = document.querySelector('.ergebnis-karte .rdg, .weiche .rdg'); const f = document.querySelector('.fuss');
         if (!r) return 'fehlt';
-        const unten = r.getBoundingClientRect().bottom, grenze = f.getBoundingClientRect().top;
-        return unten <= grenze ? `ja (Unterkante ${Math.round(unten)} px, Fuß ab ${Math.round(grenze)} px)` : `**nein** (Unterkante ${Math.round(unten)} px, Fuß ab ${Math.round(grenze)} px)`;
+        const unten = r.getBoundingClientRect().bottom;
+        const grenze = getComputedStyle(f).position === 'sticky' ? f.getBoundingClientRect().top : window.innerHeight;
+        return unten <= grenze ? `ja (Unterkante ${Math.round(unten)} px, sichtbar bis ${Math.round(grenze)} px)` : `**nein** (Unterkante ${Math.round(unten)} px, sichtbar bis ${Math.round(grenze)} px)`;
       });
       const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
       const v = axe.violations.map((x) => `${x.id} (${x.nodes.length}): ${x.nodes.slice(0, 2).map((n) => n.target.join(' ')).join('; ')}`);

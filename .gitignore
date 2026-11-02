@@ -37,3 +37,6 @@ ehthumbs_vista.db
 Desktop.ini
 $RECYCLE.BIN/
 *.lnk
+
+# Design-Prototypen: Screenshots entstehen mit design/prototyp-k2/werkzeuge/screens.mjs (siehe LIESMICH dort)
+design/prototyp-k2/screens/

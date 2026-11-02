@@ -13,7 +13,7 @@ Kritik an R2, Begründungen, Risiken und Prüfungen: `BERICHT.md`.
 | `skizze/` | nicht gewählt, bleibt zum Vergleich. Der Weg, von Hand aufgezeichnet. Wird nicht weiter gepflegt |
 | `gemeinsam/` | Ablauf, Texte und Fälle für beide (`daten.js`, `k2.js`) |
 | `schriften/` | woff2 mit OFL-1.1-Lizenz. Haltestelle: Vollkorn (normal, kursiv), Alegreya Sans (400, 700). Skizze: Shantell Sans, Atkinson Hyperlegible Next |
-| `screens/` | 390 × 844, Faktor 2, hell und dunkel; `ganz/` volle Höhe; `vorher-r2/` derselbe Ablauf in R2 (Stand 01.11.) |
+| `screens/` | **nicht im Repo** (seit 02.11.2026 in `.gitignore`), mit `werkzeuge/screens.mjs` erzeugen, siehe unten. 390 × 844, Faktor 2, hell und dunkel; `ganz/` volle Höhe; `vorher-r2/` R2 zum Vergleich. Der Stand vom 02.11.2026 vor der letzten Runde liegt in der Git-Historie (Commit 1f52006) |
 | `werkzeuge/` | `screens.mjs` (Screenshots), `pruefen.mjs` (Kontrast, Farbsehschwäche, axe, Fokus hinter dem Fuß, RDG-Satz ohne Scrollen), `lokal.mjs` (liefert den Ordner in Playwright aus) |
 | `pruefung-automatisch.md` | Ergebnis von `pruefen.mjs` |
 
@@ -28,14 +28,19 @@ Abweichungen vom Export, alle auf Entscheidung vom 02.11.2026:
   Damit steht der RDG-Satz bei 390 × 844 ohne Scrollen sichtbar unter den Beträgen, wie im Fachkonzept („erst Wie viel?“).
 - **Reihenfolge der Wegkarten und Reiter:** Der Weg, den das Regelwerk zuerst verlangt, steht links und trägt den Grund
   („zuerst beantragen“ bei `weg_b_deckt`, „deckt euren Bedarf“ bei `nur_weg_a`). Sonst steht A links, B rechts. Die beiden Etiketten sind neuer Text.
+- **Erweiterter Zugang (T03):** Kopfzeile → Beträge mit RDG-Satz → Einordnung → Karte „Reihenfolge der Anträge“ → Wahl.
+  Die Reihenfolge-Karte steht vor der Wahl, weil sie vor der Wahl gelesen werden muss. Die Wahlknöpfe tragen keine Beträge mehr;
+  die Beträge stehen nur auf der Karte mit dem RDG-Satz. Die Einordnung vor der Reihenfolge-Karte ist ein Vorschlag von Claude.
+- **Fuß auf niedrigen Bildschirmen:** Bis 700 px Höhe klebt der Fuß nicht, er scrollt mit.
 - Startbildschirm K1 „Brief“ nicht übernommen.
 
 ## Regeln aus den Prüfungen, für M5 übernehmen
 
 - Pflicht nie auf `--a-flaeche` setzen. Die beiden Flächen sind bei Deuteranopie kaum zu unterscheiden.
-- Der RDG-Satz steht auf derselben Karte direkt unter den Beträgen. Ohne Scrollen sichtbar bei 390 × 844 und 360 × 740; bei 375 × 667 und 320 × 568 noch nicht (offen, siehe `BERICHT.md` Abschnitt 8).
+- Der RDG-Satz steht auf derselben Karte direkt unter den Beträgen, auf allen Ergebnisarten gleich. Ohne Scrollen sichtbar bei 390 × 844, 360 × 740 und 375 × 667;
+  bei 320 × 568 nicht. Ob „auf derselben Karte direkt darunter“ genügt, ist offen: `docs/offene-rechtsfragen.md` Punkt 45.
 - Wegkarten liegen auf einem gemeinsamen Raster (CSS subgrid) mit fester Spaltenbreite. Beträge dürfen vor „€“ umbrechen.
-- Fokus darf nie hinter dem klebenden Fuß liegen (`scroll-padding-bottom` = Fußhöhe + 16 px).
+- Fokus darf nie hinter dem klebenden Fuß liegen (`scroll-padding-bottom` = Fußhöhe + 16 px, nur solange der Fuß klebt).
 
 ## Zwei Arten von „Entwurf“
 
@@ -48,13 +53,10 @@ Die Wortlaut-Entwürfe bleiben unsichtbar, damit sie den Fünf-Sekunden-Test (�
 
 ## Vorgemerkt für den rechts-pruefer
 
-**Vorschuss in der Wartezeit** („Nach 4 Wochen ohne Bescheid: Vorschuss beantragen. Das ist Geld vorab, das später verrechnet wird.“):
-- Die Station steht auf beiden Wegen, also auch nach einem Antrag auf Grundsicherung (Warten bei T04).
-  `docs/offene-rechtsfragen.md` Punkt 36 deckt den Vorschuss nach § 42 SGB I nur für Kinderzuschlag und Wohngeld ab.
-  Frage: Gilt das für Weg A ebenso, oder geht dort eine eigene Regel vor (etwa die vorläufige Entscheidung nach § 41a SGB II)?
-- „Nach 4 Wochen“: § 42 Abs. 1 Satz 2 SGB I spricht von „spätestens nach Ablauf eines Kalendermonats nach Eingang des Antrags“.
-  Passt „4 Wochen ohne Bescheid“ dazu, und muss man überhaupt warten, bevor man den Vorschuss beantragt?
-- „das später verrechnet wird“: stimmt das für alle Fälle (§ 42 Abs. 2 SGB I)?
+**Vorschuss in der Wartezeit** („Nach 4 Wochen ohne Bescheid: Vorschuss beantragen …“), ausdrücklich auch für Weg A:
+eingetragen als `docs/offene-rechtsfragen.md` Punkt 44.
+
+**RDG-Satz auf kleinen Bildschirmen:** `docs/offene-rechtsfragen.md` Punkt 45.
 
 **Etiketten an den Wegkarten:** „zuerst beantragen“ und „deckt euren Bedarf“ sind kurze Fassungen von Sätzen aus der Einordnung.
 Bitte auf RDG prüfen (allgemeine Regel, keine Empfehlung im Einzelfall). Danach `text-lektor`.
@@ -71,11 +73,21 @@ Parameter: `fall=T01|T03|T04|KEIN|AUS`, `screen=leitung|start|ort|wer|kinder|aus
 
 ## Screenshots und Prüfung neu erzeugen
 
-Playwright ist nicht im Projekt installiert. Mit einer eigenen Installation:
+Die Screenshots liegen nicht im Repo. So erzeugst du sie neu (Node 24, Microsoft Edge installiert):
 
 ```
-PLAYWRIGHT=<pfad>/node_modules/playwright/index.mjs node werkzeuge/screens.mjs [haltestelle|skizze]
-PLAYWRIGHT=<…>/playwright/index.mjs AXE=<…>/@axe-core/playwright/dist/index.mjs node werkzeuge/pruefen.mjs > pruefung-automatisch.md
+# einmal: Playwright und axe außerhalb des Projekts installieren, z. B. in einem Arbeitsordner
+mkdir k2-werkzeug && cd k2-werkzeug && npm init -y && npm i playwright @axe-core/playwright
+
+# im Projekt, Ordner design/prototyp-k2
+PLAYWRIGHT=<arbeitsordner>/node_modules/playwright/index.mjs node werkzeuge/screens.mjs              # beide Varianten
+PLAYWRIGHT=<arbeitsordner>/node_modules/playwright/index.mjs node werkzeuge/screens.mjs haltestelle  # nur Haltestelle
+PLAYWRIGHT=<arbeitsordner>/node_modules/playwright/index.mjs AXE=<arbeitsordner>/node_modules/@axe-core/playwright/dist/index.mjs node werkzeuge/pruefen.mjs > pruefung-automatisch.md
 ```
 
-Browser ist der installierte Microsoft Edge (`BROWSER_KANAL=chrome` oder `chromium` zum Wechseln).
+`screens.mjs` schreibt nach `screens/` (je Variante 7 Bildschirme, hell und dunkel) und nach `screens/ganz/`.
+Die Seiten liefert das Skript selbst aus (`werkzeuge/lokal.mjs`), ein Server ist nicht nötig.
+Browser ist der installierte Microsoft Edge; mit `BROWSER_KANAL=chrome` oder `chromium` lässt er sich wechseln
+(für `chromium` vorher `npx playwright install chromium` im Arbeitsordner).
+Die Vergleichsbilder in `screens/vorher-r2/` lassen sich nicht neu erzeugen, weil der Export der Design-Fläche gelöscht ist.
+Sie liegen in der Git-Historie (Commit 1f52006).

@@ -244,7 +244,8 @@ button.weg.an { border: 3px solid var(--text); padding: 15px 13px; }
 
 .zeige-entwurf [data-entwurf] { outline: 2px dashed var(--linie-leise); outline-offset: 4px; }
 /* Nach a11y-Prüfung: Fuß bei wenig Höhe nicht kleben lassen (200 % Zoom, 1.4.10); „kein Geld“ darf umbrechen (1.4.12) */
-@media (max-height: 480px) { .fuss { position: static; } }
+/* Niedrige Bildschirme (Entscheidung 02.11.2026): Der Fuß klebt nicht, er scrollt mit. So bleibt der RDG-Satz unter den Beträgen sichtbar. */
+@media (max-height: 700px) { .fuss { position: static; box-shadow: none; } }
 .betrag.kein { white-space: normal; }
 /* Niedrige Bildschirme (z. B. 360 × 740): kompakter, damit der RDG-Satz ohne Scrollen unter den Beträgen sichtbar bleibt */
 @media (max-height: 760px) {
