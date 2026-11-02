@@ -1,6 +1,6 @@
 # Offene Rechtsfragen
 
-Stand: 01.11.2026 (KV-Beitrag auf Weg B umgesetzt) · Diese Liste ist für die Rechts- oder Sozialberatung gedacht. Sie sammelt alle Stellen, an denen das Regelwerk eine Annahme trifft, die ein Mensch mit Fachwissen prüfen sollte. Jeder Meilenstein ergänzt sie.
+Stand: 02.11.2026 (Punkte 44 und 45 aus der Gestaltung K2) · Diese Liste ist für die Rechts- oder Sozialberatung gedacht. Sie sammelt alle Stellen, an denen das Regelwerk eine Annahme trifft, die ein Mensch mit Fachwissen prüfen sollte. Jeder Meilenstein ergänzt sie.
 
 Je Punkt: die Frage, unsere Annahme, die Fundstellen und die Tests, die sich ändern, wenn die Antwort anders ausfällt. Im Regelwerk tragen die betroffenen Werte meist den Status `pruefen` und erscheinen im Ergebnis als Hinweis.
 
@@ -395,6 +395,31 @@ Gefunden vom rechts-pruefer bei der Prüfung der Verhaltensdiagnose (`docs/forsc
 - **Fundstellen:** § 26 Abs. 2 und 4 SGB II; FW § 26 SGB II Rz. 26.42; DA-KiZ C.4.1 Abs. 5; § 6a Abs. 1 Nr. 3 und Abs. 1a Nr. 3 BKGG.
 - **Betroffene Tests:** `vergleich.test.ts` „Randfall Lücke A ≤ 0, mit Beitrag fehlt Geld …“ und „Randfall verheiratet …“ (konstruierter Haushalt).
 
+## Aus der Gestaltung K2 „Haltestelle“ (02.11.2026)
+
+Beide Punkte betreffen die Oberfläche, nicht die Rechnung. Der Prototyp liegt in `design/prototyp-k2/` (Grundlage für M5).
+
+### 44. Vorschuss in der Wartezeit, auf beiden Wegen
+
+- **Frage:** Darf die Oberfläche nach dem Antrag auf **beiden** Wegen diese Station zeigen: „Nach 4 Wochen ohne Bescheid: Vorschuss beantragen. Das ist Geld vorab, das später verrechnet wird.“? Ausdrücklich auch nach einem Antrag auf Grundsicherung (Weg A).
+- **Wo:** Bildschirm „Warten“, bei T01 (Weg B) und T04 (Weg A). Der Text stammt aus der Design-Fläche, nicht aus dem Folgen-Katalog. Im Prototyp ist er als sichtbarer Entwurf markiert.
+- **Unsere Annahme:** Für Kinderzuschlag und Wohngeld gilt § 42 Abs. 1 SGB I (Punkt 36). Für Weg A gibt es noch keine Annahme.
+- **Zu prüfen:**
+  - Weg A: Gilt § 42 SGB I auch für die Grundsicherung, oder geht eine eigene Regel vor, zum Beispiel die vorläufige Entscheidung nach § 41a SGB II (nicht gelesen)? Wenn es auf Weg A anders heißt, braucht die Station dort einen eigenen Text.
+  - „Nach 4 Wochen“: § 42 Abs. 1 Satz 2 SGB I sagt, die Zahlung beginnt „spätestens nach Ablauf eines Kalendermonats nach Eingang des Antrags“. Passt „4 Wochen ohne Bescheid“ dazu? Muss man überhaupt warten, bevor man den Vorschuss beantragt?
+  - „das später verrechnet wird“: Stimmt das in allen Fällen? Was gilt, wenn der Vorschuss höher war als die Leistung (§ 42 Abs. 2 SGB I, nicht gelesen)?
+- **Fundstellen:** § 42 SGB I; § 68 Nr. 9 und 10 SGB I; § 41a SGB II (nicht gelesen); Punkt 36.
+- **Betroffene Tests:** keine (Text der Oberfläche, M5).
+
+### 45. RDG-Satz am Betrag auf kleinen Bildschirmen
+
+- **Frage:** Genügt es, dass der RDG-Satz auf derselben Karte direkt unter dem Betrag steht, auch wenn man ihn auf kleinen Handys erst nach kurzem Scrollen sieht?
+- **Hintergrund:** Die Bedingungen für die Oberfläche (rechts-pruefer, 31.10.2026, `docs/forschung/verhaltensdiagnose-pruefung.md` Abschnitt 6.5, Nachtrag) lauten: direkt beim Betrag, auf derselben Karte, nicht einklappbar, ein Baustein, den der Screenreader zusammen liest. Zur Sichtbarkeit ohne Scrollen sagen sie nichts. Nico verlangt sie für den Prototyp.
+- **Stand im Prototyp (Entscheidung von Nico am 02.11.2026):** Kopfzeile, gleich danach die Karte mit Beträgen und RDG-Satz. Auf niedrigen Bildschirmen (bis 700 px Höhe) klebt der Fuß nicht, er scrollt mit. Gemessen in allen vier Ergebnisarten: Bei 390 × 844, 360 × 740 und 375 × 667 ist der Satz ohne Scrollen sichtbar. Bei 320 × 568 fehlen 34 bis 123 px.
+- **Unsere Annahme:** offen.
+- **Fundstellen:** CLAUDE.md (Regel zum Betrag); `docs/forschung/verhaltensdiagnose-pruefung.md` Abschnitt 6.5; `design/prototyp-k2/BERICHT.md` Abschnitt 8.
+- **Betroffene Tests:** keine (Oberfläche, M5).
+
 ## Kandidaten für weitere Karten (nicht umgesetzt)
 
 Bis zur Bewerbung (30.11.2026) kommen neue Themen nur hierher. Alle stehen in einer der gelesenen Quellen, sind aber nicht im Folgen-Katalog des Fachkonzepts.
@@ -402,7 +427,7 @@ Bis zur Bewerbung (30.11.2026) kommen neue Themen nur hierher. Alle stehen in ei
 - Ortsabwesenheit braucht die Zustimmung des Jobcenters, in der Regel höchstens 3 Wochen im Jahr (§ 7b Abs. 1 bis 3 SGB II; Merkblatt SGB II Kap. 3.2).
 - Unterhaltsansprüche gehen auf das Jobcenter über (§ 33 SGB II; Merkblatt SGB II Kap. 13). Erweitert um die Folgen auf Weg B und beim Unterhaltsvorschuss: Punkt 38.
 - Aufenthaltsrecht und Einbürgerung: welche Leistung bei Verlängerung oder Einbürgerung zählen kann (Punkt 37). Kandidat nach Entscheidung von Nico am 31.10.2026. Vor der Karte die AVwV AufenthG im Original lesen, danach rechts-pruefer.
-- Vorschuss gegen die Wartezeit bei Kinderzuschlag und Wohngeld (§ 42 SGB I, Punkt 36).
+- Vorschuss gegen die Wartezeit bei Kinderzuschlag und Wohngeld (§ 42 SGB I, Punkt 36). Für beide Wege und den Text in der Oberfläche: Punkt 44.
 - Rückforderung und Bußgeld beim Wohngeld (Punkt 40), als Ergänzung der Karte `b_wohngeld_aenderungen`.
 - Mit Kinderzuschlag oder Grundsicherung können Kita-Gebühren erlassen werden (Merkblatt KiZ Kap. 8; § 90 Abs. 4 SGB VIII, nicht gelesen).
 - Vergünstigungen mit dem Bewilligungsbescheid, zum Beispiel Sozialticket, Tafel, Museen (BA, Antrag und Bescheid; Merkblatt SGB II Kap. 16).
