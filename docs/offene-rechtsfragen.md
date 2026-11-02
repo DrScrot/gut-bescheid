@@ -1,6 +1,6 @@
 # Offene Rechtsfragen
 
-Stand: 02.11.2026 (Punkte 44 bis 46 aus der Gestaltung K2) · Diese Liste ist für die Rechts- oder Sozialberatung gedacht. Sie sammelt alle Stellen, an denen das Regelwerk eine Annahme trifft, die ein Mensch mit Fachwissen prüfen sollte. Jeder Meilenstein ergänzt sie.
+Stand: 02.11.2026 (Punkte 44 bis 46 aus der Gestaltung K2, vom rechts-pruefer geprüft) · Diese Liste ist für die Rechts- oder Sozialberatung gedacht. Sie sammelt alle Stellen, an denen das Regelwerk eine Annahme trifft, die ein Mensch mit Fachwissen prüfen sollte. Jeder Meilenstein ergänzt sie.
 
 Je Punkt: die Frage, unsere Annahme, die Fundstellen und die Tests, die sich ändern, wenn die Antwort anders ausfällt. Im Regelwerk tragen die betroffenen Werte meist den Status `pruefen` und erscheinen im Ergebnis als Hinweis.
 
@@ -339,7 +339,8 @@ Gefunden vom rechts-pruefer bei der Prüfung der Verhaltensdiagnose (`docs/forsc
   - **Vorschuss:** § 42 Abs. 1 SGB I gilt für Kinderzuschlag und Wohngeld (§ 68 Nr. 9 und 10 SGB I), wenn der Anspruch dem Grunde nach besteht. Auf Antrag ist er Pflicht und beginnt „spätestens nach Ablauf eines Kalendermonats nach Eingang des Antrags“.
 - **Widerspruch zu einer Quelle:** Die BAGFW-Umfrage 2022 zitiert eine beratende Person: „Durch die Bewilligung von ALG 2 endet aber automatisch per Gesetz der Wohngeldanspruch“. Das stimmt nach der Rechtslage oben nur beim erweiterten Zugang. Nicht angeglichen.
 - **Offen:** Zählt der Kinderzuschlag mit, wo es beim Wohngeld darauf ankommt, ob Hilfebedürftigkeit „durch Wohngeld“ vermieden wird (WoGVwV, nicht gelesen)?
-- **Fundstellen:** § 7 Abs. 1 Satz 3 Nr. 2, § 28 Abs. 3 und 4 WoGG; § 104 SGB X; §§ 42, 43, 68 SGB I; DA-KiZ C.4.2 Abs. 4, C.4.3, F.6.
+- **Ergänzt am 02.11.2026 (rechts-pruefer, zu Punkt 44):** Auf Weg A gilt statt des Vorschusses die vorläufige Entscheidung nach § 41a SGB II. Sie geht § 42 SGB I vor (FW § 41a SGB II, Rz. 41a.14, Stand 01.07.2026). Beim Wohngeld gibt es zusätzlich die vorläufige Zahlung nach § 26a WoGG; wie sie zu § 42 SGB I steht, ist offen. Die Fundstelle zur Erstattung ans Jobcenter heißt genau § 7 Abs. 1 Satz 3 Nr. 2 Buchst. b WoGG.
+- **Fundstellen:** § 7 Abs. 1 Satz 3 Nr. 2 (Buchst. b), § 26a, § 28 Abs. 3 und 4 WoGG; § 41a SGB II; § 104 SGB X; §§ 42, 43, 68 SGB I; DA-KiZ C.4.2 Abs. 4, C.4.3, F.6.
 - **Betroffene Tests:** keine (Text). Neue Karte; Vergleichszeile „Wie lange bis zum ersten Geld“.
 
 ### 37. Aufenthaltsrecht und Einbürgerung
@@ -408,7 +409,22 @@ Alle Punkte betreffen die Oberfläche, nicht die Rechnung. Der Prototyp liegt in
   - Weg A: Gilt § 42 SGB I auch für die Grundsicherung, oder geht eine eigene Regel vor, zum Beispiel die vorläufige Entscheidung nach § 41a SGB II (nicht gelesen)? Wenn es auf Weg A anders heißt, braucht die Station dort einen eigenen Text.
   - „Nach 4 Wochen“: § 42 Abs. 1 Satz 2 SGB I sagt, die Zahlung beginnt „spätestens nach Ablauf eines Kalendermonats nach Eingang des Antrags“. Passt „4 Wochen ohne Bescheid“ dazu? Muss man überhaupt warten, bevor man den Vorschuss beantragt?
   - „das später verrechnet wird“: Stimmt das in allen Fällen? Was gilt, wenn der Vorschuss höher war als die Leistung (§ 42 Abs. 2 SGB I, nicht gelesen)?
-- **Fundstellen:** § 42 SGB I; § 68 Nr. 9 und 10 SGB I; § 41a SGB II (nicht gelesen); Punkt 36.
+- **Ergebnis (rechts-pruefer, 02.11.2026, Gesetze im Original gelesen):**
+  - **Weg A: falsch.** § 41a SGB II geht § 42 SGB I vor. Das Jobcenter muss von sich aus vorläufig entscheiden; einen Vorschuss beantragt man dort nicht. Ausnahme: Leistungsberechtigte haben die Verzögerung „zu vertreten“ (§ 41a Abs. 1 Satz 3 SGB II), dabei zählt jede Person der Bedarfsgemeinschaft (FW Rz. 41a.5).
+  - **„Nach 4 Wochen“: falsch.** Keine Grundlage. Die Frist in § 42 Abs. 1 Satz 2 SGB I läuft ab Eingang des Vorschuss-Antrags; warten muss man vorher nicht. Der Antrag geht schon mit dem Leistungsantrag.
+  - **„später verrechnet“: unvollständig.** War der Vorschuss zu hoch, ist der Rest zu erstatten (§ 42 Abs. 2 Satz 2 SGB I). Auf Weg A erst ab 50 € für die ganze Bedarfsgemeinschaft (§ 41a Abs. 6 Satz 3 SGB II).
+  - **Kinderzuschlag:** § 11 BKGG regelt keinen Vorschuss, also gilt § 42 SGB I. **Wohngeld:** zusätzlich § 26a WoGG. Vorschuss gibt es je Stelle (§ 42 Abs. 1: „der zuständige Leistungsträger“).
+- **Wortlaut:**
+  - § 42 Abs. 1 Satz 2 SGB I: „Er hat Vorschüsse nach Satz 1 zu zahlen, wenn der Berechtigte es beantragt; die Vorschußzahlung beginnt spätestens nach Ablauf eines Kalendermonats nach Eingang des Antrags.“
+  - § 42 Abs. 2 Satz 1 und 2 SGB I: „Die Vorschüsse sind auf die zustehende Leistung anzurechnen. Soweit sie diese übersteigen, sind sie vom Empfänger zu erstatten.“
+  - § 41a Abs. 1 Satz 1 Nr. 1 SGB II: vorläufig zu entscheiden, wenn zur Feststellung „voraussichtlich längere Zeit erforderlich ist und die Voraussetzungen für den Anspruch mit hinreichender Wahrscheinlichkeit vorliegen“; Satz 3: „Eine vorläufige Entscheidung ergeht nicht, wenn Leistungsberechtigte die Umstände, die einer sofortigen abschließenden Entscheidung entgegenstehen, zu vertreten haben.“
+  - § 41a Abs. 6 Satz 3 SGB II: „Überzahlungen, die nach der Anrechnung fortbestehen, sind zu erstatten, sofern sie insgesamt mindestens 50 Euro für die Gesamtheit der Mitglieder der Bedarfsgemeinschaft betragen.“
+  - FW § 41a SGB II (Stand 01.07.2026), Rz. 41a.3: „Der Antrag der leistungsberechtigten Person muss sich daher nicht explizit auf vorläufige Leistungen erstrecken.“ Rz. 41a.14: „§ 41a geht dem § 42 SGB I als Spezialregelung im Rechtskreis des SGB II vor.“ (https://www.arbeitsagentur.de/datei/fw-sgb-ii-41a_ba012896.pdf)
+  - Die Zitate aus § 41a SGB II, § 42 SGB I und FW Rz. 41a.3 und 41a.14 hat Claude am 02.11.2026 im Original nachgelesen.
+- **Im Prototyp umgesetzt (02.11.2026):** Station „Wenn es dauert“ statt „Nach 4 Wochen ohne Bescheid“, je Weg ein eigener Text (Weg A „Vorläufiges Geld vom Jobcenter“, Weg B „Vorschuss beantragen“). Hinweis auf Weg A: „Fehlende Nachweise kannst du später schicken. Schick sie aber möglichst bald.“ Knopf „In 4 Wochen erinnern“ statt „Nach 4 Wochen erinnern“, damit er nicht wie eine Frist aus dem Gesetz wirkt. Texte in `design/prototyp-k2/gemeinsam/k2.js`, Funktion `warten`.
+- **Vorschlag nach dem Freeze:** zwei neue Karten mit Status `pruefen`: `a_vorlaeufig` (§ 41a Abs. 1, 2 und 6 SGB II; FW Rz. 41a.3, 41a.14) und `b_vorschuss` (§ 42 Abs. 1 und 2, § 68 Nr. 9 und 10 SGB I; § 26a WoGG). Im Antragstext Weg A (`folgen/naechste-schritte.json`, „Nachweise kannst du später schicken.“) prüfen, ob „Schick sie aber möglichst bald.“ dazukommt; sonst widerspricht er der Station.
+- **Offen, für eine Rechts- oder Sozialberatung:** (1) Wie rechnet man „nach Ablauf eines Kalendermonats nach Eingang“: Antrag am 15. März, Zahlung spätestens ab 15. April oder erst nach dem 30. April? Der Prototyp sagt vorsichtig „spätestens im übernächsten Monat“, das stimmt bei beiden Lesarten. (2) Verhältnis von § 26a WoGG zu § 42 SGB I. (3) Beim Kinderzuschlag hängt schon der Anspruch dem Grunde nach an der Bedarfsprüfung; ein Vorschuss greift dort wohl selten (DA-KiZ nicht gelesen). (4) § 30a WoGG (Bagatellgrenze) war nur bis 31.12.2024 erprobt; Verlängerung nicht gefunden.
+- **Fundstellen:** § 42 SGB I; § 37 Satz 1, § 68 Nr. 9 und 10 SGB I; § 41a SGB II; § 11 BKGG; § 26a WoGG; FW § 41a SGB II Rz. 41a.3, 41a.5, 41a.12, 41a.14; Punkt 36.
 - **Betroffene Tests:** keine (Text der Oberfläche, M5).
 
 ### 45. RDG-Satz am Betrag auf kleinen Bildschirmen
@@ -416,8 +432,11 @@ Alle Punkte betreffen die Oberfläche, nicht die Rechnung. Der Prototyp liegt in
 - **Frage:** Genügt es, dass der RDG-Satz auf derselben Karte direkt unter dem Betrag steht, auch wenn man ihn auf kleinen Handys erst nach kurzem Scrollen sieht?
 - **Hintergrund:** Die Bedingungen für die Oberfläche (rechts-pruefer, 31.10.2026, `docs/forschung/verhaltensdiagnose-pruefung.md` Abschnitt 6.5, Nachtrag) lauten: direkt beim Betrag, auf derselben Karte, nicht einklappbar, ein Baustein, den der Screenreader zusammen liest. Zur Sichtbarkeit ohne Scrollen sagen sie nichts. Nico verlangt sie für den Prototyp.
 - **Stand im Prototyp (Entscheidung von Nico am 02.11.2026):** Kopfzeile, gleich danach die Karte mit Beträgen und RDG-Satz. Auf niedrigen Bildschirmen (bis 700 px Höhe) klebt der Fuß nicht, er scrollt mit. Gemessen in allen vier Ergebnisarten: Bei 390 × 844, 360 × 740 und 375 × 667 ist der Satz ohne Scrollen sichtbar. Bei 320 × 568 fehlen 34 bis 123 px.
-- **Unsere Annahme:** offen.
-- **Fundstellen:** CLAUDE.md (Regel zum Betrag); `docs/forschung/verhaltensdiagnose-pruefung.md` Abschnitt 6.5; `design/prototyp-k2/BERICHT.md` Abschnitt 8.
+- **Ergebnis (rechts-pruefer, 02.11.2026): stimmt.** Das ist eine Gestaltungsfrage. Ob eine Rechtsdienstleistung vorliegt, hängt an der Tätigkeit, nicht an der Sichtbarkeit eines Hinweises. Eine Norm, die „ohne Scrollen sichtbar“ verlangt, gibt es nicht. § 2 Abs. 1 RDG: „Rechtsdienstleistung ist jede Tätigkeit in konkreten fremden Angelegenheiten, sobald sie eine rechtliche Prüfung des Einzelfalls erfordert.“ § 3 RDG regelt nur, wer darf.
+- **Bedingungen, die bleiben:** Zwischen Betrag und Satz steht kein anderes Element. Der Satz wird nicht abgeschnitten oder verdeckt. Der Betrag steht nirgends allein (keine Kopfzeile, kein Vorschaubild mit Betrag).
+- **Im Prototyp:** keine Änderung. **Für den a11y-pruefer:** Die Wegkarten sind eine Liste (`<ul>`), der Satz folgt danach. Wer mit dem Screenreader von Liste zu Liste springt, könnte ihn überspringen. Prüfen, ob `aria-describedby` nötig ist.
+- **Offen:** Ob ein Anwalt Sichtbarkeit ohne Scrollen empfiehlt, gehört in die rechtliche Ersteinschätzung.
+- **Fundstellen:** §§ 2, 3 RDG; CLAUDE.md (Regel zum Betrag); `docs/forschung/verhaltensdiagnose-pruefung.md` Abschnitt 6.5; `design/prototyp-k2/BERICHT.md` Abschnitt 8.
 - **Betroffene Tests:** keine (Oberfläche, M5).
 
 ### 46. Etiketten an den Wegkarten: „zuerst beantragen“ und „deckt euren Bedarf“
@@ -429,7 +448,14 @@ Alle Punkte betreffen die Oberfläche, nicht die Rechnung. Der Prototyp liegt in
   - „deckt euren Bedarf“ kürzt die Kopfzeile „Nur die Grundsicherung deckt euren Bedarf.“ (aus der Design-Fläche) und die Einordnung `nur_weg_a`: „Nach den Regeln reicht nur die Grundsicherung.“ Bewusst nicht „zuerst beantragen“: Wer Grundsicherung bekommt, bekommt in der Regel kein Wohngeld (§ 7 Abs. 1 WoGG, vgl. Punkt 36). Ein „danach“ für Weg B gibt es also nicht. Stimmt das so?
   - Beide Etiketten stehen auf derselben Karte wie der RDG-Satz („Das gilt für Haushalte mit euren Angaben …“).
 - **Fundstellen:** `packages/regelwerk/folgen/einordnung.json` (`weg_b_deckt`, `nur_weg_a`); Karte `a_vorrang_kiz_wohngeld` (§ 12a Satz 1 und Satz 2 Nr. 2, § 5 Abs. 3 SGB II); § 7 Abs. 1 WoGG; CLAUDE.md (RDG-Formel); `docs/forschung/verhaltensdiagnose-pruefung.md` Abschnitt 6.1, D1.
-- **Betroffene Tests:** keine (Oberfläche, M5). Nach dem rechts-pruefer der `text-lektor`.
+- **Ergebnis (rechts-pruefer, 02.11.2026):**
+  - „zuerst beantragen“: **stimmt mit Einschränkung.** Klingt wie eine Handlungsanweisung an diesen Haushalt; „zuerst“ lässt ein „danach Weg A“ erwarten, das es bei `weg_b_deckt` meist nicht gibt. Die 3-Monats-Bedingung fehlt auf dem ganzen Ergebnis, auch in der Einordnung (§ 12a Satz 2 Nr. 2 SGB II: keine Pflicht, „wenn dadurch nicht die Hilfebedürftigkeit aller Mitglieder der Bedarfsgemeinschaft für einen zusammenhängenden Zeitraum von mindestens drei Monaten beseitigt würde“).
+  - „deckt euren Bedarf“: **stimmt mit Einschränkung.** Ohne „nach den Regeln“ klingt es wie eine Tatsache; „Bedarf“ ist ein Fachwort ohne Erklärung.
+  - Begründung „kein danach für Weg B“ bei `nur_weg_a`: **stimmt.** § 7 Abs. 1 Satz 1 Nr. 1 WoGG schließt Empfänger von Grundsicherungsgeld aus; die Ausnahme in Satz 3 Nr. 2 verlangt, dass Wohngeld die Hilfebedürftigkeit vermeidet. Beim Kinderzuschlag fehlt § 6a Abs. 1 Nr. 3 BKGG. Einschränkung: Wer keine Grundsicherung beantragt, kann Wohngeld allein beantragen; Weg B bleibt eine Alternative mit weniger Geld, nur kein zweiter Schritt.
+- **Im Prototyp umgesetzt (02.11.2026, nach rechts-pruefer und text-lektor):** Etikett an Weg B „ist nach den Regeln zuerst dran“, an Weg A „reicht nach den Regeln“. Kopfzeile bei `nur_weg_a`: „Nach den Regeln reicht nur die Grundsicherung.“ (vorher „Nur die Grundsicherung deckt euren Bedarf.“).
+- **Vorschlag nach dem Freeze:** In `einordnung_weg_b_deckt` den Satz aus `a_vorrang_kiz_wohngeld` ergänzen: „Das gilt, wenn es für alle mindestens 3 Monate am Stück reicht.“
+- **Offen:** Kinder außerhalb der Bedarfsgemeinschaft könnten Wohngeld bekommen (Punkt 11; § 7 Abs. 2 WoGG nicht gelesen). Ob die Wohngeldstelle prüft, wie der Lebensunterhalt gesichert ist (WoGVwV, nicht gelesen).
+- **Betroffene Tests:** keine (Oberfläche, M5).
 
 ## Kandidaten für weitere Karten (nicht umgesetzt)
 
@@ -438,7 +464,7 @@ Bis zur Bewerbung (30.11.2026) kommen neue Themen nur hierher. Alle stehen in ei
 - Ortsabwesenheit braucht die Zustimmung des Jobcenters, in der Regel höchstens 3 Wochen im Jahr (§ 7b Abs. 1 bis 3 SGB II; Merkblatt SGB II Kap. 3.2).
 - Unterhaltsansprüche gehen auf das Jobcenter über (§ 33 SGB II; Merkblatt SGB II Kap. 13). Erweitert um die Folgen auf Weg B und beim Unterhaltsvorschuss: Punkt 38.
 - Aufenthaltsrecht und Einbürgerung: welche Leistung bei Verlängerung oder Einbürgerung zählen kann (Punkt 37). Kandidat nach Entscheidung von Nico am 31.10.2026. Vor der Karte die AVwV AufenthG im Original lesen, danach rechts-pruefer.
-- Vorschuss gegen die Wartezeit bei Kinderzuschlag und Wohngeld (§ 42 SGB I, Punkt 36). Für beide Wege und den Text in der Oberfläche: Punkt 44.
+- Vorschuss gegen die Wartezeit bei Kinderzuschlag und Wohngeld (§ 42 SGB I, Punkt 36), vorläufige Entscheidung auf Weg A (§ 41a SGB II). Karten `b_vorschuss` und `a_vorlaeufig` vorgeschlagen in Punkt 44.
 - Rückforderung und Bußgeld beim Wohngeld (Punkt 40), als Ergänzung der Karte `b_wohngeld_aenderungen`.
 - Mit Kinderzuschlag oder Grundsicherung können Kita-Gebühren erlassen werden (Merkblatt KiZ Kap. 8; § 90 Abs. 4 SGB VIII, nicht gelesen).
 - Vergünstigungen mit dem Bewilligungsbescheid, zum Beispiel Sozialticket, Tafel, Museen (BA, Antrag und Bescheid; Merkblatt SGB II Kap. 16).
